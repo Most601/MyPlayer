@@ -15,7 +15,8 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 public class MainActivity extends Activity  implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
 

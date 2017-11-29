@@ -1,17 +1,14 @@
 package metaextract.nkm.com.myplayer;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;

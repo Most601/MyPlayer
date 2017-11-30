@@ -84,6 +84,10 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         mp.setOnCompletionListener(this); // Important
         // Getting all songs list
 
+
+
+
+
         int permissionCheck = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE);
 
@@ -493,6 +497,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         mp.release();
     }
 
+    //----------------------------------------------------------------------------------
 
 
 }

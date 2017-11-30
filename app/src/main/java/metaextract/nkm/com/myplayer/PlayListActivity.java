@@ -2,20 +2,164 @@ package metaextract.nkm.com.myplayer;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.net.Uri;
+import android.content.ContentResolver;
+import android.database.Cursor;
 import android.widget.SimpleAdapter;
 
 public class PlayListActivity extends ListActivity {
 
+
+    private ArrayList<Song> songList= new ArrayList<Song>();
+    private ListView songView;
+
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.playlist);
+
+        ContentResolver musicResolver = getContentResolver();
+        Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
+
+        if(musicCursor!=null && musicCursor.moveToFirst()){
+            //get columns
+            int titleColumn = musicCursor.getColumnIndex
+                    (android.provider.MediaStore.Audio.Media.TITLE);
+            int idColumn = musicCursor.getColumnIndex
+                    (android.provider.MediaStore.Audio.Media._ID);
+            int artistColumn = musicCursor.getColumnIndex
+                    (android.provider.MediaStore.Audio.Media.ARTIST);
+            int idCossslumn = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media.DISPLAY_NAME);
+            int iddata = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media.DATA);
+
+            String fullPath = musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+            //add songs to list
+            do {
+                long thisId = musicCursor.getLong(idColumn);
+                String thiData = musicCursor.getString(iddata);
+                String thisTitle = musicCursor.getString(idCossslumn);
+                String thisArtist = musicCursor.getString(artistColumn);
+                songList.add( new Song( thisId , thisTitle , thisArtist , thiData));
+            }
+            while (musicCursor.moveToNext());
+        }
+
+
+        //--------------- sort abc.... ----------------------
+        Collections.sort(songList, new Comparator<Song>(){
+            public int compare(Song a, Song b){
+                return a.getTitle().compareTo(b.getTitle());
+            }
+        });
+        //----------------------------------------------------
+
+
+        //--------------- ListView Asapter use ---------------
+        songView = getListView();
+        SongAdapter songAdt = new SongAdapter(this , R.layout.playlist , songList);
+        songView.setAdapter(songAdt);
+        // Adding menuItems to ListView
+
+        //-----------------------------------------------------
+
+
+
+        //-------------- selecting Song -----------------------
+        // selecting single ListView item
+        ListView lv =  getListView();
+        // listening to single listitem click
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // getting listitem index
+                int songIndex = position;
+
+                // Starting new intent
+                Intent in = new Intent(getApplicationContext(),
+                        MainActivity.class);
+                // Sending songIndex to PlayerActivity
+                in.putExtra("songTitle", songIndex);
+                setResult(100, in);
+                // Closing PlayListView
+                finish();
+            }
+        });
+
+        //-----------------------------------------------------
+
+
+
+
+    }
+
+}
+
+
+
+
+
+
+
+/*
+//--------------------------------------------------------------------------------
+
+    public ArrayList<HashMap<String, String>> getPlayList() {
+        ContentResolver musicResolver = getContentResolver();
+        Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
+
+        if (musicCursor != null && musicCursor.moveToFirst()) {
+            //get columns
+            int titleColumn = musicCursor.getColumnIndex
+                    (android.provider.MediaStore.Audio.Media.TITLE);
+            int idColumn = musicCursor.getColumnIndex
+                    (android.provider.MediaStore.Audio.Media._ID);
+            int artistColumn = musicCursor.getColumnIndex
+                    (android.provider.MediaStore.Audio.Media.ARTIST);
+            int idCossslumn = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media.DATA);
+
+            String fullPath = musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+            // ...process entry...
+            //add songs to list
+            do {
+                long thisId = musicCursor.getLong(idColumn);
+                String thisTitle = musicCursor.getString(idCossslumn);
+                String thisArtist = musicCursor.getString(artistColumn);
+                HashMap<String, String> song = new HashMap<String, String>();
+                song.put("songTitle", fullPath);
+                song.put("thisArtist", thisArtist);
+                songList.add(song);
+            }
+            while (musicCursor.moveToNext());
+        }
+        return songList;
+
+    }
+
+
+
+//--------------------------------------------------------------------------------
+
+
+
+/*
     public ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
 
     @Override
@@ -66,7 +210,21 @@ public class PlayListActivity extends ListActivity {
             }
         });
     }
+*/
 
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

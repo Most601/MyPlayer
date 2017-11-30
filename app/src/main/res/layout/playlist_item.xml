@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/aaaa"
+    android:background="@color/wi"
     android:padding="5dp">
     <TextView
         android:id="@+id/songTitle"
@@ -12,5 +12,5 @@
         android:layout_height="wrap_content"
         android:textSize="16dp"
         android:padding="10dp"
-        android:color="#f3f3f3"/>
+        android:color="#144800"/>
 </LinearLayout>

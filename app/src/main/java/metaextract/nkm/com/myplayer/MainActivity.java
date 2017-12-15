@@ -91,6 +91,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
 
 
 
+
         int permissionCheck = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE);
 

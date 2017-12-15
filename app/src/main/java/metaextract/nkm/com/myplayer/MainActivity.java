@@ -53,8 +53,6 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     private boolean isRepeat = false;
     private ArrayList<Song> songsList = new ArrayList<Song>();
     // FILE
-    private FileManager fileManager = new FileManager(this);
-    private static final String BEST_SCORE_FILE = "BestScore.txt";
 
 
 
@@ -244,7 +242,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     public void  playSong(int songIndex){
         // Play song
         try {
-            fileManager.writeInternalFile(BEST_SCORE_FILE, songsList.get(songIndex).getdata(), false);
+
 
 
 
@@ -504,6 +502,24 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     public void onDestroy(){
         super.onDestroy();
         mp.release();
+    }
+
+
+
+    //---------------------------------------------------------------------------------
+
+
+
+
+
+    public void DataInformation2(View view) {
+        Intent i = new Intent(getApplicationContext(), DataShow.class);
+        startActivityForResult(i, 100);
+
+
+
+
+
     }
 
     //----------------------------------------------------------------------------------

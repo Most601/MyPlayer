@@ -35,27 +35,31 @@ public class PlayListActivity extends ListActivity {
 
         if(musicCursor!=null && musicCursor.moveToFirst()){
             //get columns
-            int titleColumn = musicCursor.getColumnIndex
-                    (android.provider.MediaStore.Audio.Media.TITLE);
             int idColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media._ID);
+            int titleColumn = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media.DISPLAY_NAME);
             int artistColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.ARTIST);
-            int idCossslumn = musicCursor.getColumnIndex
-                    (MediaStore.Audio.Media.DISPLAY_NAME);
             int iddata = musicCursor.getColumnIndex
                     (MediaStore.Audio.Media.DATA);
 
             String fullPath = musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+
             //add songs to list
             do {
                 long thisId = musicCursor.getLong(idColumn);
-                String thiData = musicCursor.getString(iddata);
-                String thisTitle = musicCursor.getString(idCossslumn);
+                String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
-                songList.add( new Song( thisId , thisTitle , thisArtist , thiData));
+                String thiData = musicCursor.getString(iddata);
+
+
+                this.songList.add( new Song( thisId , thisTitle , thisArtist , thiData));
             }
             while (musicCursor.moveToNext());
+
+
+
         }
 
 

@@ -51,8 +51,13 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     private int currentSongIndex = 0;
     private boolean isShuffle = false;
     private boolean isRepeat = false;
-
     private ArrayList<Song> songsList = new ArrayList<Song>();
+    // FILE
+    private FileManager fileManager = new FileManager(this);
+    private static final String BEST_SCORE_FILE = "BestScore.txt";
+
+
+
 
 
 
@@ -198,14 +203,12 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
 
         if (musicCursor != null && musicCursor.moveToFirst()) {
             //get columns
-            int titleColumn = musicCursor.getColumnIndex
-                    (android.provider.MediaStore.Audio.Media.TITLE);
             int idColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media._ID);
+            int titleColumn = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media.DISPLAY_NAME);
             int artistColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.ARTIST);
-            int idCossslumn = musicCursor.getColumnIndex
-                    (MediaStore.Audio.Media.DISPLAY_NAME);
             int iddata = musicCursor.getColumnIndex
                     (MediaStore.Audio.Media.DATA);
 
@@ -213,10 +216,12 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             //add songs to list
             do {
                 long thisId = musicCursor.getLong(idColumn);
-                String thiData = musicCursor.getString(iddata);
-                String thisTitle = musicCursor.getString(idCossslumn);
+                String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
-                this.songsList.add( new Song( thisId , thisTitle , "aaaaaa" , thiData));
+                String thiData = musicCursor.getString(iddata);
+
+
+                this.songsList.add( new Song( thisId , thisTitle , thisArtist , thiData));
             }
             while (musicCursor.moveToNext());
         }
@@ -239,8 +244,12 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     public void  playSong(int songIndex){
         // Play song
         try {
+            fileManager.writeInternalFile(BEST_SCORE_FILE, songsList.get(songIndex).getdata(), false);
 
-            Uri uri= Uri.parse("file:///"+songsList.get(songIndex).getdata());
+
+
+
+            Uri uri= Uri.parse(songsList.get(songIndex).getdata());
             mp.reset();
             mp.setDataSource(this,uri);
             mp.prepare();

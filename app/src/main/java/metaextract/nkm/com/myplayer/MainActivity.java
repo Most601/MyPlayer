@@ -501,7 +501,10 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     @Override
     public void onDestroy(){
         super.onDestroy();
+
+        // מפיל שעושים אחורה אבל לא שומר על הנגן -------------
         mp.release();
+        // מפיל שעושים אחורה -------------
     }
 
 

@@ -65,7 +65,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/acc_x"
+        android:layout_centerVertical="true"
         android:color="#144800"
         android:padding="10dp"
         android:textSize="16dp" />
@@ -80,5 +80,18 @@
         android:color="#144800"
         android:padding="10dp"
         android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/time_date"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="51dp"
+        android:color="#144800"
+        android:padding="10dp"
+        android:textSize="16dp" />
+
+
 
 </RelativeLayout>

@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Calendar;
+
 public class DataShow extends AppCompatActivity implements SensorEventListener{
 
 
@@ -23,6 +25,7 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
     private Button b;
     private TextView textgps;
     private TextView textH;
+    private TextView timeDate;
     private LocationManager locationManager;
     private LocationListener listener;
     private GPS gps ;
@@ -55,7 +58,7 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
 
 
 
-        //----------------------------
+        //----------------- Accelerometer -------------
         SM = (SensorManager)getSystemService(SENSOR_SERVICE);
         // Accelerometer Sensor
         mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -66,6 +69,17 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
         zText = (TextView)findViewById(R.id.acc_z);
         //----------------------------------------------
 
+        //---------------- time Date ------------------------
+        timeDate = (TextView) findViewById(R.id.time_date);
+        Calendar cc = Calendar.getInstance();
+        int year=cc.get(Calendar.YEAR);
+        int month=cc.get(Calendar.MONTH);
+        int mDay = cc.get(Calendar.DAY_OF_MONTH);
+        int mHour = cc.get(Calendar.HOUR_OF_DAY);
+        int mMinute = cc.get(Calendar.MINUTE);
+        timeDate.append("Date : "+ year+"/"+month+"/"+mDay +" --- ");
+        timeDate.append("time : "+String.format("%02d:%02d", mHour , mMinute ));
+        //----------------------------------------------
 
     }
 
@@ -83,7 +97,7 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
 
 
 
-    //----------------------------------------------
+    //----------------- Accelerometer --------------
     @Override
     public void onSensorChanged(SensorEvent event) {
         xText.setText("X: " + (int)event.values[0]);
@@ -94,6 +108,15 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
     //----------------------------------------------
+
+
+
+
+
+
+
+
+
 
 
 }

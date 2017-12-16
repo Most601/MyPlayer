@@ -498,7 +498,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         if(isShuffle){
             isShuffle = false;
             Toast.makeText(getApplicationContext(), "Shuffle is OFF", Toast.LENGTH_SHORT).show();
-            ////    btnShuffle.setImageResource(R.drawable.img_btn_shuffle);
+            btnShuffle.setImageResource(R.drawable.img_btn_shuffle);
         }else{
             // make repeat to true
             isShuffle= true;

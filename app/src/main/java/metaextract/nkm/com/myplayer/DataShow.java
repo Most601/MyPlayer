@@ -29,11 +29,13 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
     private HeartrRate heartrRate;
 
 
+
+//----------------------------------------------
     private Accelerometer accelerometer;
     private Sensor mySensor;
     private SensorManager SM;
     private TextView xText, yText, zText;
-
+//----------------------------------------------
 
 
     @Override
@@ -55,17 +57,14 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
 
         //----------------------------
         SM = (SensorManager)getSystemService(SENSOR_SERVICE);
-
         // Accelerometer Sensor
         mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
         // Register sensor Listener
         SM.registerListener((SensorEventListener) this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);
-
         xText = (TextView)findViewById(R.id.acc_x);
         yText = (TextView)findViewById(R.id.acc_y);
         zText = (TextView)findViewById(R.id.acc_z);
-
+        //----------------------------------------------
 
 
     }
@@ -84,17 +83,17 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
 
 
 
-
-
+    //----------------------------------------------
     @Override
     public void onSensorChanged(SensorEvent event) {
         xText.setText("X: " + (int)event.values[0]);
         yText.setText("Y: " + (int)event.values[1]);
         zText.setText("Z: " + (int)event.values[2]);
     }
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
+    //----------------------------------------------
+
+
 }

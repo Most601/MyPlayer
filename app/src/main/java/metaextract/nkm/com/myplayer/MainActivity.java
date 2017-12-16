@@ -44,7 +44,6 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     private  MediaPlayer mp;
     // Handler to update UI timer, progress bar etc,.
     private Handler mHandler = new Handler();;
-   ////////////////////////////////---------------------- private SongsManager songManager;
     private Utilities utils;
     private int seekForwardTime = 5000; // 5000 milliseconds
     private int seekBackwardTime = 5000; // 5000 milliseconds
@@ -79,7 +78,6 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
 
         // Mediaplayer
         mp = new MediaPlayer();
-       //////////////////////////////--------------------- songManager = new SongsManager();
         utils = new Utilities();
 
         // Listeners
@@ -178,6 +176,11 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
 
                         // permission denied, boo! Disable the
                         // functionality that depends on this permission.
+
+                        //Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        //startActivity(i);
+
+
                     }
 
 
@@ -191,6 +194,17 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
 
 
         }
+
+
+
+
+
+
+
+
+
+
+
 
 //-------------------------------------------------------------------------
 

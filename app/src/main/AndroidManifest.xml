@@ -6,13 +6,12 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     //----------------------------------
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     //----------------------------------
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     //----------------------------------
     <uses-permission android:name="android.permission.BODY_SENSORS" />
-
-
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -35,8 +34,8 @@
         <activity android:name=".PlayListActivity" />
         <activity
             android:name=".DataShow"
-            android:label="@string/title_activity_main2"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_main2"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme">
             <meta-data

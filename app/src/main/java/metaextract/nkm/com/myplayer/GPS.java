@@ -49,8 +49,7 @@ public class GPS implements LocationListener {
             // for ActivityCompat#requestPermissions for more details.
             return ;
         }
-        locationManager.requestLocationUpdates("gps", 5000,
-                0, this);
+        locationManager.requestLocationUpdates("gps", 5000,0, this);
         setMostRecentLocation(locationManager.getLastKnownLocation(provider));
 
     }

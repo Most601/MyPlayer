@@ -16,20 +16,21 @@
         android:background="@layout/bg_player_header"
         android:layout_alignParentTop="true"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp">
+        android:paddingRight="5dp"
+        >
 
         <!-- Song Title -->
         <TextView
             android:id="@+id/songTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:text="The one and the only Most601 "
             android:textColor="#04b3d2"
             android:textSize="16dp"
-            android:paddingLeft="10dp"
-            android:textStyle="bold"
-            android:text="The one and the only Most601 "
-            android:layout_marginTop="10dp"/>
+            android:textStyle="bold" />
 
 
         <!-- Data button -->
@@ -37,10 +38,9 @@
             android:id="@+id/btnData"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:src="@drawable/information2"
             android:background="@null"
             android:onClick="DataInformation2"
-            />
+            android:src="@drawable/information2" />
         <!-- Playlist button -->
         <ImageButton
             android:id="@+id/btnPlaylist"

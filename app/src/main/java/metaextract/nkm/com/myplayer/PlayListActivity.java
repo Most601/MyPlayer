@@ -25,6 +25,7 @@ public class PlayListActivity extends ListActivity {
     private ListView songView;
 
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playlist);

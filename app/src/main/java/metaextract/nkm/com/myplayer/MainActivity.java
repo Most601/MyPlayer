@@ -2,6 +2,7 @@ package metaextract.nkm.com.myplayer;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,7 +11,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -24,6 +28,11 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.Wearable;
 
 
 public class MainActivity extends Activity  implements   OnCompletionListener, SeekBar.OnSeekBarChangeListener {
@@ -52,9 +61,6 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     private boolean isRepeat = false;
     private ArrayList<Song> songsList = new ArrayList<Song>();
     // FILE
-
-
-
 
 
 
@@ -541,6 +547,11 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     }
 
     //----------------------------------------------------------------------------------
+
+
+
+
+
 
 
 }

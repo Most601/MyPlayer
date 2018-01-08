@@ -4,6 +4,9 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.provider.MediaStore;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.Wearable;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -19,6 +22,8 @@ public class DataManager {
     private GPS gps;
     private HeartrRate heartrRate ;
     private MediaPlayer mp;
+    private GoogleApiClient mGoogleApiClient;
+
 
 
 
@@ -29,6 +34,19 @@ public class DataManager {
         fileManager = new FileManager(context);
 
     }
+
+
+
+
+    private GoogleApiClient getGoogleApiClient(Context context) {
+        return new GoogleApiClient.Builder(context)
+                .addApi(Wearable.API)
+                .build();
+    }
+
+
+
+
 
 
     public void W (int songIndex){

@@ -142,6 +142,7 @@ import com.google.android.gms.wearable.Wearable;
         mGoogleApiClient.disconnect();
     }
 
+
     public void Gps_data(View view) {
 
         latitude.setText(gps.getLongitude());

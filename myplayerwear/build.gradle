@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         applicationId "com.example.myplayerwear"
@@ -20,6 +20,7 @@ android {
 }
 
 
+
 dependencies {
 
 
@@ -27,10 +28,17 @@ dependencies {
 
 
 
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    //noinspection GradleCompatible
+    compile 'com.google.android.support:wearable:1.3.0'
+    compile 'com.google.android.gms:play-services-wearable:8.3.0'
+    compile 'com.google.android.gms:play-services-location:8.3.0'
+    provided 'com.google.android.wearable:wearable:1.0.0'
+
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-
-
+    compile 'com.google.android.gms:play-services-location:11.6.2'
+    compile 'com.google.android.support:wearable:1.3.0'
 
     implementation 'com.google.android.support:wearable:2.1.0'
     implementation 'com.google.android.gms:play-services-wearable:11.6.2'

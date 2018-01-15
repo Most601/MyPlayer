@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="metaextract.nkm.com.myplayer">
     //----------------------------------
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -43,6 +44,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="metaextract.nkm.com.myplayer.MainActivity" />
         </activity>
+        <!-- added by Maria-->
+        <service android:name=".ListenerServiceFromWear">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.BIND_LISTENER"
+                    tools:ignore="WearableBindListener" />
+            </intent-filter>
+        </service>
+        <!-- added by Maria-->
     </application>
 
 </manifest>

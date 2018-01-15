@@ -527,31 +527,13 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         mp.release();
         // מפיל שעושים אחורה -------------
     }
-
-
-
     //---------------------------------------------------------------------------------
 
 
-
-
-
+    //Info button
     public void DataInformation2(View view) {
         Intent i = new Intent(getApplicationContext(), DataShow.class);
         startActivityForResult(i, 100);
-
-
-
-
-
     }
-
     //----------------------------------------------------------------------------------
-
-
-
-
-
-
-
 }

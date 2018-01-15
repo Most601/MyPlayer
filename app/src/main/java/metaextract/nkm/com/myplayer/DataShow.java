@@ -93,10 +93,6 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
 
     }
 
-
-
-
-
     //----------------- Accelerometer --------------
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -108,15 +104,4 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
     //----------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -5,11 +5,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
@@ -40,6 +43,30 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
                 .addOnConnectionFailedListener(this) //If I had a fail connection.
                 .build();//create my API object.
 
+    }
+
+    public void buttonClickHandler(View view){
+        //Send message to handheld device.
+        Button button = (Button) view;
+        String text = button.getText().toString();
+        sendMessage(text);
+    }
+
+    private void sendMessage(String text) {
+        if(mNode != null && mGoogleApiClient != null){
+            Wearable.MessageApi.sendMessage(mGoogleApiClient,
+                    mNode.getId(),WEAR_PATH,text.getBytes())
+                    .setResultCallback(new ResultCallback<MessageApi.SendMessageResult>() {
+                        @Override
+                        public void onResult(@NonNull MessageApi.SendMessageResult sendMessageResult) {
+                            if(! sendMessageResult.getStatus().isSuccess()){
+                                Log.d(WEARABLE_MAIN, "Failed message: " + sendMessageResult.getStatus().getStatusCode());
+                            }else {
+                                Log.d(WEARABLE_MAIN, "Message succeeded: ");
+                            }
+                        }
+                    });
+        }
     }
 
 

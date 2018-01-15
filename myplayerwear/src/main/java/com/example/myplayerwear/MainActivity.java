@@ -71,6 +71,7 @@ import com.google.android.gms.wearable.Wearable;
     private TextView latitude;
     private TextView longitude;
     GPS gps;
+    private HeartrRate HR = new HeartrRate(this);
 
 
 

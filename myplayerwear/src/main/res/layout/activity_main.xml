@@ -11,6 +11,13 @@ android:padding="@dimen/box_inset_layout_padding"
 tools:context="com.example.myplayerwear.MainActivity"
 tools:deviceIds="wear">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/inner_frame_layout_padding">
+
     <Button
         android:id="@+id/button"
         android:layout_width="50dp"
@@ -18,32 +25,25 @@ tools:deviceIds="wear">
         android:layout_alignParentTop="true"
         android:textSize="10dp"
         android:layout_centerHorizontal="true"
-        android:onClick="Gps_data"
         android:text="bbbbb" />
 
+        <!-- added by maria -->
+        <TextView
+            android:id="@+id/tv_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Steps" />
 
-    <TextView
-        android:id="@+id/lad"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/button"
-        android:color="#144800"
-        android:padding="10dp"
-        android:textSize="16dp" />
-
-
-    <TextView
-        android:id="@+id/led"
-        android:layout_width="fill_parent"
-        android:layout_height="30dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/lad"
-        android:color="#144800"
-        android:padding="10dp"
-        android:textSize="16dp" />
-
-
-
+        <TextView
+            android:id="@+id/tv_steps"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:text="0" />
+        <!-- added by maria -->
+    </LinearLayout>
 </RelativeLayout>
 

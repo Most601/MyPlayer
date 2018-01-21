@@ -45,12 +45,12 @@
                 android:value="metaextract.nkm.com.myplayer.MainActivity" />
         </activity>
         <!-- added by Maria-->
-        <service android:name=".ListenerServiceFromWear">
+        <!--         <service android:name=".ListenerServiceFromWear">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER"
                     tools:ignore="WearableBindListener" />
             </intent-filter>
-        </service>
+        </service>-->
         <!-- added by Maria-->
     </application>
 

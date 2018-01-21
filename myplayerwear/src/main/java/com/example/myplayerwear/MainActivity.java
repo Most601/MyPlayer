@@ -1,34 +1,42 @@
 package com.example.myplayerwear;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
-public class MainActivity extends WearableActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+/////created by maria.
+
+public class MainActivity extends WearableActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, SensorEventListener {
 
     public static final String WEARABLE_MAIN = "WEARABLE_MAIN";//logcat debugging.
     private Node mNode;//represents the phone that I want to communicate with from the watch.
     private GoogleApiClient mGoogleApiClient;//to connect and send messages.
-    private static final String WEAR_PATH = "/from-wear";//to synchronize messages between the devices.
 
+    //for steps counter
+    SensorManager sensorManager;
+    TextView tv_steps;
+    boolean running = false;
+    //
 
     private TextView latitude;
     private TextView longitude;
     GPS gps;
-    private HeartrRate HR = new HeartrRate(this);
 
 
     @Override
@@ -36,39 +44,18 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //for steps counter
+        tv_steps = (TextView) findViewById(R.id.tv_steps);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        //
+
         //Initialize mGoogleApiClient.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
                 .addConnectionCallbacks(this) //Callbacks from node - success or fails.
                 .addOnConnectionFailedListener(this) //If I had a fail connection.
                 .build();//create my API object.
-
     }
-
-    public void buttonClickHandler(View view){
-        //Send message to handheld device.
-        Button button = (Button) view;
-        String text = button.getText().toString();
-        sendMessage(text);
-    }
-
-    private void sendMessage(String text) {
-        if(mNode != null && mGoogleApiClient != null){
-            Wearable.MessageApi.sendMessage(mGoogleApiClient,
-                    mNode.getId(),WEAR_PATH,text.getBytes())
-                    .setResultCallback(new ResultCallback<MessageApi.SendMessageResult>() {
-                        @Override
-                        public void onResult(@NonNull MessageApi.SendMessageResult sendMessageResult) {
-                            if(! sendMessageResult.getStatus().isSuccess()){
-                                Log.d(WEARABLE_MAIN, "Failed message: " + sendMessageResult.getStatus().getStatusCode());
-                            }else {
-                                Log.d(WEARABLE_MAIN, "Message succeeded: ");
-                            }
-                        }
-                    });
-        }
-    }
-
 
     @Override
     //From addConnectionCallbacks.
@@ -120,4 +107,37 @@ public class MainActivity extends WearableActivity implements GoogleApiClient.Co
         super.onStop();
         mGoogleApiClient.disconnect();
     }
+
+    //////////for steps counter
+    @Override
+    protected void onResume() {
+        super.onResume();
+        running = true;
+        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        if(countSensor != null){
+            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
+        }else {
+            Toast.makeText(this,"Sensor not found!",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        running = false;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if(running){
+            tv_steps.setText(String.valueOf(event.values[0]));
+        }
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+    //////////for steps counter
 }

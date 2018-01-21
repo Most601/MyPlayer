@@ -21,7 +21,6 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
 /////created by maria.
-
 public class MainActivity extends WearableActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, SensorEventListener {
 
     public static final String WEARABLE_MAIN = "WEARABLE_MAIN";//logcat debugging.

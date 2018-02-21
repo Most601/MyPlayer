@@ -81,13 +81,16 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
         timeDate.append("time : "+String.format("%02d:%02d", mHour , mMinute ));
         //----------------------------------------------
 
+
+
     }
 
-
+    //---------------- Gps ------------------------
     public void getGps(View view) {
         textgps.setText(gps.getLatitude() + " ---- " +gps.getLongitude());
     }
 
+    //---------------- Heartr Rate ------------------------
     public void getH(View view) {
         textH.setText(heartrRate.getH());
 

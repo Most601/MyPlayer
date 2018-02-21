@@ -2,7 +2,6 @@ package metaextract.nkm.com.myplayer;
 
 import android.Manifest;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,10 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -33,16 +29,20 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
+import java.util.concurrent.TimeUnit;
+import java.util.List;
+import android.content.Context;
 
 
 public class MainActivity extends Activity  implements   OnCompletionListener, SeekBar.OnSeekBarChangeListener {
 
-    private ImageButton btnPlay;
+
     private ImageButton btnForward;
     private ImageButton btnBackward;
     private ImageButton btnNext;
     private ImageButton btnPrevious;
     private ImageButton btnPlaylist;
+    private ImageButton btnPlay;
     private ImageButton btnRepeat;
     private ImageButton btnShuffle;
     private SeekBar songProgressBar;
@@ -52,7 +52,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     // Media Player
     private  MediaPlayer mp;
     // Handler to update UI timer, progress bar etc,.
-    private Handler mHandler = new Handler();;
+    private Handler mHandler = new Handler();
     private Utilities utils;
     private int seekForwardTime = 5000; // 5000 milliseconds
     private int seekBackwardTime = 5000; // 5000 milliseconds
@@ -82,6 +82,10 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
 
+        //---------------------------------------------------------------------------------------
+
+
+
         // Mediaplayer
         mp = new MediaPlayer();
         utils = new Utilities();
@@ -89,17 +93,20 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         // Listeners
         songProgressBar.setOnSeekBarChangeListener(this); // Important
         mp.setOnCompletionListener(this); // Important
+
         // Getting all songs list
 
 
 
 
+        //------------------------- permission -------------------------------------------------
 
 
+        //------- Checking for permission ------
         int permissionCheck = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE);
 
-
+        //------- If there is permission then we will get the song list ------
         if (permissionCheck == 0 ){
             songsList = getPlayList();
             //--------------- sort abc.... ----------------------
@@ -111,35 +118,23 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             //----------------------------------------------------
         }
 
-
-
-
-
-       //---------------------------------------------------------------------
-
-
-
-        // Here, thisActivity is the current activity
+        //------- Checks whether there was a request for permission ------
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
+            //------ If permission denied ------
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-
-            } else {
-
+            }
+            //------ Requesting permission ------
+            else {
                 // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         1);
-
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
@@ -147,73 +142,53 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         }
     }
 
-
-
-
-
-
-
-        //--------------------------------------------------------------
-
-        @Override
-        public void onRequestPermissionsResult(int requestCode,
-        String permissions[], int[] grantResults) {
-            switch (requestCode) {
-                case 1: {
-                    // If request is cancelled, the result arrays are empty.
-                    if (grantResults.length > 0
-                            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                        songsList = getPlayList();
-
-
-                        //--------------- sort abc.... ----------------------
-                        Collections.sort(songsList, new Comparator<Song>(){
+    //----- Getting approval for permission ------
+    /**
+     * Getting approval for permission
+     * @param requestCode - The code for the specific permission
+     * @param permissions
+     * @param grantResults
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            //------ READ_EXTERNAL_STORAGE -------
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    songsList = getPlayList();
+                    //--------------- sort abc.... ----------------------
+                    Collections.sort(songsList, new Comparator<Song>(){
                             public int compare(Song a, Song b){
                                 return a.getTitle().compareTo(b.getTitle());
                             }
-                        });
-                        //----------------------------------------------------
-
-                        // permission was granted, yay! Do the
-                        // contacts-related task you need to do.
-
-                    } else {
-
-                        // permission denied, boo! Disable the
-                        // functionality that depends on this permission.
-
-                        //Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        //startActivity(i);
-
-
-                    }
-
-
-                    return;
+                    });
+                    //----------------------------------------------------
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    //Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    //startActivity(i);
                 }
-
+                return;
+            }
                 // other 'case' lines to check for other
                 // permissions this app might request
-            }
-
-
-
         }
+    }
 
 
 
+    //------------------------- getPlayList ----------------------------------------------------
 
-
-
-
-
-
-
-
-
-//-------------------------------------------------------------------------
-
+    /**
+     * Moves the list of songs to the array
+     * @return
+     */
     public ArrayList<Song> getPlayList() {
         ContentResolver musicResolver = getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -230,7 +205,8 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
                     (android.provider.MediaStore.Audio.Media.ARTIST);
             int iddata = musicCursor.getColumnIndex
                     (MediaStore.Audio.Media.DATA);
-
+            int albumColumn = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media.ALBUM);
 
             //add songs to list
             do {
@@ -238,36 +214,23 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
                 String thiData = musicCursor.getString(iddata);
-
-
-                this.songsList.add( new Song( thisId , thisTitle , thisArtist , thiData));
+                String thiAlbum = musicCursor.getString(albumColumn);
+                this.songsList.add( new Song( thisId , thisTitle , thisArtist , thiData , thiAlbum ));
             }
             while (musicCursor.moveToNext());
         }
         return songsList;
-
     }
 
 
-
-
-
-
-
-
-
+    //------------------------- playSong ----------------------------------------------------
     /**
      * Function to play a song
      * @param songIndex - index of song
      * */
-    public void  playSong(int songIndex){
+     public void  playSong(int songIndex){
         // Play song
         try {
-
-
-
-
-
             Uri uri= Uri.parse(songsList.get(songIndex).getdata());
             mp.reset();
             mp.setDataSource(this,uri);
@@ -276,14 +239,11 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             // Displaying Song title
             String songTitle = songsList.get(songIndex).getTitle();
             songTitleLabel.setText(songTitle);
-
             // Changing Button Image to pause image
             btnPlay.setImageResource(R.drawable.img_btn_pause);
-
             // set Progress bar values
             songProgressBar.setProgress(0);
             songProgressBar.setMax(100);
-
             // Updating progress bar
             updateProgressBar();
         } catch (IllegalArgumentException e) {
@@ -295,16 +255,16 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         }
     }
 
-//---------------------------------------------------------------------------------
+    //------------------------- updateProgressBar ------------------------------------------------
     /**
      * Update timer on seekbar
-     * */
+     */
     public void updateProgressBar() {
         mHandler.postDelayed( mUpdateTimeTask, 100);
     }
     /**
      * Background Runnable thread
-     * */
+     */
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
             long totalDuration = mp.getDuration();
@@ -326,18 +286,32 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     };
 
 
-//---------------------------------------------------------------------------------
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
 
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        mHandler.removeCallbacks(mUpdateTimeTask);
+    }
 
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        mHandler.removeCallbacks(mUpdateTimeTask);
+        int totalDuration = mp.getDuration();
+        int currentPosition = utils.progressToTimer(seekBar.getProgress(), totalDuration);
 
+        // forward or backward to certain seconds
+        mp.seekTo(currentPosition);
 
+        // update timer progress again
+        updateProgressBar();
+    }
 
-
-
-
-
-
-
+//------------------- onCompletion  השיר בסתיים -----------------------------------------------
+    /**
+     * In the song completeness, checks for both isRepeat and isShuffle ,  and works accordingly
+     * @param mp
+     */
     @Override
     public void onCompletion(MediaPlayer mp) {
         // check for repeat is ON or OFF
@@ -362,32 +336,13 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         }
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-    }
+    //------------------ Playlist -----------------------------------------------------------
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        mHandler.removeCallbacks(mUpdateTimeTask);
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        mHandler.removeCallbacks(mUpdateTimeTask);
-        int totalDuration = mp.getDuration();
-        int currentPosition = utils.progressToTimer(seekBar.getProgress(), totalDuration);
-
-        // forward or backward to certain seconds
-        mp.seekTo(currentPosition);
-
-        // update timer progress again
-        updateProgressBar();
-    }
-
-    //---------------------------------------------------------------------------------
-
-
+    /**
+     * Button Go to song list
+     * @param view
+     */
     public void ClicPlaylist(View view) {
         Intent i = new Intent(getApplicationContext(), PlayListActivity.class);
         startActivityForResult(i, 100);
@@ -409,7 +364,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
 
     }
 
-    //--------------------------------------------------------------------------------
+    //------------------- backward -------------------------------------------------------
 
     public void backward(View view) {
         // get current song position
@@ -424,6 +379,8 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         }
     }
 
+    //------------------- Previous -------------------------------------------------------
+
     public void Previous(View view) {
         if(currentSongIndex > 0){
             playSong(currentSongIndex - 1);
@@ -434,6 +391,8 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             currentSongIndex = songsList.size() - 1;
         }
     }
+
+    //------------------- play -------------------------------------------------------
 
     public void play(View view) {
         // check for already playing
@@ -454,6 +413,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
 
     }
 
+    //------------------- Forward -------------------------------------------------------
 
     public void Forward(View view) {
         // get current song position
@@ -469,6 +429,8 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
 
     }
 
+    //------------------- Next -------------------------------------------------------
+
     public void Next(View view) {
         // check if next song is there or not
         if(currentSongIndex < (songsList.size() - 1)){
@@ -481,7 +443,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         }
     }
 
-    //--------------------------------------------------------------------------------
+    //----------------- Repeat --------------------------------------------------------
 
     public void Repeat(View view) {
         if(isRepeat){
@@ -500,6 +462,8 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         }
     }
 
+    //----------------- Shuffle --------------------------------------------------------
+
     public void Shuffle(View view) {
         if(isShuffle){
             isShuffle = false;
@@ -517,7 +481,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     }
 
 
-    //---------------------------------------------------------------------------------
+    //--------------- onDestroy ----------------------------------------------------------
 
     @Override
     public void onDestroy(){
@@ -527,10 +491,9 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         mp.release();
         // מפיל שעושים אחורה -------------
     }
-    //---------------------------------------------------------------------------------
 
+    //---------------- Info button ---------------------------------------------------------
 
-    //Info button
     public void DataInformation2(View view) {
         Intent i = new Intent(getApplicationContext(), DataShow.class);
         startActivityForResult(i, 100);

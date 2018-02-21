@@ -24,19 +24,9 @@ public class DataManager {
     private MediaPlayer mp;
     private GoogleApiClient mGoogleApiClient;
 
-
-
-
-
-
     public DataManager(Context context){
-
         fileManager = new FileManager(context);
-
     }
-
-
-
 
     private GoogleApiClient getGoogleApiClient(Context context) {
         return new GoogleApiClient.Builder(context)

@@ -16,19 +16,26 @@ import java.util.ArrayList;
 public class SongAdapter extends ArrayAdapter<Song> {
 	
 	//song list and layout
-	private ArrayList<Song> songs;
+	private ArrayList<Song> SongList;
 	private LayoutInflater songInf;
 	
 	//constructor
-	public SongAdapter(Context c, int resource , ArrayList<Song> theSongs){
-		super(c, resource, theSongs);
-		songs=theSongs;
-		songInf=LayoutInflater.from(c);
+
+	/**
+	 *
+	 * @param context
+	 * @param resource
+	 * @param songList List of Song
+	 */
+	public SongAdapter(Context context, int resource , ArrayList<Song> songList){
+		super(context, resource, songList);
+		SongList = songList;
+		songInf = LayoutInflater.from(context);
 	}
 
 	@Override
 	public int getCount() {
-		return songs.size();
+		return SongList.size();
 	}
 
 	@Override

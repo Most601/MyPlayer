@@ -30,6 +30,8 @@ public class PlayListActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playlist);
 
+        //------------------------- getPlayList ----------------------------------------------------
+
         ContentResolver musicResolver = getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
@@ -44,6 +46,9 @@ public class PlayListActivity extends ListActivity {
                     (android.provider.MediaStore.Audio.Media.ARTIST);
             int iddata = musicCursor.getColumnIndex
                     (MediaStore.Audio.Media.DATA);
+            int albumColumn = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media.ALBUM);
+
 
             String fullPath = musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA));
 
@@ -53,9 +58,8 @@ public class PlayListActivity extends ListActivity {
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
                 String thiData = musicCursor.getString(iddata);
-
-
-                this.songList.add( new Song( thisId , thisTitle , thisArtist , thiData));
+                String thiAlbum = musicCursor.getString(albumColumn);
+                this.songList.add( new Song( thisId , thisTitle , thisArtist , thiData , thiAlbum ));
             }
             while (musicCursor.moveToNext());
 
@@ -73,7 +77,7 @@ public class PlayListActivity extends ListActivity {
         //----------------------------------------------------
 
 
-        //--------------- ListView Asapter use ---------------
+        //--------------- ListView Adapter use ---------------
         songView = getListView();
         SongAdapter songAdt = new SongAdapter(this , R.layout.playlist , songList);
         songView.setAdapter(songAdt);

@@ -19,23 +19,52 @@ import java.io.InputStreamReader;
 public class FileManager {
     public String idan;
     private Context m_context;
+    File file ;
+
 
     public FileManager(Context context) {
         m_context = context;
     }
 
+
+
+
+    //file name is the full file path of the file.
+    public FileManager(Context context, String Filename) {
+        m_context = context;
+        idan = Filename;
+        file = new File(idan);
+
+    }
     /** Internal Storage Methods **/
 
+    //------------------------- Aviv CSV----------------------------------------------------
 
 
+    public void writeInternalFileCSV(String fileName, String content, boolean   append) throws IOException {
 
+    }
 
+    public void writeInternalFileCsvNewLINE( String content, boolean   append) throws IOException {
+        FileWriter _file;
+        _file = new FileWriter(file.getAbsoluteFile(),append);
+        _file.append('\n');
+        _file.append(content);
+        _file.close();
 
+    }
+
+    public void writeInternalFileSameLine(String fileName, String content, boolean   append) throws IOException {
+        FileWriter _file;
+        _file = new FileWriter(file.getAbsoluteFile(),append);
+        _file.append(content);
+        _file.close();
+    }
+
+    //----------------- writeInternalFile String ---------------------------------------------
     /**
      * External Storage Methods
      **/
-
-
     public void writeInternalFile(String fileName, String content, boolean append) throws IOException {
         boolean a = isExternalStorageWritable();
         if (a) {
@@ -57,6 +86,8 @@ public class FileManager {
 
        // writeInternalFile(fileName, content.getBytes(), append);
     }
+
+    //----------------- writeInternalFile byte[] ---------------------------------------------
 
     public void writeInternalFile(String fileName, byte[] content, boolean append) throws IOException {
         // Context.MODE_PRIVATE = 0, therefore, we don't need to explicitly specify it.

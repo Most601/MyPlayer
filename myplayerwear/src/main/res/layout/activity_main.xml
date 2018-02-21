@@ -1,49 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/dark_grey"
-android:padding="@dimen/box_inset_layout_padding"
-tools:context="com.example.myplayerwear.MainActivity"
-tools:deviceIds="wear">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="@dimen/inner_frame_layout_padding">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_grey"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context="com.example.myplayerwear.MainActivity"
+    tools:deviceIds="wear">
 
     <Button
         android:id="@+id/button"
         android:layout_width="50dp"
         android:layout_height="35dp"
         android:layout_alignParentTop="true"
-        android:textSize="10dp"
         android:layout_centerHorizontal="true"
-        android:text="bbbbb" />
+        android:onClick="DataShow1"
+        android:text="Inf"
+        android:textSize="10dp" />
 
-        <!-- added by maria -->
-        <TextView
-            android:id="@+id/tv_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Steps" />
 
-        <TextView
-            android:id="@+id/tv_steps"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/lad"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/button"
+        android:color="#144800"
+        android:padding="10dp"
+        android:textSize="16dp" />
+
+
+    <TextView
+        android:id="@+id/led"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:color="#144800"
+        android:padding="10dp"
+        android:textSize="16dp" />
+
+    <LinearLayout
+        android:id="@+id/player_footer_bg"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:layout_marginTop="130dp"
+        >
+
+        <!-- Player Buttons -->
+        <!-- Previous Button -->
+        <ImageButton
+            android:id="@+id/btnPrevious"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:src="@drawable/img_btn_next"
+            android:onClick="Previous"/>
+        <!-- Backward Button -->
+        <ImageButton
+            android:id="@+id/btnBackward"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:src="@drawable/img_btn_forward"
+            android:onClick="backward"/>
+        <!-- Play Button -->
+        <ImageButton
+            android:id="@+id/btnPlay"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="20dp"
-            android:text="0" />
-        <!-- added by maria -->
+            android:background="@null"
+            android:onClick="play"
+            android:src="@drawable/img_btn_play" />
+        <!-- Forward Button -->
+        <ImageButton
+            android:id="@+id/btnForward"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:src="@drawable/img_btn_backward"
+            android:onClick="Forward"/>
+        <!-- Next Button -->
+        <ImageButton
+            android:id="@+id/btnNext"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:src="@drawable/img_btn_previous"
+            android:onClick="Next"/>
     </LinearLayout>
+
 </RelativeLayout>
 

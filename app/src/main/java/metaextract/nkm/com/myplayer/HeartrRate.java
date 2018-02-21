@@ -13,18 +13,16 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 
 public class HeartrRate implements SensorEventListener {
-    String msg;
-
+    private String msg;
+    private SensorManager sMgr;
+    private Sensor battito = null;
 
     public HeartrRate(Context context){
 
-        SensorManager sMgr;
+
         sMgr = (SensorManager)context.getSystemService(SENSOR_SERVICE);
-        Sensor battito = null;
         battito = sMgr.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         sMgr.registerListener(this, battito,SensorManager.SENSOR_DELAY_NORMAL);
-
-
 
     }
 
@@ -33,7 +31,6 @@ public class HeartrRate implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
             msg = " Value sensor: " + (int)event.values[0];
-
         }
     }
 

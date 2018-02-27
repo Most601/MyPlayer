@@ -17,6 +17,7 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 
 public class Accelerometer implements SensorEventListener{
+
     private ArrayList<Double> acc = new ArrayList<Double>();
     private double x, y, z;
     private Sensor mySensor;
@@ -35,6 +36,7 @@ public class Accelerometer implements SensorEventListener{
             x = event.values[0];
             z = event.values[1];
             y = event.values[2];
+            DataShow.print("AC",event);
         }
 
         @Override
@@ -46,7 +48,6 @@ public class Accelerometer implements SensorEventListener{
             acc.add(y);
             acc.add(z);
             return acc;
-
         }
     }
 

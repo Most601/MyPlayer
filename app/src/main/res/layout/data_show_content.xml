@@ -9,7 +9,15 @@
     tools:context="metaextract.nkm.com.myplayer.DataShow"
     tools:showIn="@layout/data_show_layout">
 
-
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:onClick="getGps"
+        android:text="Get GPS" />
     <TextView
         android:id="@+id/textgps"
         android:layout_width="fill_parent"
@@ -20,24 +28,25 @@
         android:padding="10dp"
         android:textSize="16dp" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="13dp"
-        android:onClick="getGps"
-        android:text="Get GPS" />
+
 
     <Button
         android:id="@+id/buttonH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/button"
         android:layout_below="@+id/textgps"
-        android:onClick="getH"
-        android:text="Get H" />
+        android:layout_toStartOf="@+id/button"
+        android:onClick="HeartrRateStartButten"
+        android:text="HR stop" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textgps"
+        android:layout_toEndOf="@+id/button"
+        android:onClick="HeartrRateStopButten"
+        android:text="HR start" />
 
     <TextView
         android:id="@+id/textH"
@@ -49,49 +58,70 @@
         android:padding="10dp"
         android:textSize="16dp" />
 
-    <TextView
-        android:id="@+id/acc_x"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:orientation="horizontal"
         android:layout_below="@+id/textH"
-        android:layout_marginTop="64dp"
-        android:color="#144800"
-        android:padding="10dp"
-        android:textSize="16dp" />
+        android:id="@+id/linearLayout">
 
-    <TextView
-        android:id="@+id/acc_y"
-        android:layout_width="fill_parent"
-        android:layout_below="@+id/acc_x"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:color="#144800"
-        android:padding="10dp"
-        android:textSize="16dp" />
+        <TextView
+            android:id="@+id/acc_x"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textH"
+            android:layout_weight="1"
+            android:color="#144800"
+            android:padding="10dp"
+            android:textSize="16dp" />
 
+        <TextView
+            android:id="@+id/acc_y"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/acc_x"
+            android:layout_weight="1"
+            android:color="#144800"
+            android:padding="10dp"
+            android:textSize="16dp" />
 
-    <TextView
-        android:id="@+id/acc_z"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/acc_y"
-        android:color="#144800"
-        android:padding="10dp"
-        android:textSize="16dp" />
+        <TextView
+            android:id="@+id/acc_z"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/acc_y"
+            android:layout_weight="1"
+            android:color="#144800"
+            android:padding="10dp"
+            android:textSize="16dp" />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/time_date"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="51dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_marginTop="27dp"
         android:color="#144800"
         android:padding="10dp"
         android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/Massage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/time_date"
+        android:layout_marginTop="57dp"
+        android:color="#144800"
+        android:padding="10dp"
+        android:textSize="16dp" />
+
 
 
 

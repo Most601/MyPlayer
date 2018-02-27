@@ -15,11 +15,18 @@
         android:orientation="vertical"
         android:gravity="center"        >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_red"
+            android:text="GPS" />
+
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="GPS"
+            android:onClick="GpsButten"/>
 
         <TextView
             android:id="@+id/textView2"
@@ -27,17 +34,50 @@
             android:layout_height="wrap_content"
             android:text="TextView" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:textColor="@color/dark_red"
+            android:text="HeartrRate" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="HeartrRateStartButten"
+                android:text="HR start"
+                android:textSize="10dp" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="81dp"
+                android:layout_height="wrap_content"
+                android:onClick="HeartrRateStopButten"
+                android:text="HR stop"
+                android:textSize="10dp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+           />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_red"
+            android:text="stepCounter" />
 
         <TextView
             android:id="@+id/textView4"
@@ -46,6 +86,25 @@
             android:text="TextView" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_red"
+            android:text="Accelerometer" />
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+    <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,6 +120,53 @@
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            />
+         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_red"
+            android:text="Time" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="timeDate" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_red"
+            android:text="" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_red"
+            android:text="" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_red"
+            android:text="" />
+
+
+
+
     </LinearLayout>
 </ScrollView>

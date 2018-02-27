@@ -6,6 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -24,11 +25,38 @@ public class HeartrRate implements SensorEventListener {
     private SensorManager sMgr;
     private Sensor mHeartrateSensor = null;
     private ScheduledExecutorService mScheduler;
+
+
+
+
     public HeartrRate(Context context){
-
-
         sMgr = (SensorManager)context.getSystemService(SENSOR_SERVICE);
         mHeartrateSensor = sMgr.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+    }
+
+
+
+
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
+            msg = " Value sensor: " + (int)event.values[0];
+        }
+        DataShow.print("H",event);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        System.out.println("onAccuracyChanged - accuracy: " + accuracy);
+    }
+
+    public String getH() {
+        return msg;
+
+    }
+
+    public void startMeasurement(){
         sMgr.registerListener(this, mHeartrateSensor,SensorManager.SENSOR_DELAY_NORMAL);
 
 
@@ -54,37 +82,18 @@ public class HeartrRate implements SensorEventListener {
 
                             Log.d("", "unregister Heartrate Sensor");
                             sMgr.unregisterListener(HeartrRate.this, mHeartrateSensor);
+
                         }
                     }, 3, measurementDuration + measurementBreak, TimeUnit.SECONDS);
 
         } else {
             Log.d("", "No Heartrate Sensor found");
         }
-    }
 
-
-
-
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
-            msg = " Value sensor: " + (int)event.values[0];
-
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        System.out.println("onAccuracyChanged - accuracy: " + accuracy);
-    }
-
-    public String getH() {
-        return msg;
 
     }
 
-    private void stopMeasurement() {
+    public void stopMeasurement() {
         if (sMgr != null) {
             sMgr.unregisterListener(this);
         }

@@ -8,6 +8,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 
+import java.util.ArrayList;
+
 import static android.content.Context.SENSOR_SERVICE;
 
 /**
@@ -18,6 +20,7 @@ public class Accelerometer implements SensorEventListener{
     private double x, y, z;
     private Sensor mySensor;
     private SensorManager SM;
+    private ArrayList<Double> acc = new ArrayList<Double>();
 
         public Accelerometer(Context context) {
             SM = (SensorManager) context.getSystemService(SENSOR_SERVICE);
@@ -32,11 +35,22 @@ public class Accelerometer implements SensorEventListener{
             x = event.values[0];
             z = event.values[1];
             y = event.values[2];
+            DataShow.print("AC",event);
         }
 
         @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
         }
+
+
+        public ArrayList<Double> getAccelerometerData (){
+            acc.add(x);
+            acc.add(y);
+            acc.add(z);
+            return acc;
+
+    }
+
     }
 
 

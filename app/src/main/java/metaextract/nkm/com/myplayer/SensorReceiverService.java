@@ -1,6 +1,7 @@
 package metaextract.nkm.com.myplayer;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
@@ -16,47 +17,48 @@ import com.google.android.gms.wearable.WearableListenerService;
  */
 
 public class SensorReceiverService extends WearableListenerService {
-    private static final String TAG = "SensorDashboard/SensorReceiverService";
 
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-    }
-
-    @Override
-    public void onPeerConnected(Node peer) {
-        super.onPeerConnected(peer);
-
-        //Log.i(TAG, "Connected: " + peer.getDisplayName() + " (" + peer.getId() + ")");
-    }
-
-    @Override
-    public void onPeerDisconnected(Node peer) {
-        super.onPeerDisconnected(peer);
-
-       // Log.i(TAG, "Disconnected: " + peer.getDisplayName() + " (" + peer.getId() + ")");
-    }
+//    @Override
+//    public void onCreate() {
+//        super.onCreate();
+//
+//    }
+//
+//    @Override
+//    public void onPeerConnected(Node peer) {
+//        super.onPeerConnected(peer);
+//
+//        //Log.i(TAG, "Connected: " + peer.getDisplayName() + " (" + peer.getId() + ")");
+//    }
+//
+//    @Override
+//    public void onPeerDisconnected(Node peer) {
+//        super.onPeerDisconnected(peer);
+//
+//       // Log.i(TAG, "Disconnected: " + peer.getDisplayName() + " (" + peer.getId() + ")");
+//    }
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
        // Log.d(TAG, "onDataChanged()");
+        MainActivity.print2("DATA", "sssssssss");
 
-        for (DataEvent dataEvent : dataEvents) {
-            if (dataEvent.getType() == DataEvent.TYPE_CHANGED) {
-                DataItem dataItem = dataEvent.getDataItem();
-                Uri uri = dataItem.getUri();
-                String path = uri.getPath();
 
-                if (path.startsWith("/sensors/")) {
-                    unpackSensorData(
-                        Integer.parseInt(uri.getLastPathSegment()),
-                        DataMapItem.fromDataItem(dataItem).getDataMap()
-                    );
-                }
-            }
-        }
+//        for (DataEvent dataEvent : dataEvents) {
+//            if (dataEvent.getType() == DataEvent.TYPE_CHANGED) {
+//                DataItem dataItem = dataEvent.getDataItem();
+//                Uri uri = dataItem.getUri();
+//                String path = uri.getPath();
+//
+//                if (path.startsWith("/sensors/")) {
+//                    unpackSensorData(
+//                        Integer.parseInt(uri.getLastPathSegment()),
+//                        DataMapItem.fromDataItem(dataItem).getDataMap()
+//                    );
+//                }
+//            }
+//        }
     }
 
     private void unpackSensorData(int sensorType, DataMap dataMap) {
@@ -71,14 +73,17 @@ public class SensorReceiverService extends WearableListenerService {
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
+        super.onMessageReceived(messageEvent);
+        String AAAA = messageEvent.getPath().toString();
+        if (messageEvent.getPath().equals("a1")) {
+            MainActivity.print2("DATA", AAAA);
+            Intent startIntent = new Intent(this, DataShow.class);
+            startActivity(startIntent);
 
-        if (messageEvent.getPath().equals("aaaaaa")) {
-         //   startService(new Intent(this, SensorService.class));
         }
 
         if (messageEvent.getPath().equals("ssssss")) {
-         //   stopService(new Intent(this, SensorService.class));
+            //   stopService(new Intent(this, SensorService.class));
         }
     }
-
 }

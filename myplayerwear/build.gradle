@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.2"
 
     defaultConfig {
-        applicationId "com.example.myplayerwear"
+        applicationId "metaextract.nkm.com.myplayer"
         minSdkVersion 23
         targetSdkVersion 26
         versionCode 1

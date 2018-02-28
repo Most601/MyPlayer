@@ -2,6 +2,7 @@ package com.example.myplayerwear;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.wearable.activity.WearableActivity;
@@ -16,6 +17,8 @@ import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
+
+import java.io.Serializable;
 
 public class MainActivity extends WearableActivity{// implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -38,11 +41,11 @@ public class MainActivity extends WearableActivity{// implements GoogleApiClient
 //        //Initialize mGoogleApiClient.
 //        mGoogleApiClient = new GoogleApiClient.Builder(this)
 //                .addApi(Wearable.API)
-//                .addConnectionCallbacks(this) //Callbacks from node - success or fails.
-//                .addOnConnectionFailedListener(this) //If I had a fail connection.
+//         //       .addConnectionCallbacks(this) //Callbacks from node - success or fails.
+//         //       .addOnConnectionFailedListener(this) //If I had a fail connection.
 //                .build();//create my API object.
-//
-//
+
+
 
 
         //---------------
@@ -114,7 +117,7 @@ public class MainActivity extends WearableActivity{// implements GoogleApiClient
 //    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 //
 //    }
-//
+
 //    @Override
 //    //Connect to the external node.
 //    protected void onStart() {
@@ -147,6 +150,7 @@ public class MainActivity extends WearableActivity{// implements GoogleApiClient
 
     public void DataShow1(View view) {
         Intent intent = new Intent(this, DataShow.class);
+      //  intent.putExtra("sampleObject", (Parcelable) mGoogleApiClient);
         startActivity(intent);
 
     }

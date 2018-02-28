@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -46,7 +47,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     private ImageButton btnRepeat;
     private ImageButton btnShuffle;
     private SeekBar songProgressBar;
-    private TextView songTitleLabel;
+    private static TextView songTitleLabel;
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
     // Media Player
@@ -499,4 +500,16 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         startActivityForResult(i, 100);
     }
     //----------------------------------------------------------------------------------
+
+    public static void print2(String data, String aaaa) {
+       // songTitleLabel.setText("dddddddddddddd");
+
+        Log.d(aaaa,"Connected to??????????????????????? ");
+
+
+
+    }
+
+
+
 }

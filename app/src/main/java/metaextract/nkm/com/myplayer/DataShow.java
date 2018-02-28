@@ -20,7 +20,7 @@ import java.util.Calendar;
 
 public class DataShow extends AppCompatActivity implements SensorEventListener{
 
-    private static TextView timeDateText , GpsText , HeartrRateText ,xText , yText , zText ;
+    private static TextView timeDateText , GpsText , HeartrRateText ,xText , yText , zText , x ;
     private LocationManager locationManager;
     private LocationListener listener;
     private Accelerometer accelerometer;
@@ -59,6 +59,11 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
 
         //-------------------- timeDate ----------------
         timeDate();
+
+
+
+        x = (TextView)findViewById(R.id.Massage);
+
 
     }
 
@@ -120,6 +125,14 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
             String msgH = " Value sensor : " + (int)event.values[0];
             HeartrRateText.setText(msgH);
         }
+
+    }
+
+    public static void print2(String data, String aaaa) {
+
+            x.setText(aaaa);
+
+
 
     }
 

@@ -44,6 +44,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="metaextract.nkm.com.myplayer.MainActivity" />
         </activity>
+
+
+
+
+
+
+
         <!-- added by Maria-->
         <!--         <service android:name=".ListenerServiceFromWear">
             <intent-filter>
@@ -52,6 +59,26 @@
             </intent-filter>
         </service>-->
         <!-- added by Maria-->
-    </application>
 
+
+
+
+
+
+        <service android:name=".SensorReceiverService">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+                <action android:name="com.google.android.gms.wearable.BIND_LISTENER"
+                    tools:ignore="WearableBindListener" />
+            </intent-filter>
+        </service>
+
+
+
+
+
+
+
+    </application>
 </manifest>

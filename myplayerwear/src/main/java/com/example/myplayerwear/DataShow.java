@@ -167,21 +167,21 @@ public class DataShow extends WearableActivity implements GoogleApiClient.Connec
     }
 
     private void sendMessage(String text) {
-//
-//        PutDataMapRequest dataMap = PutDataMapRequest.create("/sensors/" );
-//
-//
-//
-//        PutDataRequest putDataRequest = dataMap.asPutDataRequest();
-//
-//
-//        Wearable.DataApi.putDataItem(mGoogleApiClient, putDataRequest).setResultCallback
-//                (new ResultCallback<DataApi.DataItemResult>() {
-//                    @Override
-//                    public void onResult(DataApi.DataItemResult dataItemResult) {
-//                        // Log.v(TAG, "Sending sensor data: " + dataItemResult.getStatus().isSuccess());
-//                    }
-//                });
+
+        PutDataMapRequest dataMap = PutDataMapRequest.create("/sensors/" );
+
+
+
+        PutDataRequest putDataRequest = dataMap.asPutDataRequest();
+
+
+        Wearable.DataApi.putDataItem(mGoogleApiClient, putDataRequest).setResultCallback
+                (new ResultCallback<DataApi.DataItemResult>() {
+                    @Override
+                    public void onResult(DataApi.DataItemResult dataItemResult) {
+                        // Log.v(TAG, "Sending sensor data: " + dataItemResult.getStatus().isSuccess());
+                    }
+                });
 
 
 

@@ -16,7 +16,7 @@ import com.google.android.gms.wearable.WearableListenerService;
  * Created by Most601 on 28/02/2018.
  */
 
-public class SensorReceiverService extends WearableListenerService {
+public class SensorReceiverService extends WearableListenerService  {
 
 
 //    @Override

@@ -129,7 +129,7 @@
         android:layout_below="@+id/time_date"
         android:layout_toEndOf="@+id/buttonH"
         android:layout_toStartOf="@+id/button2"
-        android:text="Button" />
+        android:text="Send message or data" />
 
 
 </RelativeLayout>

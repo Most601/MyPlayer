@@ -1,5 +1,6 @@
 package com.example.myplayerwear;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -14,13 +15,21 @@ import com.google.android.gms.wearable.WearableListenerService;
 
 public class MessageReceiverService extends WearableListenerService {
 
-//    private DeviceClient deviceClient;
+
+    private ManageOfSensors manageOfSensors ;
+
+    public MessageReceiverService(Context Context){
+        manageOfSensors = ManageOfSensors.getInstance(Context);
+        Log.d("sssssssssssss" , "1111111111111111111111111111111111");
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-//        deviceClient = DeviceClient.getInstance(this);
+
+
+
     }
 
     @Override

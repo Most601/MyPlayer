@@ -40,6 +40,7 @@ public class SendToPhone {
     }
 
 
+
     private Context context;
     private GoogleApiClient googleApiClient;
     private ExecutorService executorService;
@@ -48,6 +49,9 @@ public class SendToPhone {
 
     private SendToPhone(Context context) {
         this.context = context;
+
+
+
 
         googleApiClient = new
                 GoogleApiClient.Builder(context).

@@ -19,6 +19,7 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 public class MainActivity extends WearableActivity{// implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -32,11 +33,15 @@ public class MainActivity extends WearableActivity{// implements GoogleApiClient
     private TextView longitude;
     private GPS gps;
 
+    MessageReceiverService aaa ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        aaa = new MessageReceiverService(this);
 
 //        //Initialize mGoogleApiClient.
 //        mGoogleApiClient = new GoogleApiClient.Builder(this)

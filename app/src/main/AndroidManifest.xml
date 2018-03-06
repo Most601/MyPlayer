@@ -51,6 +51,10 @@
 
 
 
+
+
+
+
         <!-- added by Maria-->
         <!--         <service android:name=".ListenerServiceFromWear">
             <intent-filter>

@@ -3,6 +3,8 @@ package metaextract.nkm.com.myplayer;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
+
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataItem;
@@ -41,9 +43,10 @@ public class SensorReceiverService extends WearableListenerService  {
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
-       // Log.d(TAG, "onDataChanged()");
-        MainActivity.print2("DATA", "sssssssss");
-
+        Log.d("sssssssssssssssssss", "onDatadddddddddddddddddddddddddddddddddChanged()");
+       // MainActivity.print2("DATA", "sssssssss");
+        Intent startIntent = new Intent(this, DataShow.class);
+        startActivity(startIntent);
 
 //        for (DataEvent dataEvent : dataEvents) {
 //            if (dataEvent.getType() == DataEvent.TYPE_CHANGED) {
@@ -67,23 +70,20 @@ public class SensorReceiverService extends WearableListenerService  {
         float[] values = dataMap.getFloatArray("values");
 
         // Log.d(TAG, "Received sensor data " + sensorType + " = " + Arrays.toString(values));
-
        // sensorManager.addSensorData(sensorType, accuracy, timestamp, values);
     }
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         super.onMessageReceived(messageEvent);
-        String AAAA = messageEvent.getPath().toString();
-        if (messageEvent.getPath().equals("a1")) {
-            MainActivity.print2("DATA", AAAA);
-            Intent startIntent = new Intent(this, DataShow.class);
-            startActivity(startIntent);
-
-        }
-
-        if (messageEvent.getPath().equals("ssssss")) {
-            //   stopService(new Intent(this, SensorService.class));
-        }
+//        String AAAA = messageEvent.getPath().toString();
+//        if (messageEvent.getPath().equals("a1")) {
+//            MainActivity.print2("DATA", AAAA);
+//            Intent startIntent = new Intent(this, DataShow.class);
+//            startActivity(startIntent);
+//        }
+//        if (messageEvent.getPath().equals("ssssss")) {
+//            //   stopService(new Intent(this, SensorService.class));
+//        }
     }
 }

@@ -51,6 +51,7 @@ public class GPS extends WearableActivity implements
     // Connect to Google Play Services when the Activity starts
     @Override
     protected void onStart() {
+        super.onStart();
         if (googleApiClient == null) {
             googleApiClient = new GoogleApiClient.Builder(context)
                     .addApi(LocationServices.API)

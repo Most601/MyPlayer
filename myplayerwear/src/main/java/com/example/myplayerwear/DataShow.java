@@ -1,17 +1,10 @@
 package com.example.myplayerwear;
 
-import android.content.Intent;
-import android.hardware.Sensor;
 
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.support.wearable.activity.WearableActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.hardware.SensorEvent;
@@ -25,9 +18,7 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
-
 import java.util.Calendar;
-import java.util.List;
 
 public class DataShow extends WearableActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private Accelerometer AC ;
@@ -40,6 +31,10 @@ public class DataShow extends WearableActivity implements GoogleApiClient.Connec
     private Node mNode;//represents the phone that I want to communicate with from the watch.
 
 
+    int eeeee = 0 ;
+
+
+
     private String latitude;
     private String longitude;
 //----------------------------------------------
@@ -49,14 +44,12 @@ public class DataShow extends WearableActivity implements GoogleApiClient.Connec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_show);
 
-    //    Intent i = getIntent();
-    //   mGoogleApiClient = (GoogleApiClient)i.getSerializableExtra("sampleObject");
-
         gps = new GPS(this);
         GpsText = (TextView)findViewById(R.id.textView2);
 
         H = new HeartrRate(this);
         HeartrRateText = (TextView)findViewById(R.id.textView3);
+        StartAccelerometer();
 
         AC = new Accelerometer(this);
         xText = (TextView)findViewById(R.id.textView5);
@@ -79,6 +72,19 @@ public class DataShow extends WearableActivity implements GoogleApiClient.Connec
 
 
     }
+
+//-----------------------------------------------------------
+
+    public void StartAccelerometer (){
+        H.startMeasurement();
+    }
+
+    public void StopAccelerometer (){
+        H.stopMeasurement();
+    }
+
+
+
 //-----------------------------------------------------------
 
     public void HeartrRateStartButten(View view) {
@@ -156,7 +162,7 @@ public class DataShow extends WearableActivity implements GoogleApiClient.Connec
         mGoogleApiClient.disconnect();
     }
 
-
+//------------------------------------------------------------
 
     public void buttonClickHandler(View view){
         //Send message to handheld device.
@@ -167,11 +173,10 @@ public class DataShow extends WearableActivity implements GoogleApiClient.Connec
     }
 
     private void sendMessage(String text) {
+        eeeee++;
 
         PutDataMapRequest dataMap = PutDataMapRequest.create("/sensors/" );
-
-
-
+        dataMap.getDataMap().putInt("a1",eeeee);
         PutDataRequest putDataRequest = dataMap.asPutDataRequest();
 
 
@@ -179,6 +184,7 @@ public class DataShow extends WearableActivity implements GoogleApiClient.Connec
                 (new ResultCallback<DataApi.DataItemResult>() {
                     @Override
                     public void onResult(DataApi.DataItemResult dataItemResult) {
+                        x.setText("999888889999 - "+ dataItemResult.getStatus().isSuccess());
                         // Log.v(TAG, "Sending sensor data: " + dataItemResult.getStatus().isSuccess());
                     }
                 });
@@ -191,45 +197,45 @@ public class DataShow extends WearableActivity implements GoogleApiClient.Connec
 
 
 
-        Wearable.NodeApi.getConnectedNodes(mGoogleApiClient)
-                .setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
-                    @Override
-                    public void onResult(@NonNull NodeApi.GetConnectedNodesResult nodes) {
-                        //Find the node I want to communicate with.
-                        for (Node node : nodes.getNodes()) {
-                            if (node != null && node.isNearby()) {
-                                mNode = node;
-                                x.setText(mNode.getDisplayName());
-                            }
-                        }
-                        if (mNode == null) {
-                            x.setText("999888889999");
-                        }
-
-                    }
-                }) //returns a set of nods.
-        ;
-
-        // List<Node> nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await().getNodes();
-
-        //   for (Node node : nodes) {
-        if (mGoogleApiClient != null &&
-                mGoogleApiClient.isConnected() &&
-                mNode != null) {
-            Wearable.MessageApi.sendMessage(
-                    mGoogleApiClient, mNode.getId(), "a1", text.getBytes())
-                    .setResultCallback(new ResultCallback<MessageApi.SendMessageResult>() {
-                        @Override
-                        public void onResult(MessageApi.SendMessageResult sendMessageResult) {
-                            if (!sendMessageResult.getStatus().isSuccess()) {
-                                x.setText("111");
-                            } else {
-                                x.setText("0000");
-                            }
-                        }
-                    });
-            //     }
-        }
+//        Wearable.NodeApi.getConnectedNodes(mGoogleApiClient)
+//                .setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
+//                    @Override
+//                    public void onResult(@NonNull NodeApi.GetConnectedNodesResult nodes) {
+//                        //Find the node I want to communicate with.
+//                        for (Node node : nodes.getNodes()) {
+//                            if (node != null && node.isNearby()) {
+//                                mNode = node;
+//                                x.setText(mNode.getDisplayName());
+//                            }
+//                        }
+//                        if (mNode == null) {
+//                            x.setText("999888889999");
+//                        }
+//
+//                    }
+//                }) //returns a set of nods.
+//        ;
+//
+//        // List<Node> nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await().getNodes();
+//
+//        //   for (Node node : nodes) {
+//        if (mGoogleApiClient != null &&
+//                mGoogleApiClient.isConnected() &&
+//                mNode != null) {
+//            Wearable.MessageApi.sendMessage(
+//                    mGoogleApiClient, mNode.getId(), "a1", text.getBytes())
+//                    .setResultCallback(new ResultCallback<MessageApi.SendMessageResult>() {
+//                        @Override
+//                        public void onResult(MessageApi.SendMessageResult sendMessageResult) {
+//                            if (!sendMessageResult.getStatus().isSuccess()) {
+//                                x.setText("111");
+//                            } else {
+//                                x.setText("0000");
+//                            }
+//                        }
+//                    });
+//            //     }
+//        }
 
 
 }

@@ -53,17 +53,14 @@ public class HeartrRate implements SensorEventListener {
 
     public String getH() {
         return msg;
-
     }
 
     public void startMeasurement(){
         sMgr.registerListener(this, mHeartrateSensor,SensorManager.SENSOR_DELAY_NORMAL);
 
-
         if (mHeartrateSensor != null) {
             final int measurementDuration   = 30;   // Seconds
             final int measurementBreak      = 15;    // Seconds
-
             mScheduler = Executors.newScheduledThreadPool(1);
             mScheduler.scheduleAtFixedRate(
                     new Runnable() {

@@ -22,27 +22,7 @@ public class stepCounter implements SensorEventListener {
     public stepCounter(Context context){
         sMgr = (SensorManager)context.getSystemService(SENSOR_SERVICE);
         stepCounterSensor = sMgr.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        startMeasurement();
     }
-
-
-
-    public void startMeasurement() {
-        if (stepCounterSensor != null) {
-            sMgr.registerListener(this, stepCounterSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        } else {
-            Log.d("T0AG", "No Step Counter Sensor found");
-        }
-
-
-    }
-    public void stopMeasurement() {
-        if (sMgr != null) {
-            sMgr.unregisterListener(this);
-        }
-    }
-
-
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -54,6 +34,20 @@ public class stepCounter implements SensorEventListener {
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
+
+    public void startMeasurement() {
+        if (stepCounterSensor != null) {
+            sMgr.registerListener(this, stepCounterSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        } else {
+            Log.d("T0AG", "No Step Counter Sensor found");
+        }
+    }
+
+    public void stopMeasurement() {
+        if (sMgr != null) {
+            sMgr.unregisterListener(this);
+        }
+    }
+
 }

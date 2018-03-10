@@ -5,9 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/aaaa"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="metaextract.nkm.com.myplayer.DataShow"
     tools:showIn="@layout/data_show_layout">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="GPS"
+        android:textColor="@color/colorAccent" />
 
     <Button
         android:id="@+id/button"
@@ -18,23 +27,31 @@
         android:layout_marginTop="13dp"
         android:onClick="getGps"
         android:text="Get GPS" />
+
     <TextView
         android:id="@+id/textgps"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/button"
-        android:color="#144800"
-        android:padding="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="Gps DATA "
+        android:textColor="@color/wi"
         android:textSize="13dp" />
 
-
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textgps"
+        android:layout_centerHorizontal="true"
+        android:text="Heartr Rate"
+        android:textColor="@color/colorAccent" />
 
     <Button
         android:id="@+id/buttonH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textgps"
+        android:layout_below="@+id/textView"
         android:layout_toStartOf="@+id/button"
         android:onClick="HeartrRateStartButten"
         android:text="HR stop" />
@@ -43,27 +60,40 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textgps"
+        android:layout_below="@+id/textView"
         android:layout_toEndOf="@+id/button"
         android:onClick="HeartrRateStopButten"
         android:text="HR start" />
 
     <TextView
-        android:id="@+id/textH"
-        android:layout_width="fill_parent"
+        android:id="@+id/textH3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignStart="@+id/textH"
         android:layout_below="@+id/buttonH"
-        android:color="#144800"
         android:padding="10dp"
+        android:text="Push To Start"
+        android:textColor="@color/wi"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/textH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textH3"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:text="Push To Start"
+        android:textColor="@color/wi"
         android:textSize="16dp" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/textH"
-        android:id="@+id/linearLayout">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/acc_x"
@@ -72,7 +102,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textH"
             android:layout_weight="1"
-            android:color="#144800"
+            android:textColor="@color/wi"
             android:padding="10dp"
             android:textSize="16dp" />
 
@@ -83,7 +113,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/acc_x"
             android:layout_weight="1"
-            android:color="#144800"
+            android:textColor="@color/wi"
             android:padding="10dp"
             android:textSize="16dp" />
 
@@ -94,20 +124,28 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/acc_y"
             android:layout_weight="1"
-            android:color="#144800"
+            android:textColor="@color/wi"
             android:padding="10dp"
             android:textSize="16dp" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Time And Date"
+        android:textColor="@color/colorAccent" />
 
     <TextView
         android:id="@+id/time_date"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout"
-        android:layout_marginTop="27dp"
-        android:color="#144800"
+        android:layout_below="@+id/textView2"
+        android:textColor="@color/wi"
         android:padding="10dp"
         android:textSize="16dp" />
 
@@ -116,20 +154,28 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/time_date"
-        android:layout_marginTop="69dp"
-        android:color="#144800"
+        android:layout_below="@+id/button3"
+        android:textColor="@color/wi"
         android:padding="10dp"
         android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/time_date"
+        android:layout_centerHorizontal="true"
+        android:text="Send message or data"
+        android:textColor="@color/colorAccent" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/time_date"
-        android:layout_toEndOf="@+id/buttonH"
-        android:layout_toStartOf="@+id/button2"
-        android:text="Send message or data" />
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true"
+        android:text="Send message or data"
+        android:onClick="SendingMessage"/>
 
 
 </RelativeLayout>

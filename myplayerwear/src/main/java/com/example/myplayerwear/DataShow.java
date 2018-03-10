@@ -8,32 +8,19 @@ import android.support.wearable.activity.WearableActivity;
 import android.view.View;
 import android.widget.TextView;
 import android.hardware.SensorEvent;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.MessageApi;
-import com.google.android.gms.wearable.Node;
-import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
-import com.google.android.gms.wearable.Wearable;
 import java.util.Calendar;
 
-public class DataShow extends WearableActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class DataShow extends WearableActivity {
     private Accelerometer AC ;
     private GPS gps ;
     private HeartrRate H;
     private stepCounter SC;
     private static TextView xText ,yText ,zText ,GpsText ,HeartrRateText ,stepCounterText ,timeDateText ,    x ;
 
-    private GoogleApiClient mGoogleApiClient;
-    private Node mNode;//represents the phone that I want to communicate with from the watch.
-
-
     int eeeee = 0 ;
-
-
+    private SendToPhone STP ;
 
     private String latitude;
     private String longitude;
@@ -49,43 +36,49 @@ public class DataShow extends WearableActivity implements GoogleApiClient.Connec
 
         H = new HeartrRate(this);
         HeartrRateText = (TextView)findViewById(R.id.textView3);
-        StartAccelerometer();
+        HeartrRateText.setText("Push To Start");
 
         AC = new Accelerometer(this);
         xText = (TextView)findViewById(R.id.textView5);
         yText = (TextView)findViewById(R.id.textView6);
         zText = (TextView)findViewById(R.id.textView7);
+        StartAccelerometer();
 
         SC = new stepCounter(this);
         stepCounterText = (TextView)findViewById(R.id.textView4);
+        StartstepCounter();
+
         timeDate();
 
-
-
-        //Initialize mGoogleApiClient.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Wearable.API)
-         //       .addConnectionCallbacks(this) //Callbacks from node - success or fails.
-         //       .addOnConnectionFailedListener(this) //If I had a fail connection.
-                .build();//create my API object.
+        STP = SendToPhone.getInstance(this);
         x = (TextView)findViewById(R.id.textView9);
 
 
     }
+//------------------- stepCounter ----------------------------.
 
-//-----------------------------------------------------------
+    public void StartstepCounter (){
+        SC.startMeasurement();
+    }
+
+    public void StopstepCounter (){
+        SC.stopMeasurement();
+    }
+
+
+//------------------- Accelerometer ---------------------------
 
     public void StartAccelerometer (){
-        H.startMeasurement();
+        AC.startMeasurement();
     }
 
     public void StopAccelerometer (){
-        H.stopMeasurement();
+        AC.stopMeasurement();
     }
 
 
 
-//-----------------------------------------------------------
+//-------------------- HeartrRate --------------------------
 
     public void HeartrRateStartButten(View view) {
         HeartrRateText.setText("Wait ....");
@@ -96,7 +89,7 @@ public class DataShow extends WearableActivity implements GoogleApiClient.Connec
 
     }
 
-//----------------------------------------------------------
+//----------------------- Gps -----------------------------
 
     public void GpsButten(View view) {
         longitude = gps.getLongitude();
@@ -104,7 +97,7 @@ public class DataShow extends WearableActivity implements GoogleApiClient.Connec
         GpsText.setText("latitude ="+latitude+" , "+"longitude = "+longitude);
     }
 
-//----------------------------------------------------------
+//--------------------- time + Date ---------------------------
 
     public void timeDate (){
         timeDateText = (TextView) findViewById(R.id.textView8);
@@ -118,7 +111,7 @@ public class DataShow extends WearableActivity implements GoogleApiClient.Connec
         timeDateText.append("time : "+String.format("%02d:%02d", mHour , mMinute ));
     }
 
-//----------------------------------------------------------
+//------------------------ print to screen -----------------------------
 
     public static void print(String sensor ,SensorEvent event){
         if (sensor == "AC"){
@@ -142,121 +135,32 @@ public class DataShow extends WearableActivity implements GoogleApiClient.Connec
 
 
 
-
-
-
-
-//------------------------------------------------------------
-
-        @Override
-    //Connect to the external node.
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    //Clean up the connection as the activity stops.
-    protected void onStop() {
-        super.onStop();
-        mGoogleApiClient.disconnect();
-    }
-
-//------------------------------------------------------------
+//--------------------- send Message/Data test ---------------------------
 
     public void buttonClickHandler(View view){
         //Send message to handheld device.
-
         String text = "aaaaaaaaaaaaaaaaa";
         sendMessage(text);
-        x.setText("555");
     }
 
     private void sendMessage(String text) {
+        STP.sendMessage(text);
+        x.setText("sending Message");
+    }
+    private void sendData(String text) {
         eeeee++;
-
-        PutDataMapRequest dataMap = PutDataMapRequest.create("/sensors/" );
-        dataMap.getDataMap().putInt("a1",eeeee);
+        PutDataMapRequest dataMap = PutDataMapRequest.create("/sensors/");
+        dataMap.getDataMap().putInt("1", eeeee);
         PutDataRequest putDataRequest = dataMap.asPutDataRequest();
-
-
-        Wearable.DataApi.putDataItem(mGoogleApiClient, putDataRequest).setResultCallback
-                (new ResultCallback<DataApi.DataItemResult>() {
-                    @Override
-                    public void onResult(DataApi.DataItemResult dataItemResult) {
-                        x.setText("999888889999 - "+ dataItemResult.getStatus().isSuccess());
-                        // Log.v(TAG, "Sending sensor data: " + dataItemResult.getStatus().isSuccess());
-                    }
-                });
-
-
-
-
-
-
-
-
-
-//        Wearable.NodeApi.getConnectedNodes(mGoogleApiClient)
-//                .setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
-//                    @Override
-//                    public void onResult(@NonNull NodeApi.GetConnectedNodesResult nodes) {
-//                        //Find the node I want to communicate with.
-//                        for (Node node : nodes.getNodes()) {
-//                            if (node != null && node.isNearby()) {
-//                                mNode = node;
-//                                x.setText(mNode.getDisplayName());
-//                            }
-//                        }
-//                        if (mNode == null) {
-//                            x.setText("999888889999");
-//                        }
-//
-//                    }
-//                }) //returns a set of nods.
-//        ;
-//
-//        // List<Node> nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await().getNodes();
-//
-//        //   for (Node node : nodes) {
-//        if (mGoogleApiClient != null &&
-//                mGoogleApiClient.isConnected() &&
-//                mNode != null) {
-//            Wearable.MessageApi.sendMessage(
-//                    mGoogleApiClient, mNode.getId(), "a1", text.getBytes())
-//                    .setResultCallback(new ResultCallback<MessageApi.SendMessageResult>() {
-//                        @Override
-//                        public void onResult(MessageApi.SendMessageResult sendMessageResult) {
-//                            if (!sendMessageResult.getStatus().isSuccess()) {
-//                                x.setText("111");
-//                            } else {
-//                                x.setText("0000");
-//                            }
-//                        }
-//                    });
-//            //     }
-//        }
-
-
-}
-
-
-
-
-
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
+        STP.sendButtonPush(putDataRequest);
+        x.setText("sending data");
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {
+//--------------------------------------------------------------------------
 
-    }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-    }
+
+
+
 }

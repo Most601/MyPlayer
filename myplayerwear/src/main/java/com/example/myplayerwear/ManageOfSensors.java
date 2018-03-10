@@ -8,11 +8,9 @@ import android.content.Context;
 
 public class ManageOfSensors {
 
-    private Context context;
 
+    //--------------------------------
     public static ManageOfSensors MOS ;
-
-
 
     public static ManageOfSensors getInstance(Context context) {
         if (MOS == null) {
@@ -20,25 +18,25 @@ public class ManageOfSensors {
         }
         return MOS;
     }
+    //--------------------------------
+
+
+    private Context context;
+
 
     public ManageOfSensors(Context context) {
         this.context = context;
     }
 
-
-
     public void StartAllSensors (){
-
 
     }
 
     public void StopAllSensors (){
 
-
     }
 
     public void StartHeartrRateSensors (){
-
 
     }
 

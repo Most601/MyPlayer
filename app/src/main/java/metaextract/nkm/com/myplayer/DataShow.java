@@ -16,18 +16,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
+
 import java.util.Calendar;
 
-public class DataShow extends AppCompatActivity implements SensorEventListener{
+public class DataShow extends AppCompatActivity {
 
-    private static TextView timeDateText , GpsText , HeartrRateText ,xText , yText , zText , x ;
+    private static TextView timeDateText , GpsText , HeartrRateText ,xText , yText , zText ;
     private LocationManager locationManager;
     private LocationListener listener;
     private Accelerometer accelerometer;
     private GPS gps ;
     private HeartrRate heartrRate;
 
-//----------------------------------------------
+    private SendToWear STW ;
+
+    private int eeeee = 0 ;
+//
 
 //----------------------------------------------
 
@@ -40,35 +46,30 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //----------------- gps --------------------
 
         GpsText = (TextView) findViewById(R.id.textgps);
         gps = new GPS(this);
 
-        //----------------- HeartrRate -------------
-
         HeartrRateText = (TextView) findViewById(R.id.textH);
         heartrRate = new HeartrRate(this);
-
-        //----------------- Accelerometer -------------
+        HeartrRateText.setText("Push To Start");
 
         accelerometer = new Accelerometer(this);
         xText = (TextView)findViewById(R.id.acc_x);
         yText = (TextView)findViewById(R.id.acc_y);
         zText = (TextView)findViewById(R.id.acc_z);
+        StartAccelerometer();
 
-        //-------------------- timeDate ----------------
         timeDate();
 
+        STW = SendToWear.getInstance(this);
 
 
-        x = (TextView)findViewById(R.id.Massage);
+
+
 
 
     }
-
-
-
 
     //---------------- Gps ------------------------
     public void getGps(View view) {
@@ -86,18 +87,14 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
     }
 
     //----------------- Accelerometer --------------
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        xText.setText("X: " + (int)event.values[0]);
-        yText.setText("Y: " + (int)event.values[1]);
-        zText.setText("Z: " + (int)event.values[2]);
-    }
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    public void StartAccelerometer (){
+        accelerometer.startMeasurement();
     }
 
-
-
+    public void StopAccelerometer (){
+        accelerometer.stopMeasurement();
+    }
 
     //-------------------- timeDate -----------------------------
 
@@ -129,17 +126,28 @@ public class DataShow extends AppCompatActivity implements SensorEventListener{
     }
 
     public static void print2(String data, String aaaa) {
-
-            x.setText(aaaa);
-
-
-
     }
+
+
+
 
 
 //------------------------------------------------------------
 
+    public void SendingMessage(View view) {
 
+
+      //  STW.sendMessage("sssssss","sssssss");
+
+
+
+        eeeee++;
+        PutDataMapRequest dataMap = PutDataMapRequest.create("/sensors/");
+        dataMap.getDataMap().putInt("1", eeeee);
+        PutDataRequest putDataRequest = dataMap.asPutDataRequest();
+        STW.send(putDataRequest);
+        //   x.setText("sending data");
+    }
 
 
 }

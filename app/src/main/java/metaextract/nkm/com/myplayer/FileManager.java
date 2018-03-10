@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class FileManager {
+
     public String idan;
     private Context m_context;
     File file ;

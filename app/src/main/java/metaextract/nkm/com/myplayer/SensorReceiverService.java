@@ -43,10 +43,7 @@ public class SensorReceiverService extends WearableListenerService  {
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
-        Log.d("sssssssssssssssssss", "onDatadddddddddddddddddddddddddddddddddChanged()");
-       // MainActivity.print2("DATA", "sssssssss");
-        Intent startIntent = new Intent(this, DataShow.class);
-        startActivity(startIntent);
+
 
 //        for (DataEvent dataEvent : dataEvents) {
 //            if (dataEvent.getType() == DataEvent.TYPE_CHANGED) {
@@ -76,6 +73,9 @@ public class SensorReceiverService extends WearableListenerService  {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         super.onMessageReceived(messageEvent);
+        Log.d("sssssssssssssssssss", "onDatadddddddddddddddddddddddddddddddddChanged()");
+        Intent startIntent = new Intent(this, DataShow.class);
+        startActivity(startIntent);
 //        String AAAA = messageEvent.getPath().toString();
 //        if (messageEvent.getPath().equals("a1")) {
 //            MainActivity.print2("DATA", AAAA);

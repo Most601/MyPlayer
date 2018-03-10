@@ -62,6 +62,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     private boolean isRepeat = false;
     private ArrayList<Song> songsList = new ArrayList<Song>();
     // FILE
+    private SendToWear STW ;
 
 
 
@@ -85,7 +86,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
 
         //---------------------------------------------------------------------------------------
 
-
+        STW = SendToWear.getInstance(this);
 
         // Mediaplayer
         mp = new MediaPlayer();
@@ -134,7 +135,10 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        new String[]{
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.BODY_SENSORS,
+                                Manifest.permission.ACCESS_COARSE_LOCATION},
                         1);
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
@@ -158,7 +162,10 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             case 1: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED //READ_EXTERNAL_STORAGE
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED //BODY_SENSORS
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED)//ACCESS_COARSE_LOCATION
+                {
                     songsList = getPlayList();
                     //--------------- sort abc.... ----------------------
                     Collections.sort(songsList, new Comparator<Song>(){
@@ -229,7 +236,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
      * Function to play a song
      * @param songIndex - index of song
      * */
-     public void  playSong(int songIndex){
+     public void playSong(int songIndex){
         // Play song
         try {
             Uri uri= Uri.parse(songsList.get(songIndex).getdata());
@@ -400,6 +407,9 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         if(mp.isPlaying()){
             if(mp!=null){
                 mp.pause();
+                //----------------
+                STW.sendMessage("Act" , "stop");
+                //----------------
                 // Changing button image to play button
                 btnPlay.setImageResource(R.drawable.img_btn_play);
             }
@@ -407,6 +417,9 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             // Resume song
             if(mp!=null){
                 mp.start();
+                //----------------
+                STW.sendMessage("Act" , "start");
+                //----------------
                 // Changing button image to pause button
                 btnPlay.setImageResource(R.drawable.img_btn_pause);
             }

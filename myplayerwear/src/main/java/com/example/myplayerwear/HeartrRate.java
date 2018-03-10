@@ -6,8 +6,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
-import android.widget.TextView;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -20,23 +18,15 @@ import static android.content.Context.SENSOR_SERVICE;
 
 public class HeartrRate implements SensorEventListener {
 
-
     private String msg;
     private SensorManager sMgr;
     private Sensor mHeartrateSensor = null;
     private ScheduledExecutorService mScheduler;
 
-
-
-
     public HeartrRate(Context context){
         sMgr = (SensorManager)context.getSystemService(SENSOR_SERVICE);
         mHeartrateSensor = sMgr.getDefaultSensor(Sensor.TYPE_HEART_RATE);
     }
-
-
-
-
 
     @Override
     public void onSensorChanged(SensorEvent event) {

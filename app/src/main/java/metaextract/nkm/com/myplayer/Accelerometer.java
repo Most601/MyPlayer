@@ -27,7 +27,6 @@ public class Accelerometer implements SensorEventListener{
             // Accelerometer Sensor
             mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             // Register sensor Listener
-            SM.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
 
         @Override
@@ -42,8 +41,20 @@ public class Accelerometer implements SensorEventListener{
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
         }
 
+    public void startMeasurement(){
+        // Register sensor Listener
+        SM.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
 
-        public ArrayList<Double> getAccelerometerData (){
+    public void stopMeasurement() {
+        // unRegister sensor Listener
+        if (SM != null) {
+            SM.unregisterListener(this);
+        }
+    }
+
+
+    public ArrayList<Double> getAccelerometerData (){
             acc.add(x);
             acc.add(y);
             acc.add(z);

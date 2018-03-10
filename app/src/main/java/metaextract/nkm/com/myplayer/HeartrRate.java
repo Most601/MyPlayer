@@ -24,8 +24,6 @@ public class HeartrRate implements SensorEventListener {
     private ScheduledExecutorService mScheduler;
 
     public HeartrRate(Context context){
-
-
         sMgr = (SensorManager)context.getSystemService(SENSOR_SERVICE);
         mHeartrateSensor = sMgr.getDefaultSensor(Sensor.TYPE_HEART_RATE);
     }

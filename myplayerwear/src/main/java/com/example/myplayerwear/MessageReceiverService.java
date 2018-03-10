@@ -15,47 +15,59 @@ import com.google.android.gms.wearable.WearableListenerService;
 
 public class MessageReceiverService extends WearableListenerService {
 
+//--------------------------------------------------------------------
 
     private ManageOfSensors manageOfSensors ;
 
+    public MessageReceiverService(){
+    }
+
     public MessageReceiverService(Context Context){
         manageOfSensors = ManageOfSensors.getInstance(Context);
-        Log.d("sssssssssssss" , "1111111111111111111111111111111111");
     }
+
+//--------------------------------------------------------------------
+
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-
-
-
     }
+
+//------------------------------------------------------------------------------------
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
         super.onDataChanged(dataEvents);
+        Log.e("sssssssssssssssssss", "onDatadddddddddddddddddddddddddddddddddChanged()");
+        Intent startIntent = new Intent(this, DataShow.class);
+        startActivity(startIntent);
 
-        for (DataEvent dataEvent : dataEvents) {
-            if (dataEvent.getType() == DataEvent.TYPE_CHANGED) {
-                DataItem dataItem = dataEvent.getDataItem();
-                Uri uri = dataItem.getUri();
-                String path = uri.getPath();
-
-                if (path.startsWith("/filter")) {
-                    DataMap dataMap = DataMapItem.fromDataItem(dataItem).getDataMap();
-                    int filterById = dataMap.getInt("filter");
- //                   deviceClient.setSensorFilter(filterById);
-                }
-            }
-        }
+//        for (DataEvent dataEvent : dataEvents) {
+//            if (dataEvent.getType() == DataEvent.TYPE_CHANGED) {
+//                DataItem dataItem = dataEvent.getDataItem();
+//                Uri uri = dataItem.getUri();
+//                String path = uri.getPath();
+//
+//                if (path.startsWith("/filter")) {
+//                    DataMap dataMap = DataMapItem.fromDataItem(dataItem).getDataMap();
+//                    int filterById = dataMap.getInt("filter");
+//                    deviceClient.setSensorFilter(filterById);
+//                }
+//            }
+//        }
     }
+
+//------------------------------------------------------------------------------------
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        //Log.d(TAG, "Received message: " + messageEvent.getPath());
-        Log.d("SensorDashboard/", "Received message: " + messageEvent.getPath());
 
+
+
+        Log.e("`1`1`1`1`1`1`1", "Received Path: " + messageEvent.getPath());
+        Log.d("2`2`2`2`2`2`2`2", "Received message: " + new String(messageEvent.getData()));
+        manageOfSensors.StartAllSensors();
 //        if (messageEvent.getPath().equals(ClientPaths.START_MEASUREMENT)) {
 //            startService(new Intent(this, SensorService.class));
 //        }

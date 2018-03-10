@@ -7,8 +7,13 @@ import java.util.Comparator;
 import java.util.HashMap;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -23,12 +28,16 @@ public class PlayListActivity extends ListActivity {
 
     private ArrayList<Song> songList= new ArrayList<Song>();
     private ListView songView;
-
+    MediaMetadataRetriever metaRetriver;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playlist);
+
+        metaRetriver = new MediaMetadataRetriever();
+
+
 
         //------------------------- getPlayList ----------------------------------------------------
 
@@ -49,7 +58,6 @@ public class PlayListActivity extends ListActivity {
             int albumColumn = musicCursor.getColumnIndex
                     (MediaStore.Audio.Media.ALBUM);
 
-
             String fullPath = musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA));
 
             //add songs to list
@@ -60,11 +68,32 @@ public class PlayListActivity extends ListActivity {
                 String thiData = musicCursor.getString(iddata);
                 String thiAlbum = musicCursor.getString(albumColumn);
                 this.songList.add( new Song( thisId , thisTitle , thisArtist , thiData , thiAlbum ));
+
+
+
+
+//---------------------------- GETIN DATA FROM SONG + PIC ------------------------
+//                metaRetriver.setDataSource(thiData);
+//                try {
+//                    byte[] PicSong = metaRetriver.getEmbeddedPicture();
+//                    //Bitmap songImage = BitmapFactory.decodeByteArray(art, 0, art.length);
+//                    //album_art.setImageBitmap(songImage);
+//                    String ALBUM = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
+//                    String ARTIST = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+//                    String GENRE = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
+//                    Log.e("000000000000000000" , ARTIST);
+//                } catch (Exception e) {
+//                    album_art.setBackgroundColor(Color.GRAY);
+//                    album.setText("Unknown Album");
+//                    artist.setText("Unknown Artist");
+//                    genre.setText("Unknown Genre");
+//                }
+
+
+
+
             }
             while (musicCursor.moveToNext());
-
-
-
         }
 
 

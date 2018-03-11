@@ -22,6 +22,8 @@ public class DataShow extends WearableActivity {
     int eeeee = 0 ;
     private SendToPhone STP ;
 
+    private ManageOfSensors MOS ;
+
     private String latitude;
     private String longitude;
 //----------------------------------------------
@@ -31,20 +33,24 @@ public class DataShow extends WearableActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_show);
 
+
+        MOS = ManageOfSensors.getInstance(this);
+
+
         gps = new GPS(this);
         GpsText = (TextView)findViewById(R.id.textView2);
 
-        H = new HeartrRate(this);
+//        H = new HeartrRate(this);
         HeartrRateText = (TextView)findViewById(R.id.textView3);
         HeartrRateText.setText("Push To Start");
 
-        AC = new Accelerometer(this);
+//        AC = new Accelerometer(this);
         xText = (TextView)findViewById(R.id.textView5);
         yText = (TextView)findViewById(R.id.textView6);
         zText = (TextView)findViewById(R.id.textView7);
         StartAccelerometer();
 
-        SC = new stepCounter(this);
+//        SC = new stepCounter(this);
         stepCounterText = (TextView)findViewById(R.id.textView4);
         StartstepCounter();
 
@@ -58,22 +64,22 @@ public class DataShow extends WearableActivity {
 //------------------- stepCounter ----------------------------.
 
     public void StartstepCounter (){
-        SC.startMeasurement();
+        MOS.StartStepCounter();
     }
 
     public void StopstepCounter (){
-        SC.stopMeasurement();
+        MOS.StopStepCounter();
     }
 
 
 //------------------- Accelerometer ---------------------------
 
     public void StartAccelerometer (){
-        AC.startMeasurement();
+        MOS.StartAccelerometer();
     }
 
     public void StopAccelerometer (){
-        AC.stopMeasurement();
+        MOS.StopAccelerometer();
     }
 
 
@@ -82,10 +88,10 @@ public class DataShow extends WearableActivity {
 
     public void HeartrRateStartButten(View view) {
         HeartrRateText.setText("Wait ....");
-        H.startMeasurement();
+        MOS.StartHeartrRate();
     }
     public void HeartrRateStopButten(View view) {
-        H.stopMeasurement();
+        MOS.StopHeartrRate();
 
     }
 
@@ -144,7 +150,7 @@ public class DataShow extends WearableActivity {
     }
 
     private void sendMessage(String text) {
-        STP.sendMessage(text);
+        STP.sendMessage("Data_Shoe_Click",text);
         x.setText("sending Message");
     }
     private void sendData(String text) {

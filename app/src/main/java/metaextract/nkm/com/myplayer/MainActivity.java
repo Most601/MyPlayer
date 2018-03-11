@@ -63,6 +63,14 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     private ArrayList<Song> songsList = new ArrayList<Song>();
     // FILE
     private SendToWear STW ;
+    private MessageReceiveManager MRM;
+    private DataReceiveManager DM ;
+
+
+
+    public MainActivity (){
+
+    }
 
 
 
@@ -99,7 +107,8 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         // Getting all songs list
 
 
-
+        DM= DataReceiveManager.getInstance(this);
+        MRM = MessageReceiveManager.getInstance(this);
 
         //------------------------- permission -------------------------------------------------
 
@@ -275,14 +284,24 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
      */
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
-            long totalDuration = mp.getDuration();
-            long currentDuration = mp.getCurrentPosition();
+         //   long totalDuration = mp.getDuration();
+         //   long currentDuration = mp.getCurrentPosition();
+/////////////////////////// זה מה שגרם לנגן ליפול שחוזרים ///////////////////////////
+            long totalDuration;
+            long currentDuration ;
+            try{
+                totalDuration = mp.getDuration();
+                currentDuration = mp.getCurrentPosition();
+            }catch (Exception e){
+                totalDuration = 0;
+                currentDuration = 0;
+            }
+////////////////////////////////////////////////////////////////////////////////////
 
             // Displaying Total Duration time
             songTotalDurationLabel.setText(""+utils.milliSecondsToTimer(totalDuration));
             // Displaying time completed playing
             songCurrentDurationLabel.setText(""+utils.milliSecondsToTimer(currentDuration));
-
             // Updating progress bar
             int progress = (int)(utils.getProgressPercentage(currentDuration, totalDuration));
             //Log.d("Progress", ""+progress);
@@ -361,8 +380,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
      * and play the song
      * */
     @Override
-    protected void onActivityResult(int requestCode,
-                                    int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode,int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == 100){
             currentSongIndex = data.getExtras().getInt("songTitle");
@@ -370,6 +388,29 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             playSong(currentSongIndex);
         }
 
+    }
+
+    //------------------------------------------------------------------------------------
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if ( intent.getExtras().getInt("10") == 1 ){
+            btnPlay.performClick();
+        }
+        if ( intent.getExtras().getInt("20") == 2 ){
+            btnBackward.performClick();
+        }
+        if ( intent.getExtras().getInt("30") == 3 ){
+            btnPrevious.performClick();
+        }
+        if ( intent.getExtras().getInt("40") == 4 ){
+            btnNext.performClick();
+        }
+        if ( intent.getExtras().getInt("50") == 5 ){
+            btnForward.performClick();
+        }
     }
 
     //------------------- backward -------------------------------------------------------
@@ -496,15 +537,23 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
 
 
     //--------------- onDestroy ----------------------------------------------------------
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
     @Override
     public void onDestroy(){
         super.onDestroy();
-
-        // מפיל שעושים אחורה אבל לא שומר על הנגן -------------
         mp.release();
-        // מפיל שעושים אחורה -------------
-    }
+       }
 
     //---------------- Info button ---------------------------------------------------------
 
@@ -512,17 +561,41 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         Intent i = new Intent(getApplicationContext(), DataShow.class);
         startActivityForResult(i, 100);
     }
+
     //----------------------------------------------------------------------------------
 
     public static void print2(String data, String aaaa) {
-       // songTitleLabel.setText("dddddddddddddd");
+
 
         Log.d("ddddddd","Connected to??????????????????????? ");
 
-
-
     }
 
+
+    public void Next() {
+        // check if next song is there or not
+        if(currentSongIndex < (songsList.size() - 1)){
+            playSong(currentSongIndex + 1);
+            currentSongIndex = currentSongIndex + 1;
+        }else{
+            // play first song
+            playSong(0);
+            currentSongIndex = 0;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    //----------------------------------------------------------------------------------
 
 
 }

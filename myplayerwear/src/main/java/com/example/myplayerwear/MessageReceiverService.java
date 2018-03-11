@@ -17,6 +17,9 @@ public class MessageReceiverService extends WearableListenerService {
 
 //--------------------------------------------------------------------
 
+    private static final String TAG1 = "GETING DATA";
+    private static final String TAG2 = "GETING MESSAGE";
+
     private ManageOfSensors manageOfSensors ;
 
     public MessageReceiverService(){
@@ -39,9 +42,7 @@ public class MessageReceiverService extends WearableListenerService {
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
         super.onDataChanged(dataEvents);
-        Log.e("sssssssssssssssssss", "onDatadddddddddddddddddddddddddddddddddChanged()");
-        Intent startIntent = new Intent(this, DataShow.class);
-        startActivity(startIntent);
+        Log.e(TAG1, "onDatadddddddddddddddddddddddddddddddddChanged()");
 
 //        for (DataEvent dataEvent : dataEvents) {
 //            if (dataEvent.getType() == DataEvent.TYPE_CHANGED) {
@@ -65,9 +66,9 @@ public class MessageReceiverService extends WearableListenerService {
 
 
 
-        Log.e("`1`1`1`1`1`1`1", "Received Path: " + messageEvent.getPath());
-        Log.d("2`2`2`2`2`2`2`2", "Received message: " + new String(messageEvent.getData()));
-        manageOfSensors.StartAllSensors();
+        Log.e(TAG2, "Received Path: " + messageEvent.getPath());
+        Log.d(TAG2, "Received message: " + new String(messageEvent.getData()));
+//        manageOfSensors.StartAllSensors();
 //        if (messageEvent.getPath().equals(ClientPaths.START_MEASUREMENT)) {
 //            startService(new Intent(this, SensorService.class));
 //        }

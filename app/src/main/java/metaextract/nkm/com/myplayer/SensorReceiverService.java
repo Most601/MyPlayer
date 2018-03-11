@@ -1,9 +1,15 @@
 package metaextract.nkm.com.myplayer;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+
 
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
@@ -20,11 +26,16 @@ import com.google.android.gms.wearable.WearableListenerService;
 
 public class SensorReceiverService extends WearableListenerService  {
 
+    private static final String TAG1 = "GETING DATA";
+    private static final String TAG2 = "GETING MESSAGE";
+
+    private DataReceiveManager DM = DataReceiveManager.getInstance(this);
+    private MessageReceiveManager MRM = MessageReceiveManager.getInstance(this);
 
 //    @Override
 //    public void onCreate() {
 //        super.onCreate();
-//
+//     //   MRM = MessageReceiveManager.getInstance(this);
 //    }
 //
 //    @Override
@@ -41,27 +52,30 @@ public class SensorReceiverService extends WearableListenerService  {
 //       // Log.i(TAG, "Disconnected: " + peer.getDisplayName() + " (" + peer.getId() + ")");
 //    }
 
+//----------------------- Data Changed ----------------------------------------------------
+
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
 
 
-//        for (DataEvent dataEvent : dataEvents) {
-//            if (dataEvent.getType() == DataEvent.TYPE_CHANGED) {
-//                DataItem dataItem = dataEvent.getDataItem();
-//                Uri uri = dataItem.getUri();
-//                String path = uri.getPath();
-//
-//                if (path.startsWith("/sensors/")) {
-//                    unpackSensorData(
-//                        Integer.parseInt(uri.getLastPathSegment()),
-//                        DataMapItem.fromDataItem(dataItem).getDataMap()
-//                    );
-//                }
-//            }
-//        }
+        for (DataEvent dataEvent : dataEvents) {
+            if (dataEvent.getType() == DataEvent.TYPE_CHANGED) {
+                DataItem dataItem = dataEvent.getDataItem();
+                Uri uri = dataItem.getUri();
+                String path = uri.getPath();
+
+                if (path.startsWith("/sensors/")) {
+                    unpackSensorData(
+                        Integer.parseInt(uri.getLastPathSegment()),
+                        DataMapItem.fromDataItem(dataItem).getDataMap()
+                    );
+                }
+            }
+        }
     }
 
     private void unpackSensorData(int sensorType, DataMap dataMap) {
+        String type = dataMap.getString("type");
         int accuracy = dataMap.getInt("accuracy");
         long timestamp = dataMap.getLong("timestamp");
         float[] values = dataMap.getFloatArray("values");
@@ -70,20 +84,22 @@ public class SensorReceiverService extends WearableListenerService  {
        // sensorManager.addSensorData(sensorType, accuracy, timestamp, values);
     }
 
+//----------------------- Message Received ----------------------------------------------------
+
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         super.onMessageReceived(messageEvent);
-        Log.d("sssssssssssssssssss", "onDatadddddddddddddddddddddddddddddddddChanged()");
-        Intent startIntent = new Intent(this, DataShow.class);
-        startActivity(startIntent);
-//        String AAAA = messageEvent.getPath().toString();
-//        if (messageEvent.getPath().equals("a1")) {
-//            MainActivity.print2("DATA", AAAA);
-//            Intent startIntent = new Intent(this, DataShow.class);
-//            startActivity(startIntent);
-//        }
-//        if (messageEvent.getPath().equals("ssssss")) {
-//            //   stopService(new Intent(this, SensorService.class));
-//        }
+        Log.d(TAG2, "geting message. Path : "+ messageEvent.getPath()+ " , Data : "+new String(messageEvent.getData()));
+        if (messageEvent.getPath().equals("Player")) {
+                MRM.MessageReceive(messageEvent);
+
+
+
+
+        }
+        if (messageEvent.getPath().equals("Data_Shoe_Click")) {
+            Intent i = new Intent(getApplicationContext(), DataShow.class);
+            startActivity(i);
+        }
     }
 }

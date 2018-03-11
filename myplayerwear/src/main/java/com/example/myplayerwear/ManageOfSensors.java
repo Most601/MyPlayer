@@ -21,24 +21,71 @@ public class ManageOfSensors {
     //--------------------------------
 
 
-    private Context context;
+    private GPS gps ;
+    private Context context ;
+    private HeartrRate H ;
+    private stepCounter SC ;
+    private Accelerometer AC ;
 
 
     public ManageOfSensors(Context context) {
         this.context = context;
+        AC = new Accelerometer(context);
+        H = new HeartrRate(context);
+        SC = new stepCounter(context);
+       // gps = new GPS(context);
+
+
     }
 
-    public void StartAllSensors (){
+//-------------------------- ALL SENSORS---------------------------------------------
 
+    public void StartAllSensors (){
+        SC.startMeasurement();
+        AC.startMeasurement();
+        H.startMeasurement();
     }
 
     public void StopAllSensors (){
+        SC.stopMeasurement();
+        AC.stopMeasurement();
+        H.stopMeasurement();
+    }
+
+
+    //------------------- stepCounter ----------------------------.
+
+    public void StartStepCounter (){
+        SC.startMeasurement();
+    }
+
+    public void StopStepCounter (){
+        SC.stopMeasurement();
+    }
+
+
+//------------------- Accelerometer ---------------------------
+
+    public void StartAccelerometer (){
+        AC.startMeasurement();
+    }
+
+    public void StopAccelerometer (){
+        AC.stopMeasurement();
+    }
+
+
+
+//-------------------- HeartrRate --------------------------
+
+    public void StartHeartrRate() {
+        H.startMeasurement();
+    }
+    public void StopHeartrRate() {
+        H.stopMeasurement();
 
     }
 
-    public void StartHeartrRateSensors (){
-
-    }
 
 
 }

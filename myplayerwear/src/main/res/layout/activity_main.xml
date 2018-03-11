@@ -57,11 +57,11 @@
         <!-- Previous Button -->
         <ImageButton
             android:id="@+id/btnPrevious"
-            android:layout_width="35dp"
+            android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:background="@null"
-            android:src="@drawable/img_btn_next"
-            android:onClick="Previous"/>
+            android:onClick="Previous"
+            android:src="@drawable/img_btn_next" />
         <!-- Backward Button -->
         <ImageButton
             android:id="@+id/btnBackward"

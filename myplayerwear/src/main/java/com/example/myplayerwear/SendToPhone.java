@@ -56,9 +56,10 @@ public class SendToPhone implements GoogleApiClient.ConnectionCallbacks, GoogleA
         googleApiClient = new
                 GoogleApiClient.Builder(context).
                 addApi(Wearable.API).
-                //       .addConnectionCallbacks(this) //Callbacks from node - success or fails.
+                addConnectionCallbacks(this). //Callbacks from node - success or fails.
                 //       .addOnConnectionFailedListener(this) //If I had a fail connection.
                 build();
+        googleApiClient.connect();
         executorService = Executors.newCachedThreadPool();
         lastSensorData = new SparseLongArray();
     }
@@ -140,9 +141,38 @@ public class SendToPhone implements GoogleApiClient.ConnectionCallbacks, GoogleA
         }
     }
 
-//--------------------------------------------------------------------------------------
+//------------------------------ Message -------------------------------------------------
 
-    public void sendMessage(String text) {
+    // List<Node> nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await().getNodes();
+    //   for (Node node : nodes) {
+
+
+    public void sendMessage(String type , String message) {
+        resolveNode();
+        if (googleApiClient != null &&
+                validateConnection() &&
+                mNode != null) {
+            Wearable.MessageApi.sendMessage(
+                    googleApiClient, mNode.getId(),
+                    type,
+                    message.getBytes())
+                    .setResultCallback(new ResultCallback<MessageApi.SendMessageResult>() {
+                            @Override
+                            public void onResult(MessageApi.SendMessageResult sendMessageResult) {
+                                if (sendMessageResult.getStatus().isSuccess()) {
+                                    Log.d("SENDDDDDDDDD Message", "Sending sensor data: " +sendMessageResult.getStatus().isSuccess() );
+                                }
+                                else {
+                                    Log.d("SENDDDDDDDDD Message", "Sending sensor data: " +sendMessageResult.getStatus().isSuccess() );
+                                }
+                            }
+                        });
+
+            }
+
+    }
+
+    private void resolveNode() {
         if (validateConnection()) {
             Wearable.NodeApi.getConnectedNodes(googleApiClient)
                     .setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
@@ -160,38 +190,32 @@ public class SendToPhone implements GoogleApiClient.ConnectionCallbacks, GoogleA
                             }
                         }
                     }) //returns a set of nods.
-            ;
-
-            // List<Node> nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await().getNodes();
-            //   for (Node node : nodes) {
-
-
-            if (googleApiClient != null &&
-                    googleApiClient.isConnected() &&
-                    mNode != null) {
-                Wearable.MessageApi.sendMessage(
-                        googleApiClient, mNode.getId(), "a1", text.getBytes())
-                        .setResultCallback(new ResultCallback<MessageApi.SendMessageResult>() {
-                            @Override
-                            public void onResult(MessageApi.SendMessageResult sendMessageResult) {
-                                if (sendMessageResult.getStatus().isSuccess()) {
-                                    Log.d("SENDDDDDDDDD Message", "Sending sensor data: " +sendMessageResult.getStatus().isSuccess() );
-                                }
-                                else {
-                                    Log.d("SENDDDDDDDDD Message", "Sending sensor data: " +sendMessageResult.getStatus().isSuccess() );
-                                }
-                            }
-                        });
-                //     }
-            }
-        }
-
+            ;}
     }
+
+//-----------------------------------------------------------------------------------
 
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        Wearable.NodeApi.getConnectedNodes(googleApiClient)
+                .setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
+                    @Override
+                    public void onResult(@NonNull NodeApi.GetConnectedNodesResult nodes) {
+                        //Find the node I want to communicate with.
+                        for (Node node : nodes.getNodes()){
+                            if(node != null && node.isNearby()){
+                                mNode = node;
+                                Log.d("","Connected to??????????????????????? " + mNode.getDisplayName());
+                            }
+                        }
+                        if(mNode == null){
+                            Log.d("?", "Not connected!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        }
 
+                    }
+                }) //returns a set of nods.
+        ;
     }
 
     @Override

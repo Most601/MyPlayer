@@ -40,7 +40,7 @@ public class MessageReceiveManager  {
     }
 
 
-
+//--------------------------------------------------------------------------------------------------
 
     public void MessageReceive (MessageEvent messageEvent ){
         if (messageEvent.getPath().equals("Player")) {

@@ -47,7 +47,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     private ImageButton btnRepeat;
     private ImageButton btnShuffle;
     private SeekBar songProgressBar;
-    private static TextView songTitleLabel;
+    private TextView songTitleLabel;
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
     // Media Player
@@ -65,13 +65,6 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     private SendToWear STW ;
     private MessageReceiveManager MRM;
     private DataReceiveManager DM ;
-
-
-
-    public MainActivity (){
-
-    }
-
 
 
     @Override
@@ -92,9 +85,9 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
 
-        //---------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------
 
-        STW = SendToWear.getInstance(this);
+
 
         // Mediaplayer
         mp = new MediaPlayer();
@@ -104,14 +97,13 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         songProgressBar.setOnSeekBarChangeListener(this); // Important
         mp.setOnCompletionListener(this); // Important
 
-        // Getting all songs list
-
-
+        // Data + Message
+        STW = SendToWear.getInstance(this);
         DM= DataReceiveManager.getInstance(this);
         MRM = MessageReceiveManager.getInstance(this);
 
-        //------------------------- permission -------------------------------------------------
 
+        //------------------------- permission -----------------------------------------------------
 
         //------- Checking for permission ------
         int permissionCheck = ContextCompat.checkSelfPermission(this,
@@ -235,12 +227,28 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
                 this.songsList.add( new Song( thisId , thisTitle , thisArtist , thiData , thiAlbum ));
             }
             while (musicCursor.moveToNext());
+            //---------------------------- GETIN DATA FROM SONG + PIC ------------------------
+//                metaRetriver.setDataSource(thiData);
+//                try {
+//                    byte[] PicSong = metaRetriver.getEmbeddedPicture();
+//                    //Bitmap songImage = BitmapFactory.decodeByteArray(art, 0, art.length);
+//                    //album_art.setImageBitmap(songImage);
+//                    String ALBUM = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
+//                    String ARTIST = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+//                    String GENRE = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
+//                    Log.e("000000000000000000" , ARTIST);
+//                } catch (Exception e) {
+//                    album_art.setBackgroundColor(Color.GRAY);
+//                    album.setText("Unknown Album");
+//                    artist.setText("Unknown Artist");
+//                    genre.setText("Unknown Genre");
+//                }
         }
         return songsList;
     }
 
 
-    //------------------------- playSong ----------------------------------------------------
+    //------------------------- playSong -----------------------------------------------------------
     /**
      * Function to play a song
      * @param songIndex - index of song
@@ -272,7 +280,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         }
     }
 
-    //------------------------- updateProgressBar ------------------------------------------------
+    //------------------------- updateProgressBar --------------------------------------------------
     /**
      * Update timer on seekbar
      */
@@ -297,7 +305,6 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
                 currentDuration = 0;
             }
 ////////////////////////////////////////////////////////////////////////////////////
-
             // Displaying Total Duration time
             songTotalDurationLabel.setText(""+utils.milliSecondsToTimer(totalDuration));
             // Displaying time completed playing
@@ -334,7 +341,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         updateProgressBar();
     }
 
-//------------------- onCompletion  השיר בסתיים -----------------------------------------------
+//------------------- onCompletion  השיר בסתיים ----------------------------------------------------
     /**
      * In the song completeness, checks for both isRepeat and isShuffle ,  and works accordingly
      * @param mp
@@ -364,8 +371,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     }
 
 
-    //------------------ Playlist -----------------------------------------------------------
-
+    //------------------ Playlist Activity ---------------------------------------------------------
     /**
      * Button Go to song list
      * @param view
@@ -390,8 +396,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
 
     }
 
-    //------------------------------------------------------------------------------------
-
+    //-------------------------- onNewIntent -------------------------------------------------------
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -563,31 +568,6 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     }
 
     //----------------------------------------------------------------------------------
-
-    public static void print2(String data, String aaaa) {
-
-
-        Log.d("ddddddd","Connected to??????????????????????? ");
-
-    }
-
-
-    public void Next() {
-        // check if next song is there or not
-        if(currentSongIndex < (songsList.size() - 1)){
-            playSong(currentSongIndex + 1);
-            currentSongIndex = currentSongIndex + 1;
-        }else{
-            // play first song
-            playSong(0);
-            currentSongIndex = 0;
-        }
-    }
-
-
-
-
-
 
 
 

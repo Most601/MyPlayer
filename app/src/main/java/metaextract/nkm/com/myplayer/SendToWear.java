@@ -30,11 +30,12 @@ public class SendToWear implements GoogleApiClient.ConnectionCallbacks {
         return STW;
     }
 
+
+//--------------------------------------------------------------------------------------------------
+
+
     private GoogleApiClient mGoogleApiClient ;
     private Node mNode;
-
-
-
 
     public SendToWear(Context context) {
 
@@ -59,9 +60,7 @@ public class SendToWear implements GoogleApiClient.ConnectionCallbacks {
 
 
 
-//------------------------------------------------------------------------------------------
-
-
+//--------------------------------------------------------------------------------------------------
 
 
     public void sendMessage(String type , final String message ) {

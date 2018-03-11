@@ -89,7 +89,9 @@ public class SensorReceiverService extends WearableListenerService  {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         super.onMessageReceived(messageEvent);
+
         Log.d(TAG2, "geting message. Path : "+ messageEvent.getPath()+ " , Data : "+new String(messageEvent.getData()));
+
         if (messageEvent.getPath().equals("Player")) {
                 MRM.MessageReceive(messageEvent);
 

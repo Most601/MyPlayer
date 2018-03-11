@@ -94,10 +94,7 @@ public class SensorReceiverService extends WearableListenerService  {
 
         if (messageEvent.getPath().equals("Player")) {
                 MRM.MessageReceive(messageEvent);
-
-
-
-
+                
         }
         if (messageEvent.getPath().equals("Data_Shoe_Click")) {
             Intent i = new Intent(getApplicationContext(), DataShow.class);

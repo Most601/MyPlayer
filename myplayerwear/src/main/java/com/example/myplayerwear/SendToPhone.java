@@ -42,7 +42,8 @@ public class SendToPhone implements GoogleApiClient.ConnectionCallbacks, GoogleA
     public static final String ACCURACY = "accuracy";
     public static final String TIMESTAMP = "timestamp";
     public static final String VALUES = "values";
-    public static final String FILTER = "filter";
+    public static final String TYPE = "type";
+
     private Context context;
     private GoogleApiClient googleApiClient;
     private ExecutorService executorService;
@@ -66,7 +67,7 @@ public class SendToPhone implements GoogleApiClient.ConnectionCallbacks, GoogleA
 
 //----------------------------- DATA -----------------------------------------
 
-    public void sendSensorData(final int sensorType, final int accuracy, final long timestamp, final float[] values) {
+    public void sendSensorData(final String SensorTypeString ,final int sensorType, final int accuracy, final long timestamp, final float[] values) {
         long t = System.currentTimeMillis();
         long lastTimestamp = lastSensorData.get(sensorType);
         long timeAgo = t - lastTimestamp;
@@ -83,13 +84,14 @@ public class SendToPhone implements GoogleApiClient.ConnectionCallbacks, GoogleA
         executorService.submit(new Runnable() {
             @Override
             public void run() {
-                sendSensorDataInBackground(sensorType, accuracy, timestamp, values);
+                sendSensorDataInBackground(SensorTypeString, sensorType, accuracy, timestamp, values);
             }
         });
     }
 
-    private void sendSensorDataInBackground(int sensorType, int accuracy, long timestamp, float[] values) {
+    private void sendSensorDataInBackground(String SensorTypeString , int sensorType, int accuracy, long timestamp, float[] values) {
         PutDataMapRequest dataMap = PutDataMapRequest.create("/sensors/" + sensorType);
+        dataMap.getDataMap().putString(TYPE,SensorTypeString);
         dataMap.getDataMap().putInt(ACCURACY, accuracy);
         dataMap.getDataMap().putLong(TIMESTAMP, timestamp);
         dataMap.getDataMap().putFloatArray(VALUES, values);
@@ -107,22 +109,28 @@ public class SendToPhone implements GoogleApiClient.ConnectionCallbacks, GoogleA
         return googleApiClient.isConnected();
     }
 
-    private void send(PutDataRequest putDataRequest) {
+    private synchronized void send(PutDataRequest putDataRequest) {
         if (validateConnection()) {
             Wearable.DataApi.putDataItem(googleApiClient, putDataRequest).setResultCallback
                     (new ResultCallback<DataApi.DataItemResult>() {
                         @Override
                         public void onResult(DataApi.DataItemResult dataItemResult) {
-                            // Log.v(TAG, "Sending sensor data: " + dataItemResult.getStatus().isSuccess());
-                        }
+                            if(dataItemResult.getStatus().isSuccess() ) {
+                                Log.d("SENDDDDDDDDD Data", "Sending sensor data: " +dataItemResult.getStatus().isSuccess() );
+                            }
+                            else {
+                                Log.d("SENDDDDDDDDD Data", "Sending sensor data: " +dataItemResult.getStatus().isSuccess() );
+
+
+                            }                        }
                     });
         }
     }
 
 
-    //--------------------
+    //----------------- send from DataShow --------------------------------------------------------
 
-    public void sendButtonPush(PutDataRequest putDataRequest) {
+    public synchronized void sendButtonPush(PutDataRequest putDataRequest) {
         if (validateConnection()) {
             Wearable.DataApi.putDataItem(googleApiClient, putDataRequest).setResultCallback
                     (new ResultCallback<DataApi.DataItemResult>() {
@@ -147,7 +155,7 @@ public class SendToPhone implements GoogleApiClient.ConnectionCallbacks, GoogleA
     //   for (Node node : nodes) {
 
 
-    public void sendMessage(String type , String message) {
+    public synchronized void sendMessage(String type , String message) {
         resolveNode();
         if (googleApiClient != null &&
                 validateConnection() &&

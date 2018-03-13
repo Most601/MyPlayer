@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
@@ -26,13 +27,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.wearable.Node;
-import com.google.android.gms.wearable.NodeApi;
-import com.google.android.gms.wearable.Wearable;
-import java.util.concurrent.TimeUnit;
-import java.util.List;
-import android.content.Context;
+
 
 
 public class MainActivity extends Activity  implements   OnCompletionListener, SeekBar.OnSeekBarChangeListener {
@@ -64,7 +59,20 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     // FILE
     private SendToWear STW ;
     private MessageReceiveManager MRM;
-    private DataReceiveManager DM ;
+
+    private DataReceiveManager DM_GEN;
+
+    private DataReceiveManager DM_Activity;
+
+
+    private DataReceiveManager DM_SONGLIST ;
+    private Calendar cc = Calendar.getInstance();
+    private int year=cc.get(Calendar.YEAR);
+    private int month=cc.get(Calendar.MONTH);
+    private int mDay = cc.get(Calendar.DAY_OF_MONTH);
+    private int mHour = cc.get(Calendar.HOUR_OF_DAY);
+    private int mMinute = cc.get(Calendar.MINUTE);
+
 
 
     @Override
@@ -99,9 +107,9 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
 
         // Data + Message
         STW = SendToWear.getInstance(this);
-        DM= DataReceiveManager.getInstance(this);
         MRM = MessageReceiveManager.getInstance(this);
 
+        DM_GEN = DataReceiveManager.getInstance(this);
 
         //------------------------- permission -----------------------------------------------------
 
@@ -146,7 +154,20 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
                 // result of the request.
             }
         }
+
+        //------------------- SONGLIST ---------------------------------------------
+        year=cc.get(Calendar.YEAR);
+        month=cc.get(Calendar.MONTH);
+        mDay = cc.get(Calendar.DAY_OF_MONTH);
+        mHour = cc.get(Calendar.HOUR_OF_DAY);
+        mMinute = cc.get(Calendar.MINUTE);
+        DM_SONGLIST = new  DataReceiveManager(this ,
+                String.format("time=%02d-%02d", mHour , mMinute )+" SONGLIST");
+        DM_SONGLIST.addSongList(songsList);
+
     }
+
+    //---------------------------------------------------------------------------
 
     //----- Getting approval for permission ------
     /**

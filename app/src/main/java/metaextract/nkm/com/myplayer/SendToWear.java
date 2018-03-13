@@ -63,7 +63,7 @@ public class SendToWear implements GoogleApiClient.ConnectionCallbacks {
 //--------------------------------------------------------------------------------------------------
 
 
-    public void sendMessage(String type , final String message ) {
+    public synchronized void sendMessage(String type , final String message ) {
         resolveNode();
         if(mGoogleApiClient != null &&
                 validateConnection() &&
@@ -111,7 +111,7 @@ public class SendToWear implements GoogleApiClient.ConnectionCallbacks {
 
 
 
-    public void send(PutDataRequest putDataRequest) {
+    public synchronized void send(PutDataRequest putDataRequest) {
         if (validateConnection()) {
             Wearable.DataApi.putDataItem(mGoogleApiClient, putDataRequest).setResultCallback
                     (new ResultCallback<DataApi.DataItemResult>() {

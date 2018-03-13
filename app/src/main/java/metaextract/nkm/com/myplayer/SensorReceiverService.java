@@ -29,6 +29,11 @@ public class SensorReceiverService extends WearableListenerService  {
     private static final String TAG1 = "GETING DATA";
     private static final String TAG2 = "GETING MESSAGE";
 
+    public static final String ACCURACY = "accuracy";
+    public static final String TIMESTAMP = "timestamp";
+    public static final String VALUES = "values";
+    public static final String TYPE = "type";
+
     private DataReceiveManager DM = DataReceiveManager.getInstance(this);
     private MessageReceiveManager MRM = MessageReceiveManager.getInstance(this);
 
@@ -75,13 +80,13 @@ public class SensorReceiverService extends WearableListenerService  {
     }
 
     private void unpackSensorData(int sensorType, DataMap dataMap) {
-        String type = dataMap.getString("type");
-        int accuracy = dataMap.getInt("accuracy");
-        long timestamp = dataMap.getLong("timestamp");
-        float[] values = dataMap.getFloatArray("values");
+        String SensorTypeString = dataMap.getString(TYPE);
+        int accuracy = dataMap.getInt(ACCURACY);
+        long timestamp = dataMap.getLong(TIMESTAMP);
+        float[] values = dataMap.getFloatArray(VALUES);
 
         // Log.d(TAG, "Received sensor data " + sensorType + " = " + Arrays.toString(values));
-       // sensorManager.addSensorData(sensorType, accuracy, timestamp, values);
+        DM.addSensorData(SensorTypeString, sensorType, accuracy, timestamp, values);
     }
 
 //----------------------- Message Received ----------------------------------------------------

@@ -28,19 +28,15 @@ public class MessageReceiveManager  {
         return MRM;
     }
 
-
-
+//--------------------------------------------------------------------------------------------------
 
     private Context context;
 
-
     public MessageReceiveManager(Context context){
         this.context = context;
-
     }
 
-
-//--------------------------------------------------------------------------------------------------
+//----------------------------- Player -------------------------------------------------------------
 
     public void MessageReceive (MessageEvent messageEvent ){
         if (messageEvent.getPath().equals("Player")) {
@@ -83,12 +79,9 @@ public class MessageReceiveManager  {
         if (messageEvent.getPath().equals("Data_Shoe_Click")) {
 
         }
-
-
-
-
     }
 
+//-------------------------------------------------------------------------------------------------
 
 
 }

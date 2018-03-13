@@ -22,16 +22,22 @@ public class HeartrRate implements SensorEventListener {
     private SensorManager sMgr;
     private Sensor mHeartrateSensor = null;
     private ScheduledExecutorService mScheduler;
+    private SendToPhone STP ;
 
     public HeartrRate(Context context){
         sMgr = (SensorManager)context.getSystemService(SENSOR_SERVICE);
         mHeartrateSensor = sMgr.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+        STP = SendToPhone.getInstance(context);
+
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
             msg = " Value sensor: " + (int)event.values[0];
+            //////////////////////////
+            STP.sendSensorData(event.sensor.getStringType() , event.sensor.getType(), event.accuracy, event.timestamp, event.values);
+            //////////////////////////
         }
         DataShow.print("H",event);
     }

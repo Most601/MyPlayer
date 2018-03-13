@@ -18,18 +18,25 @@ public class stepCounter implements SensorEventListener {
     private SensorManager sMgr;
     private Sensor stepCounterSensor;
     private String msg;
+    private SendToPhone STP ;
 
     public stepCounter(Context context){
         sMgr = (SensorManager)context.getSystemService(SENSOR_SERVICE);
         stepCounterSensor = sMgr.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        STP = SendToPhone.getInstance(context);
+
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
+        if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
             msg = " Value Step Counter : " + (int)event.values[0];
+            //////////////////////////
+            STP.sendSensorData(event.sensor.getStringType() , event.sensor.getType(), event.accuracy, event.timestamp, event.values);
+            //////////////////////////
+            DataShow.print("SC" , event);
         }
-        DataShow.print("SC" , event);
+
     }
 
     @Override

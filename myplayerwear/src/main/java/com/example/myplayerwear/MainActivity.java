@@ -46,6 +46,8 @@ public class MainActivity extends WearableActivity{// implements GoogleApiClient
         STP = SendToPhone.getInstance(this);
 
 
+
+
         //------------------------- permission -----------------------------------------------------
 
         //------- Checking for permission ------

@@ -20,12 +20,14 @@ public class Accelerometer implements SensorEventListener{
     private double x, y, z;
     private Sensor mySensor;
     private SensorManager SM;
+    private SendToPhone STP ;
 
         public Accelerometer(Context context) {
             SM = (SensorManager) context.getSystemService(SENSOR_SERVICE);
             // Accelerometer Sensor
             mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
+            STP = SendToPhone.getInstance(context);
         }
 
         @Override
@@ -35,6 +37,9 @@ public class Accelerometer implements SensorEventListener{
             y = event.values[2];
             //print on datashow
             DataShow.print("AC",event);
+            //////////////////////////
+//            STP.sendSensorData(event.sensor.getStringType() , event.sensor.getType(), event.accuracy, event.timestamp, event.values);
+            //////////////////////////
         }
 
         @Override

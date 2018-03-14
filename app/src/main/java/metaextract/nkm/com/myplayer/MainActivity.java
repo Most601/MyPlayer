@@ -27,28 +27,30 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
-
 public class MainActivity extends Activity  implements   OnCompletionListener, SeekBar.OnSeekBarChangeListener {
 
-
+    //Buttons: forward, backward, next, previous, play, repeat and shuffle.
+    //----------------------------------------------------------------------------------------------
     private ImageButton btnForward;
     private ImageButton btnBackward;
     private ImageButton btnNext;
     private ImageButton btnPrevious;
-    private ImageButton btnPlaylist;
     private ImageButton btnPlay;
     private ImageButton btnRepeat;
     private ImageButton btnShuffle;
-    private SeekBar songProgressBar;
+    //private ImageButton btnPlaylist;
+    //----------------------------------------------------------------------------------------------
+
+    //TextView: song title, current position in the song and song length.
+    //----------------------------------------------------------------------------------------------
     private TextView songTitleLabel;
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
-    // Media Player
-    private  MediaPlayer mp;
-    // Handler to update UI timer, progress bar etc,.
-    private Handler mHandler = new Handler();
+    //----------------------------------------------------------------------------------------------
+
+    private SeekBar songProgressBar; //Seek Bar
+    private MediaPlayer mp; //Media Player
+    private Handler mHandler = new Handler(); //Handler to update UI timer, progress bar etc.
     private Utilities utils;
     private int seekForwardTime = 5000; // 5000 milliseconds
     private int seekBackwardTime = 5000; // 5000 milliseconds
@@ -56,16 +58,15 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     private boolean isShuffle = false;
     private boolean isRepeat = false;
     private ArrayList<Song> songsList = new ArrayList<Song>();
+
     // FILE
     private SendToWear STW ;
     private MessageReceiveManager MRM;
-
     private DataReceiveManager DM_GEN;
-
     private DataReceiveManager DM_Activity;
 
 
-    private DataReceiveManager DM_SONGLIST ;
+    private DataReceiveManager DM_SONGLIST;
     private Calendar cc = Calendar.getInstance();
     private int year=cc.get(Calendar.YEAR);
     private int month=cc.get(Calendar.MONTH);
@@ -85,19 +86,18 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         btnBackward = (ImageButton) findViewById(R.id.btnBackward);
         btnNext = (ImageButton) findViewById(R.id.btnNext);
         btnPrevious = (ImageButton) findViewById(R.id.btnPrevious);
-        btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
         btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
         btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
         songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
         songTitleLabel = (TextView) findViewById(R.id.songTitle);
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
+        //btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
 
         //------------------------------------------------------------------------------------------
 
 
-
-        // Mediaplayer
+        // Media player
         mp = new MediaPlayer();
         utils = new Utilities();
 
@@ -362,7 +362,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         updateProgressBar();
     }
 
-//------------------- onCompletion  השיר בסתיים ----------------------------------------------------
+//------------------- onCompletion  השיר הסתיים ----------------------------------------------------
     /**
      * In the song completeness, checks for both isRepeat and isShuffle ,  and works accordingly
      * @param mp
@@ -391,7 +391,6 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         }
     }
 
-
     //------------------ Playlist Activity ---------------------------------------------------------
     /**
      * Button Go to song list
@@ -418,7 +417,6 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     }
 
     //-------------------------- onNewIntent -------------------------------------------------------
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

@@ -1,74 +1,72 @@
 package metaextract.nkm.com.myplayer;
 
 /**
- * Created by Most601 on 27/11/2017.
+ *The object SeekBar named songProgressBar using this class.
  */
-
 public class Utilities {
-
     /**
-     * Function to convert milliseconds time to
-     * Timer Format
-     * Hours:Minutes:Seconds
+     * Function to convert milliseconds time to Timer Format Hours:Minutes:Seconds.
+     * Using this function to display the duration of the song and the current position in milliseconds.
+     * @param milliseconds - time in milliseconds.
      * */
     public String milliSecondsToTimer(long milliseconds){
-        String finalTimerString = "";
-        String secondsString = "";
+        String finalTimerString = ""; //the final string that represents the format Hours:Minutes:Seconds.
+        String secondsString; //string that represents the seconds.
 
-        // Convert total duration into time
+        //Convert total duration into time.
         int hours = (int)( milliseconds / (1000*60*60));
         int minutes = (int)(milliseconds % (1000*60*60)) / (1000*60);
         int seconds = (int) ((milliseconds % (1000*60*60)) % (1000*60) / 1000);
-        // Add hours if there
+
+        //Add hours if there.
         if(hours > 0){
             finalTimerString = hours + ":";
         }
 
-        // Prepending 0 to seconds if it is one digit
+        //Prepending 0 to seconds if it is one digit.
         if(seconds < 10){
             secondsString = "0" + seconds;
         }else{
-            secondsString = "" + seconds;}
-
+            secondsString = "" + seconds;
+        }
         finalTimerString = finalTimerString + minutes + ":" + secondsString;
 
-        // return timer string
+        //Return timer string.
         return finalTimerString;
     }
 
     /**
-     * Function to get Progress percentage
-     * @param currentDuration
-     * @param totalDuration
+     * Function to Calculate progress percentage (from milliseconds to percentage - integer).
+     * The songProgressBar using the percentage value to move himself to the right position in the SeekBar.
+     * @param currentDuration - the current time in the song (milliseconds).
+     * @param totalDuration - the song length (milliseconds).
      * */
     public int getProgressPercentage(long currentDuration, long totalDuration){
-        Double percentage = (double) 0;
+        Double percentage;
 
+        //Convert to seconds.
         long currentSeconds = (int) (currentDuration / 1000);
         long totalSeconds = (int) (totalDuration / 1000);
 
-        // calculating percentage
+        //Calculating percentage.
         percentage =(((double)currentSeconds)/totalSeconds)*100;
 
-        // return percentage
+        //Return percentage as integer.
         return percentage.intValue();
     }
 
     /**
-     * Function to change progress to timer
-     * @param progress -
-     * @param totalDuration
-     * returns current duration in milliseconds
+     * Function to convert from progress percentage to milliseconds.
+     * The function onStopTrackingTouch using this function to update the media player to the right position in the SeekBar.
+     * @param progress - the percentage progress of songProgressBar.
+     * @param totalDuration - duration of the song.
      * */
     public int progressToTimer(int progress, int totalDuration) {
-        int currentDuration = 0;
-        totalDuration = (int) (totalDuration / 1000);
+        int currentDuration;
+        totalDuration = (totalDuration / 1000);
         currentDuration = (int) ((((double)progress) / 100) * totalDuration);
 
-        // return current duration in milliseconds
+        //Return current duration in milliseconds
         return currentDuration * 1000;
     }
-
-
-
 }

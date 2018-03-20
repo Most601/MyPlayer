@@ -34,7 +34,8 @@ public class MainActivity extends WearableActivity{// implements GoogleApiClient
 
 
     private SendToPhone STP;
-    private MessageReceiverService MRS ;
+    private ManageOfSensors manageOfSensors;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +43,9 @@ public class MainActivity extends WearableActivity{// implements GoogleApiClient
         setContentView(R.layout.activity_main);
 
 
-        MRS = new MessageReceiverService(this);
-        STP = SendToPhone.getInstance(this);
 
+        STP = SendToPhone.getInstance(this);
+        manageOfSensors = ManageOfSensors.getInstance(this);
 
 
 

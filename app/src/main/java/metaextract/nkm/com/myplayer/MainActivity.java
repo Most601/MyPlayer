@@ -50,21 +50,26 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     // Handler to update UI timer, progress bar etc,.
     private Handler mHandler = new Handler();
     private Utilities utils;
+    private int progress ;
     private int seekForwardTime = 5000; // 5000 milliseconds
     private int seekBackwardTime = 5000; // 5000 milliseconds
     private int currentSongIndex = 0;
+    private String LastSongName = "...";
+    private String currentSongName = "";
+    private String songTotalDuration = "";
+    private String songCurrentDuration = "00:00";
     private boolean isShuffle = false;
     private boolean isRepeat = false;
     private ArrayList<Song> songsList = new ArrayList<Song>();
     // FILE
     private SendToWear STW ;
     private MessageReceiveManager MRM;
-
-    private DataReceiveManager DM_GEN;
-
+    //------------------//
+    private DataReceiveManager DM_SENSOR;
+    private DataReceiveManager DM_ACC;
+    //------------------//
     private DataReceiveManager DM_Activity;
-
-
+    //------------------//
     private DataReceiveManager DM_SONGLIST ;
     private Calendar cc = Calendar.getInstance();
     private int year=cc.get(Calendar.YEAR);
@@ -72,6 +77,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     private int mDay = cc.get(Calendar.DAY_OF_MONTH);
     private int mHour = cc.get(Calendar.HOUR_OF_DAY);
     private int mMinute = cc.get(Calendar.MINUTE);
+    //------------------//
 
 
 
@@ -109,8 +115,8 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         STW = SendToWear.getInstance(this);
         MRM = MessageReceiveManager.getInstance(this);
 
-        DM_GEN = DataReceiveManager.getInstance(this);
-
+        DM_SENSOR = DataReceiveManager.getInstance(this);
+        DM_ACC = DataReceiveManager.getInstanceACC(this);
         //------------------------- permission -----------------------------------------------------
 
         //------- Checking for permission ------
@@ -155,7 +161,11 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             }
         }
 
-        //------------------- SONGLIST ---------------------------------------------
+        currentSongName = songsList.get(0).getTitle();
+
+
+        //------------------- SONGLIST FILE --------------------------------------------------------
+
         year=cc.get(Calendar.YEAR);
         month=cc.get(Calendar.MONTH);
         mDay = cc.get(Calendar.DAY_OF_MONTH);
@@ -165,9 +175,21 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
                 String.format("time=%02d-%02d", mHour , mMinute )+" SONGLIST");
         DM_SONGLIST.addSongList(songsList);
 
+
+        //------------------- SONGLIST FILE --------------------------------------------------------
+
+        DM_Activity = new DataReceiveManager(this ,"Activity" );
+        DM_Activity.ActivityFILE(
+                currentSongName,
+                currentSongIndex ,
+                songTotalDuration ,
+                LastSongName,
+                progress+"%",
+                "APP START");
+
     }
 
-    //---------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
 
     //----- Getting approval for permission ------
     /**
@@ -277,7 +299,12 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
      public void playSong(int songIndex){
         // Play song
         try {
+            STW.sendMessage("Act" , "start");
             Uri uri= Uri.parse(songsList.get(songIndex).getdata());
+            LastSongName = currentSongName;
+            currentSongName = songsList.get(songIndex).getTitle();
+            DM_ACC.setSongName(currentSongName+"_ACC");
+            DM_SENSOR.setSongName(currentSongName);
             mp.reset();
             mp.setDataSource(this,uri);
             mp.prepare();
@@ -327,11 +354,13 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             }
 ////////////////////////////////////////////////////////////////////////////////////
             // Displaying Total Duration time
-            songTotalDurationLabel.setText(""+utils.milliSecondsToTimer(totalDuration));
+            songTotalDuration = utils.milliSecondsToTimer(totalDuration);
+                    songTotalDurationLabel.setText(" / "+songTotalDuration );
             // Displaying time completed playing
-            songCurrentDurationLabel.setText(""+utils.milliSecondsToTimer(currentDuration));
+            songCurrentDuration = utils.milliSecondsToTimer(currentDuration);
+            songCurrentDurationLabel.setText(" "+songCurrentDuration);
             // Updating progress bar
-            int progress = (int)(utils.getProgressPercentage(currentDuration, totalDuration));
+            progress = (int)(utils.getProgressPercentage(currentDuration, totalDuration));
             //Log.d("Progress", ""+progress);
             songProgressBar.setProgress(progress);
 
@@ -354,12 +383,20 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         mHandler.removeCallbacks(mUpdateTimeTask);
         int totalDuration = mp.getDuration();
         int currentPosition = utils.progressToTimer(seekBar.getProgress(), totalDuration);
+        DM_Activity.ActivityFILE(
+                currentSongName,
+                currentSongIndex ,
+                songTotalDuration ,
+                LastSongName ,
+                "From : "+progress+"% | TO : "+seekBar.getProgress()+"%",
+                "progress BAR");
 
         // forward or backward to certain seconds
         mp.seekTo(currentPosition);
 
         // update timer progress again
         updateProgressBar();
+
     }
 
 //------------------- onCompletion  השיר בסתיים ----------------------------------------------------
@@ -413,6 +450,13 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             currentSongIndex = data.getExtras().getInt("songTitle");
             // play selected song
             playSong(currentSongIndex);
+            DM_Activity.ActivityFILE(
+                    currentSongName,
+                    currentSongIndex ,
+                    songTotalDuration ,
+                    LastSongName,
+                    progress+"%",
+                    "fROM LIST");
         }
 
     }
@@ -452,11 +496,20 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             // backward to starting position
             mp.seekTo(0);
         }
+        DM_Activity.ActivityFILE(
+                currentSongName,
+                currentSongIndex ,
+                songTotalDuration ,
+                LastSongName ,
+                progress+"%",
+                "backward");
+
     }
 
     //------------------- Previous -------------------------------------------------------
 
     public void Previous(View view) {
+
         if(currentSongIndex > 0){
             playSong(currentSongIndex - 1);
             currentSongIndex = currentSongIndex - 1;
@@ -465,6 +518,14 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             playSong(songsList.size() - 1);
             currentSongIndex = songsList.size() - 1;
         }
+        DM_Activity.ActivityFILE(
+                currentSongName,
+                currentSongIndex ,
+                songTotalDuration ,
+                LastSongName,
+                progress+"%",
+                "Previous");
+
     }
 
     //------------------- play -------------------------------------------------------
@@ -476,6 +537,13 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
                 mp.pause();
                 //----------------
                 STW.sendMessage("Act" , "stop");
+                DM_Activity.ActivityFILE(
+                        currentSongName,
+                        currentSongIndex ,
+                        songTotalDuration ,
+                        LastSongName,
+                        progress+"%",
+                        "stop");
                 //----------------
                 // Changing button image to play button
                 btnPlay.setImageResource(R.drawable.img_btn_play);
@@ -486,6 +554,13 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
                 mp.start();
                 //----------------
                 STW.sendMessage("Act" , "start");
+                DM_Activity.ActivityFILE(
+                        currentSongName,
+                        currentSongIndex ,
+                        songTotalDuration ,
+                        LastSongName,
+                        progress+"%",
+                        "play");
                 //----------------
                 // Changing button image to pause button
                 btnPlay.setImageResource(R.drawable.img_btn_pause);
@@ -507,12 +582,20 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             // forward to end position
             mp.seekTo(mp.getDuration());
         }
+        DM_Activity.ActivityFILE(
+                currentSongName,
+                currentSongIndex ,
+                songTotalDuration ,
+                LastSongName,
+                progress+"%",
+                "Forward");
 
     }
 
     //------------------- Next -------------------------------------------------------
 
     public void Next(View view) {
+
         // check if next song is there or not
         if(currentSongIndex < (songsList.size() - 1)){
             playSong(currentSongIndex + 1);
@@ -522,6 +605,14 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             playSong(0);
             currentSongIndex = 0;
         }
+        DM_Activity.ActivityFILE(
+                currentSongName,
+                currentSongIndex ,
+                songTotalDuration ,
+                LastSongName,
+                progress+"%",
+                "Next");
+
     }
 
     //----------------- Repeat --------------------------------------------------------
@@ -530,6 +621,13 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         if(isRepeat){
             isRepeat = false;
             Toast.makeText(getApplicationContext(), "Repeat is OFF", Toast.LENGTH_SHORT).show();
+            DM_Activity.ActivityFILE(
+                    currentSongName,
+                    currentSongIndex ,
+                    songTotalDuration ,
+                    LastSongName,
+                    progress+"%",
+                    "Repeat OFF");
             btnRepeat.setImageResource(R.drawable.img_btn_repeat);
         }else{
             // make repeat to true
@@ -537,7 +635,13 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             Toast.makeText(getApplicationContext(), "Repeat is ON", Toast.LENGTH_SHORT).show();
             // make shuffle to false
            /////    isShuffle = false;
-
+            DM_Activity.ActivityFILE(
+                    currentSongName,
+                    currentSongIndex ,
+                    songTotalDuration ,
+                    LastSongName,
+                    progress+"%",
+                    "Repeat ON");
             btnRepeat.setImageResource(R.drawable.img_btn_repeat_pressed);
            /////    btnShuffle.setImageResource(R.drawable.btn_shuffle);
         }
@@ -549,11 +653,25 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         if(isShuffle){
             isShuffle = false;
             Toast.makeText(getApplicationContext(), "Shuffle is OFF", Toast.LENGTH_SHORT).show();
+            DM_Activity.ActivityFILE(
+                    currentSongName,
+                    currentSongIndex ,
+                    songTotalDuration ,
+                    LastSongName,
+                    progress+"%",
+                    "Shuffle OFF");
             btnShuffle.setImageResource(R.drawable.img_btn_shuffle);
         }else{
             // make repeat to true
             isShuffle= true;
             Toast.makeText(getApplicationContext(), "Shuffle is ON", Toast.LENGTH_SHORT).show();
+            DM_Activity.ActivityFILE(
+                    currentSongName,
+                    currentSongIndex ,
+                    songTotalDuration ,
+                    LastSongName,
+                    progress+"%",
+                    "Shuffle ON");
             // make shuffle to false
              ////   isRepeat = false;
             btnShuffle.setImageResource(R.drawable.img_btn_shuffle_pressed);
@@ -579,6 +697,13 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     public void onDestroy(){
         super.onDestroy();
         mp.release();
+        DM_Activity.ActivityFILE(
+                currentSongName,
+                currentSongIndex ,
+                songTotalDuration ,
+                LastSongName,
+                progress+"%",
+                "Destroy");
        }
 
     //---------------- Info button ---------------------------------------------------------

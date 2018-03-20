@@ -6,6 +6,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -16,30 +18,28 @@ import static android.content.Context.SENSOR_SERVICE;
 
 public class Accelerometer implements SensorEventListener{
 
-    private ArrayList<Double> acc = new ArrayList<Double>();
-    private double x, y, z;
+    private static final String TAG = "Accelerometer";
+
     private Sensor mySensor;
     private SensorManager SM;
     private SendToPhone STP ;
 
         public Accelerometer(Context context) {
             SM = (SensorManager) context.getSystemService(SENSOR_SERVICE);
-            // Accelerometer Sensor
             mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
             STP = SendToPhone.getInstance(context);
         }
 
         @Override
         public void onSensorChanged(SensorEvent event) {
-            x = event.values[0];
-            z = event.values[1];
-            y = event.values[2];
             //print on datashow
-            DataShow.print("AC",event);
-            //////////////////////////
-//            STP.sendSensorData(event.sensor.getStringType() , event.sensor.getType(), event.accuracy, event.timestamp, event.values);
-            //////////////////////////
+            try {
+                DataShow.print("AC",event);
+            }catch (Exception e){
+            }
+
+            STP.sendSensorData(event.sensor.getStringType() , event.sensor.getType(), event.accuracy, event.timestamp, event.values);
+
         }
 
         @Override
@@ -48,7 +48,13 @@ public class Accelerometer implements SensorEventListener{
 
         public void startMeasurement(){
             // Register sensor Listener
-            SM.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);
+            if (SM != null) {
+                if (mySensor != null) {
+                    SM.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);
+                } else {
+                    Log.w(TAG, "No Accelerometer found");
+                }
+            }
         }
 
         public void stopMeasurement() {
@@ -58,12 +64,6 @@ public class Accelerometer implements SensorEventListener{
             }
         }
 
-        public ArrayList<Double> getAccelerometerData (){
-            acc.add(x);
-            acc.add(y);
-            acc.add(z);
-            return acc;
-        }
     }
 
 

@@ -20,7 +20,7 @@ public class FileManager {
 
     public String idan;
     private Context m_context;
-    File file ;
+    private File file ;
 
 
     public FileManager(Context context) {
@@ -55,13 +55,6 @@ public class FileManager {
 
     //------------ Aviv CSV----------------------------
 
-    public boolean deleteFile() {
-        return file.delete();
-    }
-
-    public void writeInternalFileCSV(String fileName, String content, boolean append) throws IOException {
-    }
-
     public void writeInternalFileCsvNewLINE( String content, boolean   append){
         try {
             FileWriter _file;
@@ -90,7 +83,12 @@ public class FileManager {
     //---------------------------end Aviv-----------------------------
 
 
+    public boolean deleteFile() {
+        return file.delete();
+    }
 
+    public void writeInternalFileCSV(String fileName, String content, boolean append) throws IOException {
+    }
 
 
 
@@ -123,12 +121,12 @@ public class FileManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //---------------------------------------------
+        //--------------------
 
        // writeInternalFile(fileName, content.getBytes(), append);
     }
 
-    //----------------- writeInternalFile byte[] -----------
+    //------- writeInternalFile byte[] ---------
 
     public void writeInternalFile(String fileName, byte[] content, boolean append) throws IOException {
         // Context.MODE_PRIVATE = 0, therefore, we don't need to explicitly specify it.
@@ -141,7 +139,7 @@ public class FileManager {
         outputStream.close();
     }
 
-    //---------------------------------------------------------------------------------------------
+    //----------------- read Internal File ---------------------------------------------------------
 
     public String readInternalFile(String fileName) throws IOException {
         String content = "";
@@ -175,18 +173,18 @@ public class FileManager {
     }
 
 
-    //--------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
 
     public boolean deleteInternalFile(String fileName) {
         return m_context.deleteFile(fileName);
     }
 
-    String[] getInternalFileList() {
+    public String[] getInternalFileList() {
         return m_context.fileList();
     }
 
 
-    //------- We check to see if there is External Storage. ---------------------------------------
+    //------- We check to see if there is External Storage. ----------------------------------------
 
     /*
        is External Storage Writable {
@@ -211,7 +209,7 @@ public class FileManager {
         return false;
     }
 
-    //------------------------------------------------------------------
+    //-------------------------------------
 
     // Public == user-related.
     public static File getPublicPicturesDirectory(String picturesFolder) {
@@ -233,7 +231,24 @@ public class FileManager {
 //        return file;
 //    }
 
+    //----------------------------------------------------------------------------------------------
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

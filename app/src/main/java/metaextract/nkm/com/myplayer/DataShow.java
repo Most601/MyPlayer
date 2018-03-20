@@ -145,8 +145,8 @@ public class DataShow extends AppCompatActivity {
         PutDataMapRequest dataMap = PutDataMapRequest.create("/sensors/");
         dataMap.getDataMap().putInt("1", eeeee);
         PutDataRequest putDataRequest = dataMap.asPutDataRequest();
-        STW.send(putDataRequest);
-        //   x.setText("sending data");
+        // STW.send(putDataRequest);
+        // x.setText("sending data");
     }
 
 

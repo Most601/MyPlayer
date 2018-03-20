@@ -18,6 +18,9 @@ import static android.content.Context.SENSOR_SERVICE;
 
 public class HeartrRate implements SensorEventListener {
 
+    private static final String TAG = "HeartrRate";
+
+
     private String msg;
     private SensorManager sMgr;
     private Sensor mHeartrateSensor = null;
@@ -35,26 +38,22 @@ public class HeartrRate implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
             msg = " Value sensor: " + (int)event.values[0];
-            //////////////////////////
             STP.sendSensorData(event.sensor.getStringType() , event.sensor.getType(), event.accuracy, event.timestamp, event.values);
-            //////////////////////////
         }
-        DataShow.print("H",event);
+        try {
+            DataShow.print("H", event);
+        }catch (Exception e){
+
+        }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        System.out.println("onAccuracyChanged - accuracy: " + accuracy);
-    }
-
-    public String getH() {
-        return msg;
     }
 
     public void startMeasurement(){
-        sMgr.registerListener(this, mHeartrateSensor,SensorManager.SENSOR_DELAY_NORMAL);
-
         if (mHeartrateSensor != null) {
+            sMgr.registerListener(this, mHeartrateSensor,SensorManager.SENSOR_DELAY_NORMAL);
             final int measurementDuration   = 30;   // Seconds
             final int measurementBreak      = 15;    // Seconds
             mScheduler = Executors.newScheduledThreadPool(1);
@@ -80,7 +79,7 @@ public class HeartrRate implements SensorEventListener {
                     }, 3, measurementDuration + measurementBreak, TimeUnit.SECONDS);
 
         } else {
-            Log.d("", "No Heartrate Sensor found");
+            Log.d(TAG, "No Heartrate Sensor found");
         }
 
 

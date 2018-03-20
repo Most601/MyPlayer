@@ -133,6 +133,25 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
                 }
             });
             //----------------------------------------------------
+            currentSongName = songsList.get(0).getTitle();
+            //------------------- SONGLIST FILE ----------------------------------------------------
+            year=cc.get(Calendar.YEAR);
+            month=cc.get(Calendar.MONTH);
+            mDay = cc.get(Calendar.DAY_OF_MONTH);
+            mHour = cc.get(Calendar.HOUR_OF_DAY);
+            mMinute = cc.get(Calendar.MINUTE);
+            DM_SONGLIST = new  DataReceiveManager(this ,
+                    String.format("time=%02d-%02d", mHour , mMinute )+" SONGLIST");
+            DM_SONGLIST.addSongList(songsList);
+            //------------------- Activity FILE ----------------------------------------------------
+            DM_Activity = new DataReceiveManager(this ,"Activity" );
+            DM_Activity.ActivityFILE(
+                    currentSongName,
+                    currentSongIndex ,
+                    songTotalDuration ,
+                    LastSongName,
+                    progress+"%",
+                    "APP START");
         }
 
         //------- Checks whether there was a request for permission ------
@@ -161,31 +180,6 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             }
         }
 
-        currentSongName = songsList.get(0).getTitle();
-
-
-        //------------------- SONGLIST FILE --------------------------------------------------------
-
-        year=cc.get(Calendar.YEAR);
-        month=cc.get(Calendar.MONTH);
-        mDay = cc.get(Calendar.DAY_OF_MONTH);
-        mHour = cc.get(Calendar.HOUR_OF_DAY);
-        mMinute = cc.get(Calendar.MINUTE);
-        DM_SONGLIST = new  DataReceiveManager(this ,
-                String.format("time=%02d-%02d", mHour , mMinute )+" SONGLIST");
-        DM_SONGLIST.addSongList(songsList);
-
-
-        //------------------- SONGLIST FILE --------------------------------------------------------
-
-        DM_Activity = new DataReceiveManager(this ,"Activity" );
-        DM_Activity.ActivityFILE(
-                currentSongName,
-                currentSongIndex ,
-                songTotalDuration ,
-                LastSongName,
-                progress+"%",
-                "APP START");
 
     }
 
@@ -217,6 +211,31 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
                                 return a.getTitle().compareTo(b.getTitle());
                             }
                     });
+                    //----------------------------------------------------
+                    currentSongName = songsList.get(0).getTitle();
+                    //------------------- SONGLIST FILE --------------------------------------------------------
+
+                    year=cc.get(Calendar.YEAR);
+                    month=cc.get(Calendar.MONTH);
+                    mDay = cc.get(Calendar.DAY_OF_MONTH);
+                    mHour = cc.get(Calendar.HOUR_OF_DAY);
+                    mMinute = cc.get(Calendar.MINUTE);
+                    DM_SONGLIST = new  DataReceiveManager(this ,
+                            String.format("time=%02d-%02d", mHour , mMinute )+" SONGLIST");
+                    DM_SONGLIST.addSongList(songsList);
+
+
+                    //------------------- Activity FILE --------------------------------------------------------
+
+                    DM_Activity = new DataReceiveManager(this ,"Activity" );
+                    DM_Activity.ActivityFILE(
+                            currentSongName,
+                            currentSongIndex ,
+                            songTotalDuration ,
+                            LastSongName,
+                            progress+"%",
+                            "APP START");
+
                     //----------------------------------------------------
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.

@@ -30,10 +30,10 @@ public class SensorReceiverService extends WearableListenerService  {
     private static final String TAG1 = "GETING DATA";
     private static final String TAG2 = "GETING MESSAGE";
 
-    public static final String ACCURACY = "accuracy";
-    public static final String TIMESTAMP = "timestamp";
-    public static final String VALUES = "values";
-    public static final String TYPE = "type";
+    private static final String ACCURACY = "accuracy";
+    private static final String TIMESTAMP = "timestamp";
+    private static final String VALUES = "values";
+    private static final String TYPE = "type";
 
     private DataReceiveManager DM_ACC = DataReceiveManager.getInstanceACC(this);
     private DataReceiveManager DM_Sensor = DataReceiveManager.getInstance(this);

@@ -27,46 +27,56 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+public class MainActivity extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
 
-
-
-public class MainActivity extends Activity  implements   OnCompletionListener, SeekBar.OnSeekBarChangeListener {
-
-
+    //--- The buttons of the player: forward, backward, next, previous, play, repeat and shuffle.---
     private ImageButton btnForward;
     private ImageButton btnBackward;
     private ImageButton btnNext;
     private ImageButton btnPrevious;
-    private ImageButton btnPlaylist;
     private ImageButton btnPlay;
     private ImageButton btnRepeat;
     private ImageButton btnShuffle;
-    private SeekBar songProgressBar;
+    //----------------------------------------------------------------------------------------------
+
+    //--- Titles: song name, current duration of the song and the duration of the song.-------------
     private TextView songTitleLabel;
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
-    // Media Player
-    private  MediaPlayer mp;
-    // Handler to update UI timer, progress bar etc,.
-    private Handler mHandler = new Handler();
-    private Utilities utils;
-    private int progress ;
-    private int seekForwardTime = 5000; // 5000 milliseconds
-    private int seekBackwardTime = 5000; // 5000 milliseconds
-    private int currentSongIndex = 0;
-    private String LastSongName = "...";
-    private String currentSongName = "";
-    private String songTotalDuration = "";
-    private String songCurrentDuration = "00:00";
-    private boolean isShuffle = false;
-    private boolean isRepeat = false;
-    private ArrayList<Song> songsList = new ArrayList<Song>();
+    //----------------------------------------------------------------------------------------------
+
+    private SeekBar songProgressBar; //The seekbar.
+    private MediaPlayer mp; //The media player.
+    private Handler mHandler = new Handler(); //Handler to update UI timer, progress bar.
+    private Utilities utils; //The object SeekBar named songProgressBar using the Utilities class.
+
+    //--- The data we write to the file: -----------------------------------------------------------
+    private int progress; //The current position in the SeekBar (percentage).
+    private int currentSongIndex = 0; //The id song.
+    private String LastSongName = "..."; //The last song that has been played.
+    private String currentSongName = ""; //The song playing now.
+    private String songTotalDuration = ""; //The duration of the song.
+    private String songCurrentDuration = "00:00"; //The current duration of the song.
+    //----------------------------------------------------------------------------------------------
+
+    //--- The time to move for the forward and backward buttons ------------------------------------
+    private final int seekForwardTime = 5000; // 5000 milliseconds
+    private final int seekBackwardTime = 5000; // 5000 milliseconds
+    //----------------------------------------------------------------------------------------------
+
+    private boolean isShuffle = false; //If true the songs will be shuffled.
+    private boolean isRepeat = false; //If true the song will be repeated.
+
+    private ArrayList<Song> songsList = new ArrayList<Song>(); //
+
     // FILE
     private SendToWear STW ;
     private MessageReceiveManager MRM;
+
     //------------------//
     private DataReceiveManager DM_SENSOR;
     private DataReceiveManager DM_ACC;
+
     //------------------//
     private DataReceiveManager DM_Activity;
     //------------------//
@@ -79,8 +89,6 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
     private int mMinute = cc.get(Calendar.MINUTE);
     //------------------//
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +99,6 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
         btnBackward = (ImageButton) findViewById(R.id.btnBackward);
         btnNext = (ImageButton) findViewById(R.id.btnNext);
         btnPrevious = (ImageButton) findViewById(R.id.btnPrevious);
-        btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
         btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
         btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
         songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
@@ -379,7 +386,7 @@ public class MainActivity extends Activity  implements   OnCompletionListener, S
             songCurrentDuration = utils.milliSecondsToTimer(currentDuration);
             songCurrentDurationLabel.setText(" "+songCurrentDuration);
             // Updating progress bar
-            progress = (int)(utils.getProgressPercentage(currentDuration, totalDuration));
+            progress = (utils.getProgressPercentage(currentDuration, totalDuration));
             //Log.d("Progress", ""+progress);
             songProgressBar.setProgress(progress);
 

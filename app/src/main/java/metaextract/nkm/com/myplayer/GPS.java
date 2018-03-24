@@ -72,8 +72,8 @@ public class GPS implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        float lon = (float) location.getLongitude();/// * 1E6);
-        float lat = (float) (location.getLatitude());// * 1E6);
+        float lon = (float)(location.getLongitude());/// * 1E6);
+        float lat = (float)(location.getLatitude());// * 1E6);
         latitude = lat + "";
         longitude = lon + "";
         if (lat != 0 && lon != 0 ){

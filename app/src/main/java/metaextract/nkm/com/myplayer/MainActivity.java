@@ -140,7 +140,9 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
                 }
             });
             //----------------------------------------------------
-            currentSongName = songsList.get(0).getTitle();
+            if(songsList.size() > 0) {
+                currentSongName = songsList.get(0).getTitle();
+            }
             //------------------- SONGLIST FILE ----------------------------------------------------
             year=cc.get(Calendar.YEAR);
             month=cc.get(Calendar.MONTH);
@@ -219,7 +221,9 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
                             }
                     });
                     //----------------------------------------------------
-                    currentSongName = songsList.get(0).getTitle();
+                    if(songsList.size() > 0) {
+                        currentSongName = songsList.get(0).getTitle();
+                    }
                     //------------------- SONGLIST FILE --------------------------------------------------------
 
                     year=cc.get(Calendar.YEAR);

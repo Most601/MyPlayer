@@ -25,10 +25,11 @@ public class GPS implements LocationListener {
     private Criteria criteria;
     private String provider;
 
+    private static DataReceiveManager DM;
 
     public GPS(Context context) {
 
-
+        DM = DataReceiveManager.getInstance(context);
 
         locationManager = (LocationManager) context
                 .getSystemService(Context.LOCATION_SERVICE);
@@ -71,10 +72,16 @@ public class GPS implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        double lon = (double) (location.getLongitude());/// * 1E6);
-        double lat = (double) (location.getLatitude());// * 1E6);
+        float lon = (float) location.getLongitude();/// * 1E6);
+        float lat = (float) (location.getLatitude());// * 1E6);
         latitude = lat + "";
         longitude = lon + "";
+        if (lat != 0 && lon != 0 ){
+            float gpsArr[] = {lon ,lat};
+            DM.addSensorData_s("GPS" , 0,0,0,gpsArr);
+            stopGPS();
+        }
+
     }
 
     @Override
@@ -91,4 +98,9 @@ public class GPS implements LocationListener {
     public void onProviderDisabled(String provider) {
 
     }
+
+    public void stopGPS (){
+        locationManager.removeUpdates(this);
+    }
+
 }

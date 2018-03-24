@@ -42,13 +42,13 @@ public class ManageOfSensors {
 
     public void StartAllSensors (){
         SC.startMeasurement();
-        AC.startMeasurement();
+       // AC.startMeasurement();
         H.startMeasurement();
     }
 
     public void StopAllSensors (){
         SC.stopMeasurement();
-        AC.stopMeasurement();
+        //AC.stopMeasurement();
         H.stopMeasurement();
     }
 
@@ -58,7 +58,6 @@ public class ManageOfSensors {
     public void StartStepCounter (){
         SC.startMeasurement();
     }
-
     public void StopStepCounter (){
         SC.stopMeasurement();
     }
@@ -69,7 +68,6 @@ public class ManageOfSensors {
     public void StartAccelerometer (){
         AC.startMeasurement();
     }
-
     public void StopAccelerometer (){
         AC.stopMeasurement();
     }
@@ -81,8 +79,7 @@ public class ManageOfSensors {
     public void StartHeartrRate() {
         H.startMeasurement();
     }
-    public void StopHeartrRate() {
-        H.stopMeasurement();
+    public void StopHeartrRate() {H.stopMeasurement();
 
     }
 

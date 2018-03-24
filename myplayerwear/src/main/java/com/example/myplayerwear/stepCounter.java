@@ -15,6 +15,9 @@ import static android.content.Context.SENSOR_SERVICE;
 
 public class stepCounter implements SensorEventListener {
 
+    private static final String TAG = "stepCounter";
+
+
     private SensorManager sMgr;
     private Sensor stepCounterSensor;
     private String msg;
@@ -34,7 +37,10 @@ public class stepCounter implements SensorEventListener {
             //////////////////////////
             STP.sendSensorData(event.sensor.getStringType() , event.sensor.getType(), event.accuracy, event.timestamp, event.values);
             //////////////////////////
-            DataShow.print("SC" , event);
+            try {
+                DataShow.print("SC" , event);
+            }catch (Exception e){
+            }
         }
 
     }
@@ -47,7 +53,7 @@ public class stepCounter implements SensorEventListener {
         if (stepCounterSensor != null) {
             sMgr.registerListener(this, stepCounterSensor, SensorManager.SENSOR_DELAY_NORMAL);
         } else {
-            Log.d("T0AG", "No Step Counter Sensor found");
+            Log.d(TAG, "No Step Counter Sensor found");
         }
     }
 

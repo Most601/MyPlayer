@@ -19,15 +19,9 @@ public class MessageReceiverService extends WearableListenerService {
 
     private static final String TAG1 = "GETING DATA";
     private static final String TAG2 = "GETING MESSAGE";
+    private boolean playing = false;
+    private ManageOfSensors manageOfSensors = ManageOfSensors.getInstance(this);
 
-    private ManageOfSensors manageOfSensors ;
-
-    public MessageReceiverService(){
-    }
-
-    public MessageReceiverService(Context Context){
-        manageOfSensors = ManageOfSensors.getInstance(Context);
-    }
 
 //--------------------------------------------------------------------
 
@@ -63,18 +57,20 @@ public class MessageReceiverService extends WearableListenerService {
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-
-
-
-        Log.e(TAG2, "Received Path: " + messageEvent.getPath());
-        Log.d(TAG2, "Received message: " + new String(messageEvent.getData()));
-//        manageOfSensors.StartAllSensors();
-//        if (messageEvent.getPath().equals(ClientPaths.START_MEASUREMENT)) {
-//            startService(new Intent(this, SensorService.class));
-//        }
-//
-//        if (messageEvent.getPath().equals(ClientPaths.STOP_MEASUREMENT)) {
-//            stopService(new Intent(this, SensorService.class));
-//        }
+        if (messageEvent.getPath().equals("Act")) {
+            if ((new String(messageEvent.getData())).equals("start") && !playing) {
+                Log.e(TAG2, "Received Path: " + messageEvent.getPath());
+                Log.d(TAG2, "Received message: " + new String(messageEvent.getData()));
+                playing = true;
+                manageOfSensors.StartAllSensors();
+            }
+            else if ((new String(messageEvent.getData())).equals("stop")){
+                manageOfSensors.StopAllSensors();
+                Log.e(TAG2, "Received Path: " + messageEvent.getPath());
+                Log.d(TAG2, "Received message: " + new String(messageEvent.getData()));
+            }
+        }
     }
+
+
 }

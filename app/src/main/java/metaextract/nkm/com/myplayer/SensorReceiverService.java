@@ -4,6 +4,7 @@ package metaextract.nkm.com.myplayer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +35,8 @@ public class SensorReceiverService extends WearableListenerService  {
     public static final String VALUES = "values";
     public static final String TYPE = "type";
 
-    private DataReceiveManager DM = DataReceiveManager.getInstance(this);
+    private DataReceiveManager DM_ACC = DataReceiveManager.getInstanceACC(this);
+    private DataReceiveManager DM_Sensor = DataReceiveManager.getInstance(this);
     private MessageReceiveManager MRM = MessageReceiveManager.getInstance(this);
 
 //    @Override
@@ -84,9 +86,16 @@ public class SensorReceiverService extends WearableListenerService  {
         int accuracy = dataMap.getInt(ACCURACY);
         long timestamp = dataMap.getLong(TIMESTAMP);
         float[] values = dataMap.getFloatArray(VALUES);
+        if (  Sensor.TYPE_ACCELEROMETER == sensorType ){
+            Log.d(TAG1, "Received sensor ACC data " + sensorType + " = " +SensorTypeString );
+            DM_ACC.addSensorData(SensorTypeString, sensorType, accuracy, timestamp, values);
+        }
+        else {
+            Log.d(TAG1, "Received sensor data " + sensorType + " = " +SensorTypeString );
+            DM_Sensor.addSensorData_s(SensorTypeString, sensorType, accuracy, timestamp, values);
 
-        // Log.d(TAG, "Received sensor data " + sensorType + " = " + Arrays.toString(values));
-        DM.addSensorData(SensorTypeString, sensorType, accuracy, timestamp, values);
+
+        }
     }
 
 //----------------------- Message Received ----------------------------------------------------

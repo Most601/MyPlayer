@@ -34,6 +34,7 @@ public class SendToWear implements GoogleApiClient.ConnectionCallbacks {
 //--------------------------------------------------------------------------------------------------
 
 
+    private static String TAG = "STW";
     private GoogleApiClient mGoogleApiClient ;
     private Node mNode;
 
@@ -69,7 +70,7 @@ public class SendToWear implements GoogleApiClient.ConnectionCallbacks {
                 validateConnection() &&
                 mNode != null
                 ) {
-            Log.d("","Message is going to be sent to watch");
+            Log.d(TAG,"Message is going to be sent to watch");
 
             Wearable.MessageApi.sendMessage(mGoogleApiClient,
                     mNode.getId(),
@@ -79,9 +80,9 @@ public class SendToWear implements GoogleApiClient.ConnectionCallbacks {
                         @Override
                         public void onResult(@NonNull MessageApi.SendMessageResult sendMessageResult) {
                             if(sendMessageResult.getStatus().isSuccess()) {
-                                Log.e("111111111111111","Message Succesfully sent to watch=>"+message);
+                                Log.e(TAG,"Message Succesfully sent to watch=>"+message);
                             } else {
-                                Log.e("000000000000000","Message FAILED TO BE SENT to watch=>"+message);
+                                Log.e(TAG,"Message FAILED TO BE SENT to watch=>"+message);
                             }
                         }
                     });
@@ -97,7 +98,7 @@ public class SendToWear implements GoogleApiClient.ConnectionCallbacks {
                         for (Node node : nodes.getNodes()) {
                             if (node != null && node.isNearby()) {
                                 mNode = node;
-                                Log.d("11111111111111", "Sending data to : " +node.getDisplayName());
+                                Log.d(TAG, "Sending data to : " +node.getDisplayName());
 
                             }
                         }
@@ -107,7 +108,7 @@ public class SendToWear implements GoogleApiClient.ConnectionCallbacks {
                 }) //returns a set of nods.
         ;
     }
-//------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
 
 
 
@@ -142,26 +143,24 @@ public class SendToWear implements GoogleApiClient.ConnectionCallbacks {
                 .setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
                     @Override
                     public void onResult(@NonNull NodeApi.GetConnectedNodesResult nodes) {
-                        //Find the node I want to communicate with.
                         for (Node node : nodes.getNodes()){
                             if(node != null && node.isNearby()){
                                 mNode = node;
-                                Log.d("","Connected to??????????????????????? " + mNode.getDisplayName());
+                                Log.d(TAG,"Connected to -- " + mNode.getDisplayName());
                             }
                         }
                         if(mNode == null){
-                            Log.d("?", "Not connected!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                            Log.d(TAG, "Not connected");
                         }
 
                     }
-                }) //returns a set of nods.
+                })
         ;
 
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
 

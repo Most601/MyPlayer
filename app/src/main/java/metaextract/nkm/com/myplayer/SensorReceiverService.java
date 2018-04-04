@@ -87,8 +87,12 @@ public class SensorReceiverService extends WearableListenerService  {
         long timestamp = dataMap.getLong(TIMESTAMP);
         float[] values = dataMap.getFloatArray(VALUES);
         if (  Sensor.TYPE_ACCELEROMETER == sensorType ){
-            Log.d(TAG1, "Received sensor ACC data " + sensorType + " = " +SensorTypeString );
+            Log.d(TAG1, "Received sensor TYPE_ACCELEROMETER data " + sensorType + " = " +SensorTypeString );
             DM_ACC.addSensorData(SensorTypeString, sensorType, accuracy, timestamp, values);
+        }
+        else if (Sensor.TYPE_GRAVITY == sensorType){
+            Log.d(TAG1, "Received sensor TYPE_GRAVITY data " + sensorType + " = " +SensorTypeString );
+         //   grdgrdgdrg
         }
         else {
             Log.d(TAG1, "Received sensor data " + sensorType + " = " +SensorTypeString );
@@ -105,7 +109,6 @@ public class SensorReceiverService extends WearableListenerService  {
         super.onMessageReceived(messageEvent);
 
         Log.d(TAG2, "geting message. Path : "+ messageEvent.getPath()+ " , Data : "+new String(messageEvent.getData()));
-
         if (messageEvent.getPath().equals("Player")) {
                 MRM.MessageReceive(messageEvent);
                 

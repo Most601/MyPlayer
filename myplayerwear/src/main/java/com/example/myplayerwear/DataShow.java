@@ -17,9 +17,12 @@ public class DataShow extends WearableActivity {
     private GPS gps ;
     private HeartrRate H;
     private stepCounter SC;
-    private static TextView xText ,yText ,zText ,GpsText ,HeartrRateText ,stepCounterText ,timeDateText ,    x ;
+    private static TextView
+            AxText ,AyText ,AzText ,GpsText ,
+            HeartrRateText ,stepCounterText ,timeDateText , sendToPhone ,
+            GxText ,GyText ,GzText ;
 
-    int eeeee = 0 ;
+    int count = 0 ;
     private SendToPhone STP ;
 
     private ManageOfSensors MOS ;
@@ -45,19 +48,28 @@ public class DataShow extends WearableActivity {
         HeartrRateText.setText("Push To Start");
 
 //        AC = new Accelerometer(this);
-        xText = (TextView)findViewById(R.id.textView5);
-        yText = (TextView)findViewById(R.id.textView6);
-        zText = (TextView)findViewById(R.id.textView7);
+        AxText = (TextView)findViewById(R.id.textView5);
+        AyText = (TextView)findViewById(R.id.textView6);
+        AzText = (TextView)findViewById(R.id.textView7);
         StartAccelerometer();
 
 //        SC = new stepCounter(this);
         stepCounterText = (TextView)findViewById(R.id.textView4);
         StartstepCounter();
 
+//        Gravity = new stepCounter(this);
+        GxText = (TextView)findViewById(R.id.textView10);
+        GyText = (TextView)findViewById(R.id.textView11);
+        GzText = (TextView)findViewById(R.id.textView12);
+        StartGravity();
+
+
+
+
         timeDate();
 
         STP = SendToPhone.getInstance(this);
-        x = (TextView)findViewById(R.id.textView9);
+        sendToPhone = (TextView)findViewById(R.id.textView9);
 
 
     }
@@ -95,6 +107,16 @@ public class DataShow extends WearableActivity {
 
     }
 
+//-------------------- Gravity --------------------------
+
+    public void StartGravity (){
+        MOS.StartGravity();
+    }
+
+    public void StopGravity (){
+        MOS.StopGravity();
+    }
+
 //----------------------- Gps -----------------------------
 
     public void GpsButten(View view) {
@@ -121,9 +143,9 @@ public class DataShow extends WearableActivity {
 
     public static void print(String sensor ,SensorEvent event){
         if (sensor == "AC"){
-            xText.setText("X: " + (int)event.values[0]+"   ;   ");
-            yText.setText("Y: " + (int)event.values[1]+"   ;   ");
-            zText.setText("Z: " + (int)event.values[2]);
+            AxText.setText("X: " + (int)event.values[0]+"   ;   ");
+            AyText.setText("Y: " + (int)event.values[1]+"   ;   ");
+            AzText.setText("Z: " + (int)event.values[2]);
         }
         else if (sensor == "H"){
             String msgH = " Value sensor : " + (int)event.values[0];
@@ -132,6 +154,11 @@ public class DataShow extends WearableActivity {
         else if (sensor == "SC"){
             String msgSC = " Value Step Counter : " + (int)event.values[0];
             stepCounterText.setText(msgSC);
+        }
+        else if (sensor == "Gravity"){
+            GxText.setText("X: " + event.values[0]+"   ;   ");
+            GyText.setText("Y: " + event.values[1]+"   ;   ");
+            GzText.setText("Z: " + event.values[2]);
         }
 
     }
@@ -151,15 +178,15 @@ public class DataShow extends WearableActivity {
 
     private void sendMessage(String text) {
         STP.sendMessage("Data_Shoe_Click",text);
-        x.setText("sending Message");
+        sendToPhone.setText("sending Message");
     }
     private void sendData(String text) {
-        eeeee++;
+        count++;
         PutDataMapRequest dataMap = PutDataMapRequest.create("/sensors/");
-        dataMap.getDataMap().putInt("1", eeeee);
+        dataMap.getDataMap().putInt("1", count);
         PutDataRequest putDataRequest = dataMap.asPutDataRequest();
         STP.sendButtonPush(putDataRequest);
-        x.setText("sending data");
+        sendToPhone.setText("sending data");
     }
 
 //--------------------------------------------------------------------------

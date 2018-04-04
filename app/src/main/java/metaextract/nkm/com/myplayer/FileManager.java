@@ -18,7 +18,9 @@ import java.io.InputStreamReader;
 
 public class FileManager {
 
-    public String idan;
+    private static final String TAG = "FileManager";
+
+    public String filePath;
     private Context m_context;
     private File file ;
 
@@ -34,18 +36,20 @@ public class FileManager {
         m_context = context;
         boolean a = isExternalStorageWritable();
         if (a) {
-            Log.d("11111111111111 - ", "11111111111111");
+            Log.d(TAG, "External Storage Writable");
         } else {
-            Log.d("000000000 - ", "000000000000");
+            Log.d(TAG, "External Storage not Writable");
         }
         File outputStream1 = getPublicPicturesDirectory("Log");
-        idan = outputStream1.getPath();
-        file = new File(idan, Filename+".csv"  );
+        filePath = outputStream1.getPath();
+        file = new File(filePath, Filename+".csv"  );
         if(file.length() == 0) {
             try {
                 BufferedWriter bw = new BufferedWriter(new FileWriter(file, append));
                 bw.write(String.valueOf(Filename + "\n"));
                 bw.close();
+                Log.d(TAG, "File created - "+Filename);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -80,15 +84,11 @@ public class FileManager {
         }
     }
 
-    //---------------------------end Aviv-----------------------------
-
-
     public boolean deleteFile() {
         return file.delete();
     }
 
-    public void writeInternalFileCSV(String fileName, String content, boolean append) throws IOException {
-    }
+    //---------------------------end Aviv-----------------------------
 
 
 
@@ -112,8 +112,8 @@ public class FileManager {
 
         //----------- הוספה שלי לעומת המקור ----------
         File outputStream1 = getPublicPicturesDirectory("Log");
-        idan = outputStream1.getPath();
-        File file = new File(idan, fileName+".csv" );
+        filePath = outputStream1.getPath();
+        File file = new File(filePath, fileName+".csv" );
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(file,append));
             bw.write(String.valueOf(content+"\n"));
@@ -131,8 +131,8 @@ public class FileManager {
     public void writeInternalFile(String fileName, byte[] content, boolean append) throws IOException {
         // Context.MODE_PRIVATE = 0, therefore, we don't need to explicitly specify it.
         File outputStream1 = getPublicPicturesDirectory("A");
-        idan = outputStream1.getPath() + "/" + fileName;
-        FileOutputStream outputStream = new FileOutputStream(idan, false);
+        filePath = outputStream1.getPath() + "/" + fileName;
+        FileOutputStream outputStream = new FileOutputStream(filePath, false);
 
 
         outputStream.write(content);
@@ -151,8 +151,8 @@ public class FileManager {
         }
 
         File outputStream1 = getPublicPicturesDirectory("A");
-        idan = outputStream1.getPath() + "/" + fileName;
-        FileInputStream inputStream = new FileInputStream(idan);
+        filePath = outputStream1.getPath() + "/" + fileName;
+        FileInputStream inputStream = new FileInputStream(filePath);
         if (inputStream != null) {
             InputStreamReader streamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(streamReader);
@@ -175,13 +175,18 @@ public class FileManager {
 
     //----------------------------------------------------------------------------------------------
 
-    public boolean deleteInternalFile(String fileName) {
-        return m_context.deleteFile(fileName);
-    }
 
-    public String[] getInternalFileList() {
-        return m_context.fileList();
-    }
+
+
+
+
+
+
+
+
+
+
+
 
 
     //------- We check to see if there is External Storage. ----------------------------------------
@@ -216,7 +221,7 @@ public class FileManager {
         File file = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), picturesFolder);
         if (!file.mkdirs()) {
-            Log.e("SNAPGuidesError", "Directory not created");
+            Log.d(TAG, "Directory not created");
         }
         return file;
     }

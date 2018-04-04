@@ -28,7 +28,7 @@ public class PlayListActivity extends ListActivity {
 
     private ArrayList<Song> songList= new ArrayList<Song>();
     private ListView songView;
-    MediaMetadataRetriever metaRetriver;
+    private MediaMetadataRetriever metaRetriver;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +51,6 @@ public class PlayListActivity extends ListActivity {
                     (android.provider.MediaStore.Audio.Media._ID);
             int titleColumn = musicCursor.getColumnIndex
                     (MediaStore.Audio.Media.DISPLAY_NAME);
-            int artistColumn = musicCursor.getColumnIndex
-                    (android.provider.MediaStore.Audio.Media.ARTIST);
-            int iddata = musicCursor.getColumnIndex
-                    (MediaStore.Audio.Media.DATA);
-            int albumColumn = musicCursor.getColumnIndex
-                    (MediaStore.Audio.Media.ALBUM);
 
             String fullPath = musicCursor.getString(musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA));
 
@@ -64,10 +58,7 @@ public class PlayListActivity extends ListActivity {
             do {
                 long thisId = musicCursor.getLong(idColumn);
                 String thisTitle = musicCursor.getString(titleColumn);
-                String thisArtist = musicCursor.getString(artistColumn);
-                String thiData = musicCursor.getString(iddata);
-                String thiAlbum = musicCursor.getString(albumColumn);
-                this.songList.add( new Song( thisId , thisTitle , thisArtist , thiData , thiAlbum ));
+                this.songList.add( new Song( thisId , thisTitle  ));
 
 
 

@@ -15,11 +15,9 @@ import java.util.ArrayList;
 
 public class SongAdapter extends ArrayAdapter<Song> {
 	
-	//song list and layout
 	private ArrayList<Song> SongList;
 	private LayoutInflater songInf;
 	
-	//constructor
 
 	/**
 	 *

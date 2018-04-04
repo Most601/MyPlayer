@@ -38,7 +38,12 @@ public class Accelerometer implements SensorEventListener{
             }catch (Exception e){
             }
 
-            STP.sendSensorData(event.sensor.getStringType() , event.sensor.getType(), event.accuracy, event.timestamp, event.values);
+            STP.sendSensorData(
+                    event.sensor.getStringType() ,
+                    event.sensor.getType(),
+                    event.accuracy,
+                    event.timestamp,
+                    event.values);
 
         }
 

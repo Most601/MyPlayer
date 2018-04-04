@@ -26,6 +26,7 @@ public class ManageOfSensors {
     private HeartrRate H ;
     private stepCounter SC ;
     private Accelerometer AC ;
+    private Gravity gravity;
 
 
     public ManageOfSensors(Context context) {
@@ -33,6 +34,7 @@ public class ManageOfSensors {
         AC = new Accelerometer(context);
         H = new HeartrRate(context);
         SC = new stepCounter(context);
+        gravity = new Gravity(context);
        // gps = new GPS(context);
 
 
@@ -42,14 +44,16 @@ public class ManageOfSensors {
 
     public void StartAllSensors (){
         SC.startMeasurement();
-       // AC.startMeasurement();
+        AC.startMeasurement();
         H.startMeasurement();
+        gravity.startMeasurement();
     }
 
     public void StopAllSensors (){
         SC.stopMeasurement();
-        //AC.stopMeasurement();
+        AC.stopMeasurement();
         H.stopMeasurement();
+        gravity.stopMeasurement();
     }
 
 
@@ -83,6 +87,12 @@ public class ManageOfSensors {
 
     }
 
+//-------------------- Gravity --------------------------
 
 
+    public void StartGravity() {
+        gravity.startMeasurement();
+    }
+    public void StopGravity() {gravity.stopMeasurement();
+    }
 }

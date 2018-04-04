@@ -15,6 +15,7 @@ public class DataReceiveManager {
     private static DataReceiveManager DM;
     private static DataReceiveManager DM_ACC;
 
+
     public static synchronized DataReceiveManager getInstance(Context context) {
         if (DM == null) {
             DM = new DataReceiveManager(context.getApplicationContext());
@@ -62,21 +63,28 @@ public class DataReceiveManager {
         fileManager.deleteFile();
         this.songsList = songsList;
         int i = 1;
+        fileManager.writeInternalFileCsvNewLINE("Date : "+mDay+"/"+month+"/"+ year,true);
         for (Song song : songsList) {
             long id = song.getID();
             String title = song.getTitle();
-//          String artist = song.getArtist();
-//          String data = song.getdata();
-//          String album = song.getAlbum();
+            String artist = song.getArtist();
+            String data = song.getdata();
+            String album = song.getAlbum();
+            String genre = song.getGenre();
+            String Duration = song.getDuration();
             fileManager.writeInternalFileCsvNewLINE(Integer.toString(i) , true);
             fileManager.writeInternalFileCsvSameLine(Long.toString(id) , true);
             fileManager.writeInternalFileCsvSameLine(title , true);
-//          fileManager.writeInternalFileCsvSameLine(artist, true);
-//          fileManager.writeInternalFileCsvSameLine(album , true);
-//          fileManager.writeInternalFileCsvSameLine(data , true );
+            fileManager.writeInternalFileCsvSameLine(artist, true);
+            fileManager.writeInternalFileCsvSameLine(album , true);
+            fileManager.writeInternalFileCsvSameLine(Duration , true );
+            fileManager.writeInternalFileCsvSameLine(genre , true );
+            fileManager.writeInternalFileCsvSameLine(data , true );
             i++;
         }
     }
+
+    //----------------------------------------------------------------------------------------------
 
     /**
      * The function writes to file named Activity.
@@ -95,7 +103,7 @@ public class DataReceiveManager {
         mHour = cc.get(Calendar.HOUR_OF_DAY);
         mMinute = cc.get(Calendar.MINUTE);
         mSecond = cc.get(Calendar.SECOND);
-        fileManager.writeInternalFileCsvNewLINE("Date : "+year+"/"+month+"/"+mDay  ,true );
+        fileManager.writeInternalFileCsvNewLINE("Date : "+mDay+"/"+month+"/"+ year  ,true );
         fileManager.writeInternalFileCsvSameLine("time : "+String.format("%02d:%02d:%02d", mHour , mMinute, mSecond) ,true);
         fileManager.writeInternalFileCsvSameLine(Integer.toString(currentSongIndex) ,true);
         fileManager.writeInternalFileCsvSameLine(currentSongName ,true);
@@ -104,6 +112,8 @@ public class DataReceiveManager {
         fileManager.writeInternalFileCsvSameLine(progress ,true);
         fileManager.writeInternalFileCsvSameLine(activity ,true);
     }
+
+    //----------------------------------------------------------------------------------------------
 
     /**
      * The function writes to file named _ACC.
@@ -123,7 +133,7 @@ public class DataReceiveManager {
         mHour = cc.get(Calendar.HOUR_OF_DAY);
         mMinute = cc.get(Calendar.MINUTE);
         mSecond = cc.get(Calendar.SECOND);
-        fileManager.writeInternalFileCsvNewLINE("Date: "+year+"/"+month+"/"+mDay  ,true );
+        fileManager.writeInternalFileCsvNewLINE("Date: "+mDay+"/"+month+"/"+ year ,true );
         fileManager.writeInternalFileCsvSameLine("time: "+String.format("%02d:%02d:%02d", mHour , mMinute, mSecond) ,true);
         if (Sensor.TYPE_ACCELEROMETER == sensorType){
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[0]) ,true);
@@ -151,7 +161,7 @@ public class DataReceiveManager {
         mHour = cc.get(Calendar.HOUR_OF_DAY);
         mMinute = cc.get(Calendar.MINUTE);
         mSecond = cc.get(Calendar.SECOND);
-        fileManager.writeInternalFileCsvNewLINE("Date : "+year+"/"+month+"/"+mDay  ,true );
+        fileManager.writeInternalFileCsvNewLINE("Date : "+mDay+"/"+month+"/"+ year ,true );
         fileManager.writeInternalFileCsvSameLine("time : "+String.format("%02d:%02d:%02d", mHour, mMinute, mSecond) ,true);
         if (SensorTypeString == "GPS"){
             fileManager.writeInternalFileCsvSameLine(SensorTypeString ,true);
@@ -162,6 +172,8 @@ public class DataReceiveManager {
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[0]) ,true);
         }
     }
+
+    //----------------------------------------------------------------------------------------------
 
     /**
      *

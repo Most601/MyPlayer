@@ -1,5 +1,8 @@
 package metaextract.nkm.com.myplayer;
 
+/**
+ * Created by Most601 on 10/12/2017.
+ */
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -32,7 +35,7 @@ public class DataShow extends AppCompatActivity {
 
     private SendToWear STW ;
 
-    private int eeeee = 0 ;
+    private int counter = 0 ;
 //
 
 //----------------------------------------------
@@ -141,9 +144,9 @@ public class DataShow extends AppCompatActivity {
 
 
 
-        eeeee++;
+        counter++;
         PutDataMapRequest dataMap = PutDataMapRequest.create("/sensors/");
-        dataMap.getDataMap().putInt("1", eeeee);
+        dataMap.getDataMap().putInt("1", counter);
         PutDataRequest putDataRequest = dataMap.asPutDataRequest();
         // STW.send(putDataRequest);
         // x.setText("sending data");

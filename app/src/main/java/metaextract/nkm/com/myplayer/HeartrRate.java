@@ -18,6 +18,9 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 
 public class HeartrRate implements SensorEventListener {
+
+    private static final String TAG = "HeartrRate";
+
     private String msg;
     private SensorManager sMgr;
     private Sensor mHeartrateSensor = null;
@@ -41,14 +44,13 @@ public class HeartrRate implements SensorEventListener {
         System.out.println("onAccuracyChanged - accuracy: " + accuracy);
     }
 
-    public String getH() {
-        return msg;
-
-    }
 
     public void startMeasurement() {
-        sMgr.registerListener(this, mHeartrateSensor,SensorManager.SENSOR_DELAY_NORMAL);
+
+
         if (mHeartrateSensor != null) {
+            sMgr.registerListener(this, mHeartrateSensor,SensorManager.SENSOR_DELAY_NORMAL);
+
             final int measurementDuration   = 30;   // Seconds
             final int measurementBreak      = 15;    // Seconds
 
@@ -57,7 +59,7 @@ public class HeartrRate implements SensorEventListener {
                     new Runnable() {
                         @Override
                         public void run() {
-                            Log.d("", "register Heartrate Sensor");
+                            Log.d(TAG, "register Heartrate Sensor");
                             sMgr.registerListener(HeartrRate.this,
                                     mHeartrateSensor,
                                     SensorManager.SENSOR_DELAY_FASTEST);
@@ -65,17 +67,17 @@ public class HeartrRate implements SensorEventListener {
                             try {
                                 Thread.sleep(measurementDuration * 1000);
                             } catch (InterruptedException e) {
-                                Log.e("", "Interrupted while waitting to unregister Heartrate Sensor");
+                                Log.e(TAG, "Interrupted while waitting to unregister Heartrate Sensor");
                             }
 
-                            Log.d("", "unregister Heartrate Sensor");
+                            Log.d(TAG, "unregister Heartrate Sensor");
                             sMgr.unregisterListener(HeartrRate.this, mHeartrateSensor);
 
                         }
                     }, 3, measurementDuration + measurementBreak, TimeUnit.SECONDS);
 
         } else {
-            Log.d("", "No Heartrate Sensor found");
+            Log.d(TAG, "No Heartrate Sensor found");
         }
 
 

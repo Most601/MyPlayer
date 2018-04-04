@@ -4,6 +4,9 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import java.io.IOException;
@@ -18,17 +21,18 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
-
     //--- The buttons of the player: forward, backward, next, previous, play, repeat and shuffle.---
     private ImageButton btnForward;
     private ImageButton btnBackward;
@@ -37,14 +41,13 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
     private ImageButton btnPlay;
     private ImageButton btnRepeat;
     private ImageButton btnShuffle;
+    private ImageView songImageView;
     //----------------------------------------------------------------------------------------------
-
     //--- Titles: song name, current duration of the song and the duration of the song.-------------
     private TextView songTitleLabel;
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
     //----------------------------------------------------------------------------------------------
-
     private SeekBar songProgressBar; //The seekbar.
     private MediaPlayer mp; //The media player.
     private Handler mHandler = new Handler(); //Handler to update UI timer, progress bar.
@@ -66,20 +69,17 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
 
     private boolean isShuffle = false; //If true the songs will be shuffled.
     private boolean isRepeat = false; //If true the song will be repeated.
-
-    private ArrayList<Song> songsList = new ArrayList<Song>(); //
-
     // FILE
     private SendToWear STW ;
     private MessageReceiveManager MRM;
-
     //------------------//
     private DataReceiveManager DM_SENSOR;
     private DataReceiveManager DM_ACC;
-
     //------------------//
     private DataReceiveManager DM_Activity;
     //------------------//
+    private MediaMetadataRetriever metaRetriver;
+    private ArrayList<Song> songsList = new ArrayList<Song>();
     private DataReceiveManager DM_SONGLIST ;
     private Calendar cc = Calendar.getInstance();
     private int year=cc.get(Calendar.YEAR);
@@ -88,7 +88,6 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
     private int mHour = cc.get(Calendar.HOUR_OF_DAY);
     private int mMinute = cc.get(Calendar.MINUTE);
     //------------------//
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +104,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
         songTitleLabel = (TextView) findViewById(R.id.songTitle);
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
-
+        songImageView = (ImageView) findViewById(R.id.songImage);
         //------------------------------------------------------------------------------------------
 
 
@@ -141,7 +140,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
             });
             //----------------------------------------------------
             if(songsList.size() > 0) {
-                currentSongName = songsList.get(0).getTitle();
+                currentSongName = songsList.get(1).getTitle();
             }
             //------------------- SONGLIST FILE ----------------------------------------------------
             year=cc.get(Calendar.YEAR);
@@ -150,7 +149,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
             mHour = cc.get(Calendar.HOUR_OF_DAY);
             mMinute = cc.get(Calendar.MINUTE);
             DM_SONGLIST = new  DataReceiveManager(this ,
-                    String.format("time=%02d-%02d", mHour , mMinute )+" SONGLIST");
+                    "Date "+String.format("%02d,%02d,%d", mDay , month, year)+" - SONGLIST");
             DM_SONGLIST.addSongList(songsList);
             //------------------- Activity FILE ----------------------------------------------------
             DM_Activity = new DataReceiveManager(this ,"Activity" );
@@ -188,8 +187,6 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
                 // result of the request.
             }
         }
-
-
     }
 
     //----------------------------------------------------------------------------------------------
@@ -232,7 +229,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
                     mHour = cc.get(Calendar.HOUR_OF_DAY);
                     mMinute = cc.get(Calendar.MINUTE);
                     DM_SONGLIST = new  DataReceiveManager(this ,
-                            String.format("time=%02d-%02d", mHour , mMinute )+" SONGLIST");
+                            "Date  "+String.format("%02d,%02d,%d", mDay , month, year)+" - SONGLIST");
                     DM_SONGLIST.addSongList(songsList);
 
 
@@ -253,8 +250,8 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    //Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    //startActivity(i);
+                    Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(i);
                 }
                 return;
             }
@@ -277,19 +274,22 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
 
         Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
 
+        metaRetriver = new MediaMetadataRetriever();
+
         if (musicCursor != null && musicCursor.moveToFirst()) {
             //get columns
             int idColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media._ID);
-            int titleColumn = musicCursor.getColumnIndex
-                    (MediaStore.Audio.Media.DISPLAY_NAME);
             int artistColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.ARTIST);
+            int titleColumn = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media.DISPLAY_NAME);
             int iddata = musicCursor.getColumnIndex
                     (MediaStore.Audio.Media.DATA);
             int albumColumn = musicCursor.getColumnIndex
                     (MediaStore.Audio.Media.ALBUM);
-
+            int DurationColumn = musicCursor.getColumnIndex
+                    (MediaStore.Audio.Media.DURATION);
             //add songs to list
             do {
                 long thisId = musicCursor.getLong(idColumn);
@@ -297,25 +297,27 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
                 String thisArtist = musicCursor.getString(artistColumn);
                 String thiData = musicCursor.getString(iddata);
                 String thiAlbum = musicCursor.getString(albumColumn);
-                this.songsList.add( new Song( thisId , thisTitle , thisArtist , thiData , thiAlbum ));
+                String DURATION =  utils.milliSecondsToTimer(musicCursor.getLong(DurationColumn));
+
+                byte[] PicSong = null;
+                Bitmap songImage = null;
+                String genre = null;
+                metaRetriver.setDataSource(thiData);
+                genre = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
+                PicSong = metaRetriver.getEmbeddedPicture();
+                try {
+                    songImage = BitmapFactory.decodeByteArray(PicSong, 0, PicSong.length);
+                } catch (Exception e) {
+                }
+
+
+                this.songsList.add( new Song(
+                        thisId , thisTitle , thisArtist , thiData ,
+                        thiAlbum , genre , DURATION , songImage));
+
+
             }
             while (musicCursor.moveToNext());
-            //---------------------------- GETIN DATA FROM SONG + PIC ------------------------
-//                metaRetriver.setDataSource(thiData);
-//                try {
-//                    byte[] PicSong = metaRetriver.getEmbeddedPicture();
-//                    //Bitmap songImage = BitmapFactory.decodeByteArray(art, 0, art.length);
-//                    //album_art.setImageBitmap(songImage);
-//                    String ALBUM = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
-//                    String ARTIST = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-//                    String GENRE = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
-//                    Log.e("000000000000000000" , ARTIST);
-//                } catch (Exception e) {
-//                    album_art.setBackgroundColor(Color.GRAY);
-//                    album.setText("Unknown Album");
-//                    artist.setText("Unknown Artist");
-//                    genre.setText("Unknown Genre");
-//                }
         }
         return songsList;
     }
@@ -342,6 +344,12 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
             // Displaying Song title
             String songTitle = songsList.get(songIndex).getTitle();
             songTitleLabel.setText(songTitle);
+            if (songsList.get(songIndex).getImage() == null ){
+                songImageView.setImageResource(R.drawable.adele );
+            }else {
+                songImageView.setImageBitmap( songsList.get(songIndex).getImage());
+            }
+
             // Changing Button Image to pause image
             btnPlay.setImageResource(R.drawable.img_btn_pause);
             // set Progress bar values
@@ -536,7 +544,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
 
     }
 
-    //------------------- Previous -------------------------------------------------------
+    //------------------- Previous -----------------------------------------------------------------
 
     public void Previous(View view) {
 
@@ -558,7 +566,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
 
     }
 
-    //------------------- play -------------------------------------------------------
+    //------------------- play ---------------------------------------------------------------------
 
     public void play(View view) {
         // check for already playing
@@ -599,7 +607,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
 
     }
 
-    //------------------- Forward -------------------------------------------------------
+    //------------------- Forward ------------------------------------------------------------------
 
     public void Forward(View view) {
         // get current song position
@@ -622,7 +630,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
 
     }
 
-    //------------------- Next -------------------------------------------------------
+    //------------------- Next ---------------------------------------------------------------------
 
     public void Next(View view) {
 
@@ -645,7 +653,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
 
     }
 
-    //----------------- Repeat --------------------------------------------------------
+    //----------------- Repeat ---------------------------------------------------------------------
 
     public void Repeat(View view) {
         if(isRepeat){

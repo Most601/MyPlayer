@@ -20,7 +20,8 @@ public class DataShow extends WearableActivity {
     private static TextView
             AxText ,AyText ,AzText ,GpsText ,
             HeartrRateText ,stepCounterText ,timeDateText , sendToPhone ,
-            GxText ,GyText ,GzText ;
+            GxText ,GyText ,GzText ,
+            MFxText ,MFyText ,MFzText ;
 
     int count = 0 ;
     private SendToPhone STP ;
@@ -57,11 +58,17 @@ public class DataShow extends WearableActivity {
         stepCounterText = (TextView)findViewById(R.id.textView4);
         StartstepCounter();
 
-//        Gravity = new stepCounter(this);
+//        Gravity = new Gravity(this);
         GxText = (TextView)findViewById(R.id.textView10);
         GyText = (TextView)findViewById(R.id.textView11);
         GzText = (TextView)findViewById(R.id.textView12);
         StartGravity();
+
+//        MagneticField = new MagneticField(this);
+        MFxText = (TextView)findViewById(R.id.textView13);
+        MFyText = (TextView)findViewById(R.id.textView14);
+        MFzText = (TextView)findViewById(R.id.textView15);
+        StartMagneticField ();
 
 
 
@@ -85,16 +92,12 @@ public class DataShow extends WearableActivity {
 
 
 //------------------- Accelerometer ---------------------------
-
     public void StartAccelerometer (){
         MOS.StartAccelerometer();
     }
-
     public void StopAccelerometer (){
         MOS.StopAccelerometer();
     }
-
-
 
 //-------------------- HeartrRate --------------------------
 
@@ -104,7 +107,6 @@ public class DataShow extends WearableActivity {
     }
     public void HeartrRateStopButten(View view) {
         MOS.StopHeartrRate();
-
     }
 
 //-------------------- Gravity --------------------------
@@ -112,9 +114,17 @@ public class DataShow extends WearableActivity {
     public void StartGravity (){
         MOS.StartGravity();
     }
-
     public void StopGravity (){
         MOS.StopGravity();
+    }
+
+//-------------------- MagneticField --------------------------
+
+    public void StartMagneticField (){
+        MOS.StartMagneticField();
+    }
+    public void StopMagneticField (){
+        MOS.StopMagneticField();
     }
 
 //----------------------- Gps -----------------------------
@@ -156,9 +166,14 @@ public class DataShow extends WearableActivity {
             stepCounterText.setText(msgSC);
         }
         else if (sensor == "Gravity"){
-            GxText.setText("X: " + event.values[0]+"   ;   ");
-            GyText.setText("Y: " + event.values[1]+"   ;   ");
-            GzText.setText("Z: " + event.values[2]);
+            GxText.setText("X: " + (int)event.values[0]+" ; ");
+            GyText.setText("Y: " + (int)event.values[1]+" ; ");
+            GzText.setText("Z: " + (int)event.values[2]);
+        }
+        else if (sensor == "MagneticField"){
+            MFxText.setText("X: " + (int)event.values[0]+" ; ");
+            MFyText.setText("Y: " + (int)event.values[1]+" ; ");
+            MFzText.setText("Z: " + (int)event.values[2]);
         }
 
     }

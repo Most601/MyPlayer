@@ -479,7 +479,6 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
         Intent i = new Intent(getApplicationContext(), PlayListActivity.class);
         startActivityForResult(i, 100);
     }
-
     /**
      * Receiving song index from playlist view
      * and play the song
@@ -576,6 +575,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
         if(mp.isPlaying()){
             if(mp!=null){
                 mp.pause();
+
                 //----------------
                 STW.sendMessage("Act" , "stop");
                 DM_Activity.ActivityFILE(

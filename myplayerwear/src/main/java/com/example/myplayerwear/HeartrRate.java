@@ -61,29 +61,29 @@ public class HeartrRate implements SensorEventListener {
     public void startMeasurement(){
         if (mHeartrateSensor != null) {
             SM.registerListener(this, mHeartrateSensor,SensorManager.SENSOR_DELAY_NORMAL);
-            final int measurementDuration   = 30;   // Seconds
-            final int measurementBreak      = 15;    // Seconds
-            mScheduler = Executors.newScheduledThreadPool(1);
-            mScheduler.scheduleAtFixedRate(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.d(TAG, "register Heartrate Sensor");
-                            SM.registerListener(HeartrRate.this,
-                                    mHeartrateSensor,
-                                    SensorManager.SENSOR_DELAY_FASTEST);
-
-                            try {
-                                Thread.sleep(measurementDuration * 1000);
-                            } catch (InterruptedException e) {
-                                Log.e(TAG, "Interrupted while waitting to unregister Heartrate Sensor");
-                            }
-
-                            Log.d(TAG, "unregister Heartrate Sensor");
-                            SM.unregisterListener(HeartrRate.this, mHeartrateSensor);
-
-                        }
-                    }, 3, measurementDuration + measurementBreak, TimeUnit.SECONDS);
+//            final int measurementDuration   = 30;   // Seconds
+//            final int measurementBreak      = 15;    // Seconds
+//            mScheduler = Executors.newScheduledThreadPool(1);
+//            mScheduler.scheduleAtFixedRate(
+//                    new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Log.d(TAG, "register Heartrate Sensor");
+//                            SM.registerListener(HeartrRate.this,
+//                                    mHeartrateSensor,
+//                                    SensorManager.SENSOR_DELAY_FASTEST);
+//
+//                            try {
+//                                Thread.sleep(measurementDuration * 1000);
+//                            } catch (InterruptedException e) {
+//                                Log.e(TAG, "Interrupted while waitting to unregister Heartrate Sensor");
+//                            }
+//
+//                            Log.d(TAG, "unregister Heartrate Sensor");
+//                            SM.unregisterListener(HeartrRate.this, mHeartrateSensor);
+//
+//                        }
+//                    }, 3, measurementDuration + measurementBreak, TimeUnit.SECONDS);
 
         } else {
             Log.d(TAG, "No Heartrate Sensor found");

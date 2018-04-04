@@ -36,7 +36,7 @@ public class MessageReceiverService extends WearableListenerService {
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
         super.onDataChanged(dataEvents);
-        Log.e(TAG1, "onDatadddddddddddddddddddddddddddddddddChanged()");
+       // Log.e(TAG1, "onDatadddddddddddddddddddddddddddddddddChanged()");
 
 //        for (DataEvent dataEvent : dataEvents) {
 //            if (dataEvent.getType() == DataEvent.TYPE_CHANGED) {

@@ -44,16 +44,16 @@ public class ManageOfSensors {
 
     public void StartAllSensors (){
         SC.startMeasurement();
-        AC.startMeasurement();
+       // AC.startMeasurement();
         H.startMeasurement();
-        gravity.startMeasurement();
+       // gravity.startMeasurement();
     }
 
     public void StopAllSensors (){
         SC.stopMeasurement();
-        AC.stopMeasurement();
+       // AC.stopMeasurement();
         H.stopMeasurement();
-        gravity.stopMeasurement();
+       // gravity.stopMeasurement();
     }
 
 

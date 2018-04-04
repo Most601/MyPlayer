@@ -75,6 +75,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
     //------------------//
     private DataReceiveManager DM_SENSOR;
     private DataReceiveManager DM_ACC;
+    private DataReceiveManager DM_Gravity;
     //------------------//
     private DataReceiveManager DM_Activity;
     //------------------//
@@ -123,6 +124,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
 
         DM_SENSOR = DataReceiveManager.getInstance(this);
         DM_ACC = DataReceiveManager.getInstanceACC(this);
+        DM_Gravity = DataReceiveManager.getInstanceGravity(this);
         //------------------------- permission -----------------------------------------------------
 
         //------- Checking for permission ------
@@ -337,6 +339,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
             currentSongName = songsList.get(songIndex).getTitle();
             DM_ACC.setSongName(currentSongName+"_ACC");
             DM_SENSOR.setSongName(currentSongName);
+            DM_Gravity.setSongName(currentSongName+"_Gravity");
             mp.reset();
             mp.setDataSource(this,uri);
             mp.prepare();

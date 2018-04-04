@@ -4,7 +4,7 @@ package metaextract.nkm.com.myplayer;
  * Created by Most601 on 15/12/2017.
  */
 
-import android.content.Context;
+
 import android.os.Environment;
 import android.util.Log;
 import java.io.BufferedReader;
@@ -21,19 +21,17 @@ public class FileManager {
     private static final String TAG = "FileManager";
 
     public String filePath;
-    private Context m_context;
     private File file ;
 
 
-    public FileManager(Context context) {
-        m_context = context;
-    }
 
     //-----------------------------------------------------------------------------------------------
 
+
+
+
     //-------------------Aviv--------------------
-    public FileManager(Context context , String Filename , boolean append ) {
-        m_context = context;
+    public FileManager(String Filename , boolean append ) {
         boolean a = isExternalStorageWritable();
         if (a) {
             Log.d(TAG, "External Storage Writable");
@@ -228,7 +226,7 @@ public class FileManager {
 //
 //    // Private == app-related.
 //    public File getPrivatePicturesDirectory(String picturesFolder) {
-//        File file = new File(m_context.getExternalFilesDir(
+//        File file = new File(context.getExternalFilesDir(
 //                Environment.DIRECTORY_PICTURES), picturesFolder);
 //        if (!file.mkdirs()) {
 //            Log.e("SNAPGuidesError", "Directory not created");

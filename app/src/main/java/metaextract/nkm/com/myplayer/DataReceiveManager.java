@@ -2,6 +2,7 @@ package metaextract.nkm.com.myplayer;
 
 import android.content.Context;
 import android.hardware.Sensor;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,6 +15,9 @@ public class DataReceiveManager {
 
     private static DataReceiveManager DM;
     private static DataReceiveManager DM_ACC;
+    private static DataReceiveManager DM_Gravity;
+
+
 
 
     public static synchronized DataReceiveManager getInstance(Context context) {
@@ -28,6 +32,13 @@ public class DataReceiveManager {
             DM_ACC = new DataReceiveManager(context.getApplicationContext());
         }
         return DM_ACC;
+    }
+
+    public static synchronized DataReceiveManager getInstanceGravity (Context context) {
+        if (DM_Gravity == null) {
+            DM_Gravity = new DataReceiveManager(context.getApplicationContext());
+        }
+        return DM_Gravity;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -46,12 +57,11 @@ public class DataReceiveManager {
     //-------------- Constructors ------------------------------------------------------------------
     public DataReceiveManager(Context context){
         this.context = context;
-        fileManager = new FileManager(context);
     }
 
     public DataReceiveManager(Context context ,String filename){
         this.context = context;
-        fileManager = new FileManager(context , filename , false );
+        fileManager = new FileManager( filename , false );
     }
     //----------------------------------------------------------------------------------------------
 
@@ -141,6 +151,12 @@ public class DataReceiveManager {
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[2]) ,true);
             fileManager.writeInternalFileCsvSameLine(Long.toString(timestamp) ,true);
         }
+        else if (Sensor.TYPE_GRAVITY == sensorType){
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[0]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[1]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[2]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Long.toString(timestamp) ,true);
+        }
     }
 
     /**
@@ -173,6 +189,7 @@ public class DataReceiveManager {
         }
     }
 
+
     //----------------------------------------------------------------------------------------------
 
     /**
@@ -181,7 +198,7 @@ public class DataReceiveManager {
      */
     public void setSongName (String songName){
         this.songName = songName ;
-        fileManager = new FileManager(context, songName,false);
+        fileManager = new FileManager( songName,false);
         gps = new GPS(context);
     }
 }

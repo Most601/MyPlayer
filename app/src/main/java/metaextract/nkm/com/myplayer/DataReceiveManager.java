@@ -17,7 +17,7 @@ public class DataReceiveManager {
     private static DataReceiveManager DM_ACC;
     private static DataReceiveManager DM_Gravity;
     private static DataReceiveManager DM_Pressure;
-
+    private static DataReceiveManager DM_MagneticField;
 
 
     public static synchronized DataReceiveManager getInstance(Context context) {
@@ -46,6 +46,13 @@ public class DataReceiveManager {
             DM_Pressure = new DataReceiveManager(context.getApplicationContext());
         }
         return DM_Pressure;
+    }
+
+    public static synchronized DataReceiveManager getInstanceMagneticField (Context context) {
+        if (DM_MagneticField == null) {
+            DM_MagneticField = new DataReceiveManager(context.getApplicationContext());
+        }
+        return DM_MagneticField;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -159,6 +166,12 @@ public class DataReceiveManager {
             fileManager.writeInternalFileCsvSameLine(Long.toString(timestamp) ,true);
         }
         else if (Sensor.TYPE_GRAVITY == sensorType){
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[0]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[1]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[2]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Long.toString(timestamp) ,true);
+        }
+        else if (Sensor.TYPE_MAGNETIC_FIELD == sensorType){
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[0]) ,true);
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[1]) ,true);
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[2]) ,true);

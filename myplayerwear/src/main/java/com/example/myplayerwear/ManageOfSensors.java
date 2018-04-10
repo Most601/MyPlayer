@@ -50,22 +50,22 @@ public class ManageOfSensors {
 //-------------------------- ALL SENSORS---------------------------------------------
 
     public void StartAllSensors (){
-        SC.startMeasurement();
-        AC.startMeasurement();
+        StartStepCounter();
+        StartAccelerometer();
         H.startMeasurement();
         StartGravity();
-        //StartMagneticField();
+        StartMagneticField();
         //StartOrientation();
         StartPressure();
         //StartRotationVector() ;
     }
 
     public void StopAllSensors (){
-        SC.stopMeasurement();
-        AC.stopMeasurement();
+        StopStepCounter();
+        StopAccelerometer();
         H.stopMeasurement();
         StopGravity();
-       // StopMagneticField();
+        StopMagneticField();
        // StopOrientation();
         StopPressure();
        // StopRotationVector() ;

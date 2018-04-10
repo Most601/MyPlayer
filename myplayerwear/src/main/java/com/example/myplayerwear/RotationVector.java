@@ -61,7 +61,7 @@ public class RotationVector implements SensorEventListener {
 
     public void stopMeasurement() {
         // unRegister sensor Listener
-        if (SM != null) {
+        if (SssM != null) {
             SM.unregisterListener(this);
         }
     }

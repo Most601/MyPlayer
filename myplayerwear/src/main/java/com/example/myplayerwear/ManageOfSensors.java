@@ -55,7 +55,7 @@ public class ManageOfSensors {
         H.startMeasurement();
         StartGravity();
         StartMagneticField();
-        //StartOrientation();
+        StartOrientation();
         StartPressure();
         //StartRotationVector() ;
     }
@@ -66,7 +66,7 @@ public class ManageOfSensors {
         H.stopMeasurement();
         StopGravity();
         StopMagneticField();
-       // StopOrientation();
+        StopOrientation();
         StopPressure();
        // StopRotationVector() ;
     }

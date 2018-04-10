@@ -78,6 +78,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
     private DataReceiveManager DM_Gravity;
     private DataReceiveManager DM_Pressure;
     private DataReceiveManager DM_MagneticField;
+    private DataReceiveManager DM_Orientation;
     //------------------//
     private DataReceiveManager DM_Activity;
     //------------------//
@@ -129,6 +130,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
         DM_Gravity = DataReceiveManager.getInstanceGravity(this);
         DM_Pressure = DataReceiveManager.getInstancePressure(this);
         DM_MagneticField = DataReceiveManager.getInstanceMagneticField(this);
+        DM_Orientation = DataReceiveManager.getInstanceOrientation(this);
         //------------------------- permission -----------------------------------------------------
 
         //------- Checking for permission ------
@@ -310,7 +312,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
                 String genre = null;
                 metaRetriver.setDataSource(thiData);
                 genre = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
-                PicSong = metaRetriver.getEmbeddedPicture();
+              //  PicSong = metaRetriver.getEmbeddedPicture();
                 try {
                     songImage = BitmapFactory.decodeByteArray(PicSong, 0, PicSong.length);
                 } catch (Exception e) {
@@ -346,6 +348,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
             DM_Gravity.setSongName(currentSongName+"_Gravity");
             DM_Pressure.setSongName(currentSongName+"_Pressure");
             DM_MagneticField.setSongName(currentSongName+"_MagneticField");
+            DM_Orientation.setSongName(currentSongName+"_Orientation");
             mp.reset();
             mp.setDataSource(this,uri);
             mp.prepare();

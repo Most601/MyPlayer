@@ -78,7 +78,7 @@ public class GPS implements LocationListener {
         longitude = lon + "";
         if (lat != 0 && lon != 0 ){
             float gpsArr[] = {lon ,lat};
-            DM.addSensorData_s("GPS" , 0,0,0,gpsArr);
+            DM.addSensorData("GPS" , -1,-1,-1,gpsArr);
             stopGPS();
         }
 

@@ -16,7 +16,7 @@ public class DataReceiveManager {
     private static DataReceiveManager DM;
     private static DataReceiveManager DM_ACC;
     private static DataReceiveManager DM_Gravity;
-
+    private static DataReceiveManager DM_Pressure;
 
 
 
@@ -39,6 +39,13 @@ public class DataReceiveManager {
             DM_Gravity = new DataReceiveManager(context.getApplicationContext());
         }
         return DM_Gravity;
+    }
+
+    public static synchronized DataReceiveManager getInstancePressure (Context context) {
+        if (DM_Pressure == null) {
+            DM_Pressure = new DataReceiveManager(context.getApplicationContext());
+        }
+        return DM_Pressure;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -126,7 +133,7 @@ public class DataReceiveManager {
     //----------------------------------------------------------------------------------------------
 
     /**
-     * The function writes to file named _ACC.
+     * The function writes to file named .
      * @param SensorTypeString - sensor type.
      * @param sensorType - integer that represents the sensor type.
      * @param accuracy - accuracy of the sensor.
@@ -157,37 +164,19 @@ public class DataReceiveManager {
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[2]) ,true);
             fileManager.writeInternalFileCsvSameLine(Long.toString(timestamp) ,true);
         }
-    }
-
-    /**
-     * The function writes to file named as the song name.
-     * @param SensorTypeString - sensor type.
-     * @param sensorType - integer that represents the sensor type.
-     * @param accuracy - accuracy of the sensor.
-     * @param timestamp - time that the data of the sensor was collected.
-     * @param values - data of the sensor.
-     */
-    public void addSensorData_s(String SensorTypeString ,int sensorType, int accuracy, long timestamp, float[] values) {
-
-//      event.sensor.getType() == Sensor.TYPE_HEART_RATE == sensorTypesString
-        cc = Calendar.getInstance();
-        year=cc.get(Calendar.YEAR);
-        month=cc.get(Calendar.MONTH);
-        mDay = cc.get(Calendar.DAY_OF_MONTH);
-        mHour = cc.get(Calendar.HOUR_OF_DAY);
-        mMinute = cc.get(Calendar.MINUTE);
-        mSecond = cc.get(Calendar.SECOND);
-        fileManager.writeInternalFileCsvNewLINE("Date : "+mDay+"/"+month+"/"+ year ,true );
-        fileManager.writeInternalFileCsvSameLine("time : "+String.format("%02d:%02d:%02d", mHour, mMinute, mSecond) ,true);
-        if (SensorTypeString == "GPS"){
+        else if (SensorTypeString == "GPS"){
             fileManager.writeInternalFileCsvSameLine(SensorTypeString ,true);
-            fileManager.writeInternalFileCsvSameLine(Float.toString(values[0])+" - "+Float.toString(values[1]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[0]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[1]) ,true);
         }
         else {
             fileManager.writeInternalFileCsvSameLine(SensorTypeString ,true);
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[0]) ,true);
         }
     }
+
+
+
 
 
     //----------------------------------------------------------------------------------------------

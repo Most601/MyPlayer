@@ -21,13 +21,16 @@ public class ManageOfSensors {
     //--------------------------------
 
 
-    private GPS gps ;
+
     private Context context ;
     private HeartrRate H ;
     private stepCounter SC ;
     private Accelerometer AC ;
     private Gravity gravity;
     private MagneticField magneticField;
+    private Orientation orientation;
+    private Pressure pressure;
+    private RotationVector rotationVector;
 
     public ManageOfSensors(Context context) {
         this.context = context;
@@ -36,7 +39,10 @@ public class ManageOfSensors {
         SC = new stepCounter(context);
         gravity = new Gravity(context);
         magneticField = new MagneticField(context);
-       // gps = new GPS(context);
+        orientation = new Orientation(context);
+        pressure = new Pressure(context);
+        rotationVector = new RotationVector(context);
+
 
 
     }
@@ -45,18 +51,24 @@ public class ManageOfSensors {
 
     public void StartAllSensors (){
         SC.startMeasurement();
-       // AC.startMeasurement();
+        AC.startMeasurement();
         H.startMeasurement();
         StartGravity();
-        StartMagneticField();
+        //StartMagneticField();
+        //StartOrientation();
+        StartPressure();
+        //StartRotationVector() ;
     }
 
     public void StopAllSensors (){
         SC.stopMeasurement();
-       // AC.stopMeasurement();
+        AC.stopMeasurement();
         H.stopMeasurement();
-       // StopGravity();
+        StopGravity();
        // StopMagneticField();
+       // StopOrientation();
+        StopPressure();
+       // StopRotationVector() ;
     }
 
     //------------------- stepCounter ----------------------------.
@@ -74,7 +86,15 @@ public class ManageOfSensors {
 //-------------------- magneticField --------------------------
     public void StartMagneticField() {magneticField.startMeasurement();}
     public void StopMagneticField() {magneticField.stopMeasurement();}
-
+//-------------------- Orientation --------------------------
+    public void StartOrientation() {orientation.startMeasurement();}
+    public void StopOrientation() {orientation.stopMeasurement();}
+//-------------------- Pressure --------------------------
+    public void StartPressure() {pressure.startMeasurement();}
+    public void StopPressure() {pressure.stopMeasurement();}
+//-------------------- RotationVector --------------------------
+    public void StartRotationVector() {rotationVector.startMeasurement();}
+    public void StopRotationVector() {rotationVector.stopMeasurement();}
 
 
 }

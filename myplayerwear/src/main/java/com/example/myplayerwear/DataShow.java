@@ -13,23 +13,20 @@ import com.google.android.gms.wearable.PutDataRequest;
 import java.util.Calendar;
 
 public class DataShow extends WearableActivity {
-    private Accelerometer AC ;
-    private GPS gps ;
-    private HeartrRate H;
-    private stepCounter SC;
+
     private static TextView
-            AxText ,AyText ,AzText ,GpsText ,
+            AxText ,AyText ,AzText ,
             HeartrRateText ,stepCounterText ,timeDateText , sendToPhone ,
             GxText ,GyText ,GzText ,
-            MFxText ,MFyText ,MFzText ;
+            MFxText ,MFyText ,MFzText ,
+            OxText ,OyText ,OzText ,
+            PressureText ,
+            RVxText ,RVyText ,RVzText , RVcosText , RVAccuracyText ;
 
     int count = 0 ;
     private SendToPhone STP ;
-
     private ManageOfSensors MOS ;
 
-    private String latitude;
-    private String longitude;
 //----------------------------------------------
 
     @Override
@@ -41,8 +38,6 @@ public class DataShow extends WearableActivity {
         MOS = ManageOfSensors.getInstance(this);
 
 
-        gps = new GPS(this);
-        GpsText = (TextView)findViewById(R.id.textView2);
 
 //        H = new HeartrRate(this);
         HeartrRateText = (TextView)findViewById(R.id.textView3);
@@ -62,35 +57,48 @@ public class DataShow extends WearableActivity {
         GxText = (TextView)findViewById(R.id.textView10);
         GyText = (TextView)findViewById(R.id.textView11);
         GzText = (TextView)findViewById(R.id.textView12);
-        StartGravity();
+        // StartGravity();
 
 //        MagneticField = new MagneticField(this);
         MFxText = (TextView)findViewById(R.id.textView13);
         MFyText = (TextView)findViewById(R.id.textView14);
         MFzText = (TextView)findViewById(R.id.textView15);
-        StartMagneticField ();
+      //  StartMagneticField ();
 
+//        Orientation = new Orientation(this);
+        OxText = (TextView)findViewById(R.id.textView17);
+        OyText = (TextView)findViewById(R.id.textView18);
+        OzText = (TextView)findViewById(R.id.textView19);
+      //  StartOrientation ();
 
+//        Pressure = new Pressure(this);
+        PressureText = (TextView)findViewById(R.id.textView16);
+        StartPressure();
 
+//        RotationVector = new RotationVector(this);
+        RVxText = (TextView)findViewById(R.id.textView20);
+        RVyText = (TextView)findViewById(R.id.textView21);
+        RVzText = (TextView)findViewById(R.id.textView22);
+        RVcosText = (TextView)findViewById(R.id.textView23);
+        RVAccuracyText = (TextView)findViewById(R.id.textView24);
+     //   StartRotationVector ();
 
-        timeDate();
-
+//        SendToPhone = new SendToPhone(this);
         STP = SendToPhone.getInstance(this);
         sendToPhone = (TextView)findViewById(R.id.textView9);
 
 
+        timeDate();
+
+
     }
 //------------------- stepCounter ----------------------------.
-
     public void StartstepCounter (){
         MOS.StartStepCounter();
     }
-
     public void StopstepCounter (){
         MOS.StopStepCounter();
     }
-
-
 //------------------- Accelerometer ---------------------------
     public void StartAccelerometer (){
         MOS.StartAccelerometer();
@@ -98,45 +106,37 @@ public class DataShow extends WearableActivity {
     public void StopAccelerometer (){
         MOS.StopAccelerometer();
     }
-
 //-------------------- HeartrRate --------------------------
-
     public void HeartrRateStartButten(View view) {
         HeartrRateText.setText("Wait ....");
-        MOS.StartHeartrRate();
-    }
-    public void HeartrRateStopButten(View view) {
-        MOS.StopHeartrRate();
-    }
-
+        MOS.StartHeartrRate();}
+    public void HeartrRateStopButten(View view) {MOS.StopHeartrRate();}
 //-------------------- Gravity --------------------------
-
     public void StartGravity (){
         MOS.StartGravity();
     }
     public void StopGravity (){
         MOS.StopGravity();
     }
-
 //-------------------- MagneticField --------------------------
-
     public void StartMagneticField (){
         MOS.StartMagneticField();
     }
     public void StopMagneticField (){
         MOS.StopMagneticField();
     }
-
+//-------------------- Orientation --------------------------
+    public void StartOrientation (){MOS.StartOrientation();}
+    public void StopOrientation (){MOS.StopOrientation();}
+//-------------------- Pressure --------------------------
+    public void StartPressure (){MOS.StartPressure();}
+    public void StopPressure (){MOS.StopPressure();}
+//-------------------- RotationVector --------------------------
+    public void StartRotationVector (){MOS.StartRotationVector();}
+    public void StopRotationVector (){MOS.StopRotationVector();}
 //----------------------- Gps -----------------------------
-
-    public void GpsButten(View view) {
-        longitude = gps.getLongitude();
-        latitude= gps.getLatitude();
-        GpsText.setText("latitude ="+latitude+" , "+"longitude = "+longitude);
-    }
-
+    public void GpsButten(View view) {}
 //--------------------- time + Date ---------------------------
-
     public void timeDate (){
         timeDateText = (TextView) findViewById(R.id.textView8);
         Calendar cc = Calendar.getInstance();
@@ -148,6 +148,11 @@ public class DataShow extends WearableActivity {
         timeDateText.append("Date : "+ year+"/"+month+"/"+mDay +" --- ");
         timeDateText.append("time : "+String.format("%02d:%02d", mHour , mMinute ));
     }
+
+
+
+
+
 
 //------------------------ print to screen -----------------------------
 
@@ -175,6 +180,22 @@ public class DataShow extends WearableActivity {
             MFyText.setText("Y: " + (int)event.values[1]+" ; ");
             MFzText.setText("Z: " + (int)event.values[2]);
         }
+        else if (sensor == "Orientation"){
+            OxText.setText("X: " + (int)event.values[0]+" ; ");
+            OyText.setText("Y: " + (int)event.values[1]+" ; ");
+            OzText.setText("Z: " + (int)event.values[2]);
+        }
+        else if (sensor == "Pressure"){
+            PressureText.setText((int)event.values[0]);
+        }
+        else if (sensor == "RotationVector"){
+            RVxText.setText("X: " + (int)event.values[0]+" ; ");
+            RVyText.setText("Y: " + (int)event.values[1]+" ; ");
+            RVzText.setText("Z: " + (int)event.values[2]);
+            RVcosText.setText("cos : " + (int)event.values[4]+" ; ");
+            RVAccuracyText.setText("Accuracy : " + (int)event.values[5]);
+        }
+
 
     }
 

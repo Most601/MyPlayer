@@ -38,6 +38,7 @@ public class SensorReceiverService extends WearableListenerService  {
     private DataReceiveManager DM_ACC = DataReceiveManager.getInstanceACC(this);
     private DataReceiveManager DM_Sensor = DataReceiveManager.getInstance(this);
     private DataReceiveManager DM_Gravity = DataReceiveManager.getInstanceGravity(this);
+    private DataReceiveManager DM_Pressure = DataReceiveManager.getInstancePressure(this);
     private MessageReceiveManager MRM = MessageReceiveManager.getInstance(this);
 
 //    @Override
@@ -88,16 +89,20 @@ public class SensorReceiverService extends WearableListenerService  {
         long timestamp = dataMap.getLong(TIMESTAMP);
         float[] values = dataMap.getFloatArray(VALUES);
         if (  Sensor.TYPE_ACCELEROMETER == sensorType ){
-          //  Log.d(TAG1, "Received sensor TYPE_ACCELEROMETER data " + sensorType + " = " +SensorTypeString );
+          //  Log.d(TAG1, "Received sensor TYPE_ACCELEROMETER data " + sensorType + " = " +values[0] );
             DM_ACC.addSensorData(SensorTypeString, sensorType, accuracy, timestamp, values);
         }
         else if (Sensor.TYPE_GRAVITY == sensorType){
-          //  Log.d(TAG1, "Received sensor TYPE_GRAVITY data " + sensorType + " = " +SensorTypeString );
+          //  Log.d(TAG1, "Received sensor TYPE_GRAVITY data " + sensorType + " = " +values[0] );
             DM_Gravity.addSensorData(SensorTypeString, sensorType, accuracy, timestamp, values);
         }
+        else if (Sensor.TYPE_PRESSURE == sensorType){
+              Log.d(TAG1, "Received sensor TYPE_PRESSURE data " + sensorType + " = " +values[0] );
+            DM_Pressure.addSensorData(SensorTypeString, sensorType, accuracy, timestamp, values);
+        }
         else {
-            Log.d(TAG1, "Received sensor data " + sensorType + " = " +SensorTypeString );
-            DM_Sensor.addSensorData_s(SensorTypeString, sensorType, accuracy, timestamp, values);
+            //Log.d(TAG1, "Received sensor data " + sensorType + " = " +SensorTypeString );
+            DM_Sensor.addSensorData(SensorTypeString, sensorType, accuracy, timestamp, values);
 
 
         }

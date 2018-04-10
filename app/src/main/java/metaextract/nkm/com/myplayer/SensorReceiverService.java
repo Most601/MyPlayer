@@ -41,6 +41,7 @@ public class SensorReceiverService extends WearableListenerService  {
     private DataReceiveManager DM_Pressure = DataReceiveManager.getInstancePressure(this);
     private DataReceiveManager DM_MagneticField = DataReceiveManager.getInstanceMagneticField(this);
     private DataReceiveManager DM_Orientation = DataReceiveManager.getInstanceOrientation(this);
+    private DataReceiveManager DM_RotationVector = DataReceiveManager.getInstanceRotationVector(this);
     private MessageReceiveManager MRM = MessageReceiveManager.getInstance(this);
 
 //    @Override
@@ -99,7 +100,7 @@ public class SensorReceiverService extends WearableListenerService  {
             DM_Gravity.addSensorData(SensorTypeString, sensorType, accuracy, timestamp, values);
         }
         else if (Sensor.TYPE_PRESSURE == sensorType){
-              Log.d(TAG1, "Received sensor TYPE_PRESSURE data " + sensorType + " = " +values[0] );
+          //  Log.d(TAG1, "Received sensor TYPE_PRESSURE data " + sensorType + " = " +values[0] );
             DM_Pressure.addSensorData(SensorTypeString, sensorType, accuracy, timestamp, values);
         }
         else if (Sensor.TYPE_MAGNETIC_FIELD == sensorType){
@@ -107,8 +108,13 @@ public class SensorReceiverService extends WearableListenerService  {
             DM_MagneticField.addSensorData(SensorTypeString, sensorType, accuracy, timestamp, values);
         }
         else if (Sensor.TYPE_ORIENTATION == sensorType){
-            Log.d(TAG1, "Received sensor TYPE_ORIENTATION data " + sensorType + " = " +values[0] + " = " +values[1] + " = " +values[2] );
+          //  Log.d(TAG1, "Received sensor TYPE_ORIENTATION data " + sensorType + " = " +values[0] + " = " +values[1] + " = " +values[2] );
             DM_Orientation.addSensorData(SensorTypeString, sensorType, accuracy, timestamp, values);
+        }
+        else if (Sensor.TYPE_ROTATION_VECTOR == sensorType){
+            Log.d(TAG1, "Received sensor TYPE_ROTATION_VECTOR data " + sensorType + " = " +values[0] + " = " +values[1] + " = " +values[2]
+                    + " = " +values[3] + " = " +values[4]);
+            DM_RotationVector.addSensorData(SensorTypeString, sensorType, accuracy, timestamp, values);
         }
         else {
             //Log.d(TAG1, "Received sensor data " + sensorType + " = " +SensorTypeString );

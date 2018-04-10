@@ -19,6 +19,7 @@ public class DataReceiveManager {
     private static DataReceiveManager DM_Pressure;
     private static DataReceiveManager DM_MagneticField;
     private static DataReceiveManager DM_Orientation;
+    private static DataReceiveManager DM_RotationVector;
 
 
     public static synchronized DataReceiveManager getInstance(Context context) {
@@ -61,6 +62,13 @@ public class DataReceiveManager {
             DM_Orientation = new DataReceiveManager(context.getApplicationContext());
         }
         return DM_Orientation;
+    }
+
+    public static synchronized DataReceiveManager getInstanceRotationVector(Context context) {
+        if (DM_RotationVector == null) {
+            DM_RotationVector = new DataReceiveManager(context.getApplicationContext());
+        }
+        return DM_RotationVector;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -189,6 +197,14 @@ public class DataReceiveManager {
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[0]) ,true);
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[1]) ,true);
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[2]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Long.toString(timestamp) ,true);
+        }
+        else if (Sensor.TYPE_ROTATION_VECTOR == sensorType){
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[0]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[1]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[2]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[3]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[4]) ,true);
             fileManager.writeInternalFileCsvSameLine(Long.toString(timestamp) ,true);
         }
         else if (SensorTypeString == "GPS"){

@@ -79,6 +79,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
     private DataReceiveManager DM_Pressure;
     private DataReceiveManager DM_MagneticField;
     private DataReceiveManager DM_Orientation;
+    private DataReceiveManager DM_RotationVector;
     //------------------//
     private DataReceiveManager DM_Activity;
     //------------------//
@@ -131,6 +132,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
         DM_Pressure = DataReceiveManager.getInstancePressure(this);
         DM_MagneticField = DataReceiveManager.getInstanceMagneticField(this);
         DM_Orientation = DataReceiveManager.getInstanceOrientation(this);
+        DM_RotationVector = DataReceiveManager.getInstanceRotationVector(this);
         //------------------------- permission -----------------------------------------------------
 
         //------- Checking for permission ------
@@ -349,6 +351,7 @@ public class MainActivity extends Activity implements OnCompletionListener, Seek
             DM_Pressure.setSongName(currentSongName+"_Pressure");
             DM_MagneticField.setSongName(currentSongName+"_MagneticField");
             DM_Orientation.setSongName(currentSongName+"_Orientation");
+            DM_RotationVector.setSongName(currentSongName+"_RotationVector");
             mp.reset();
             mp.setDataSource(this,uri);
             mp.prepare();

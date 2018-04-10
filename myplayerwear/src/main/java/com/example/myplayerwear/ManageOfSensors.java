@@ -57,7 +57,7 @@ public class ManageOfSensors {
         StartMagneticField();
         StartOrientation();
         StartPressure();
-        //StartRotationVector() ;
+        StartRotationVector() ;
     }
 
     public void StopAllSensors (){
@@ -68,7 +68,7 @@ public class ManageOfSensors {
         StopMagneticField();
         StopOrientation();
         StopPressure();
-       // StopRotationVector() ;
+        StopRotationVector() ;
     }
 
     //------------------- stepCounter ----------------------------.

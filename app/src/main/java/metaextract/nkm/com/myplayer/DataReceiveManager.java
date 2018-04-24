@@ -75,7 +75,6 @@ public class DataReceiveManager {
     //-------------- Class variables ---------------------------------------------------------------
     private Context context;
     private FileManager fileManager;
-
     private ArrayList<Song> songsList = new ArrayList<Song>();
     private String songName;
     private GPS gps;
@@ -93,6 +92,18 @@ public class DataReceiveManager {
         this.context = context;
         fileManager = new FileManager( filename , false );
     }
+    //----------------------------------------------------------------------------------------------
+
+    /**
+     *
+     * @param songName
+     */
+    public void setSongName (String songName){
+        this.songName = songName ;
+        fileManager = new FileManager( songName,false);
+        gps = new GPS(context);
+    }
+
     //----------------------------------------------------------------------------------------------
 
     /**
@@ -207,12 +218,17 @@ public class DataReceiveManager {
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[4]) ,true);
             fileManager.writeInternalFileCsvSameLine(Long.toString(timestamp) ,true);
         }
+        else if (Sensor.TYPE_PRESSURE == sensorType){
+            fileManager.writeInternalFileCsvSameLine(Float.toString(values[0]) ,true);
+            fileManager.writeInternalFileCsvSameLine(Long.toString(timestamp) ,true);
+        }
         else if (SensorTypeString == "GPS"){
             fileManager.writeInternalFileCsvSameLine(SensorTypeString ,true);
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[0]) ,true);
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[1]) ,true);
         }
-        else {
+
+        else { // stepCounter + HeartrRate
             fileManager.writeInternalFileCsvSameLine(SensorTypeString ,true);
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[0]) ,true);
         }
@@ -224,13 +240,5 @@ public class DataReceiveManager {
 
     //----------------------------------------------------------------------------------------------
 
-    /**
-     *
-     * @param songName
-     */
-    public void setSongName (String songName){
-        this.songName = songName ;
-        fileManager = new FileManager( songName,false);
-        gps = new GPS(context);
-    }
+
 }

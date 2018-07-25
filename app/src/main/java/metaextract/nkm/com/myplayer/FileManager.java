@@ -47,6 +47,17 @@ public class FileManager {
                 bw.write(String.valueOf(Filename + "\n"));
                 bw.close();
                 Log.d(TAG, "File created - "+Filename);
+                //if we first time install the app, create head-line for the file.
+                if(Filename.equals("Activity")){
+                    writeInternalFileCsvNewLINE("Date", true);
+                    writeInternalFileCsvSameLine("Time", true);
+                    writeInternalFileCsvSameLine("Song id", true);
+                    writeInternalFileCsvSameLine("Full song name", true);
+                    writeInternalFileCsvSameLine("Song length", true);
+                    writeInternalFileCsvSameLine("Previous Song", true);
+                    writeInternalFileCsvSameLine("Position in the SeekBar", true);
+                    writeInternalFileCsvSameLine("Activity", true);
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();

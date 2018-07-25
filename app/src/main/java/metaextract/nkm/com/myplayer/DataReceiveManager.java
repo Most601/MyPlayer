@@ -154,8 +154,8 @@ public class DataReceiveManager {
         mHour = cc.get(Calendar.HOUR_OF_DAY);
         mMinute = cc.get(Calendar.MINUTE);
         mSecond = cc.get(Calendar.SECOND);
-        fileManager.writeInternalFileCsvNewLINE("Date : "+mDay+"/"+month+"/"+ year  ,true );
-        fileManager.writeInternalFileCsvSameLine("time : "+String.format("%02d:%02d:%02d", mHour , mMinute, mSecond) ,true);
+        fileManager.writeInternalFileCsvNewLINE(mDay+"/"+(month+1)+"/"+ year  ,true );
+        fileManager.writeInternalFileCsvSameLine(String.format("%02d:%02d:%02d", mHour , mMinute, mSecond) ,true);
         fileManager.writeInternalFileCsvSameLine(Integer.toString(currentSongIndex) ,true);
         fileManager.writeInternalFileCsvSameLine(currentSongName ,true);
         fileManager.writeInternalFileCsvSameLine(timeOfSong ,true);
@@ -184,8 +184,8 @@ public class DataReceiveManager {
         mHour = cc.get(Calendar.HOUR_OF_DAY);
         mMinute = cc.get(Calendar.MINUTE);
         mSecond = cc.get(Calendar.SECOND);
-        fileManager.writeInternalFileCsvNewLINE("Date: "+mDay+"/"+month+"/"+ year ,true );
-        fileManager.writeInternalFileCsvSameLine("time: "+String.format("%02d:%02d:%02d", mHour , mMinute, mSecond) ,true);
+        fileManager.writeInternalFileCsvNewLINE(mDay+"/"+month+"/"+ year ,true );
+        fileManager.writeInternalFileCsvSameLine(String.format("%02d:%02d:%02d", mHour , mMinute, mSecond) ,true);
         if (Sensor.TYPE_ACCELEROMETER == sensorType){
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[0]) ,true);
             fileManager.writeInternalFileCsvSameLine(Float.toString(values[1]) ,true);
